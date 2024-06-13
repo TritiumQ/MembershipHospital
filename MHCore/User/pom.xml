@@ -17,6 +17,11 @@
     </properties>
     <dependencies>
         <!--        各项目独立的依赖-->
+        <dependency>
+            <groupId>me.qunqun</groupId>
+            <artifactId>shared</artifactId>
+            <version>0.0.1</version>
+        </dependency>
     </dependencies>
 
     <build>

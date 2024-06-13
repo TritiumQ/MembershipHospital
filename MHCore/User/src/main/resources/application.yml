@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: user
+  profiles:
+    include: shared
+
+server:
+  port: 9092

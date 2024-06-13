@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: docter
+  profiles:
+    include: shared
+
+server:
+  port: 9091
