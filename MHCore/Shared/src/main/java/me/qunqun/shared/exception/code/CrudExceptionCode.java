@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum CrudExceptionCode implements IExceptionCode
 {
 	//TODO 数据操作错误代码, 待补充
-	UNKNOWN_ERROR(2000, "未知数据错误"),
+	ERROR(2000, "数据操作错误"),
 	ADD_ERROR(2001, "添加失败"),
 	DELETE_ERROR(2002, "删除失败"),
 	UPDATE_ERROR(2003, "修改失败"),

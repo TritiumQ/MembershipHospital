@@ -1,16 +1,18 @@
-package me.qunqun.shared.exception.handler;
+package me.qunqun.shared.component;
 
 import cn.dev33.satoken.exception.SaTokenException;
 import lombok.extern.slf4j.Slf4j;
 import me.qunqun.shared.entity.Result;
 import me.qunqun.shared.exception.CustomException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+/**
+ * 默认全局异常处理
+ */
 @Slf4j
 @RestControllerAdvice
-public class GlobalExceptionHandler
+public class SharedExceptionHandler
 {
 	@ExceptionHandler(SaTokenException.class)
 	public Result handleSaTokenException(SaTokenException e)
@@ -32,7 +34,7 @@ public class GlobalExceptionHandler
 	
 	
 	/**
-	 * 处理所有系统异常, 仅在产品部署后时使用
+	 * 处理所有系统异常
 	 */
 //	@ExceptionHandler(Exception.class)
 //	public SimpleResult<String> handleException(Exception e) {

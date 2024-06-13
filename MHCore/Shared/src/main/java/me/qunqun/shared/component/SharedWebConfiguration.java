@@ -1,11 +1,9 @@
-package me.qunqun.shared.config;
+package me.qunqun.shared.component;
 
 import cn.dev33.satoken.SaManager;
 import cn.dev33.satoken.context.SaHolder;
-import cn.dev33.satoken.filter.SaServletFilter;
 import cn.dev33.satoken.interceptor.SaInterceptor;
 import cn.dev33.satoken.jwt.StpLogicJwtForStateless;
-import cn.dev33.satoken.router.SaHttpMethod;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.stp.StpLogic;
 import cn.dev33.satoken.stp.StpUtil;
@@ -18,7 +16,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * Web配置
  */
 @Configuration
-public class WebSharedConfig implements WebMvcConfigurer
+public class SharedWebConfiguration implements WebMvcConfigurer
 {
 	// Sa-Token 配置类
 	// https://sa-token.cc/doc.html#/use/route-check  参考文档
@@ -50,8 +48,7 @@ public class WebSharedConfig implements WebMvcConfigurer
 					//鉴权规则
 					SaRouter
 							// 排除掉的 path 列表，可以写多个
-							.notMatch("/api/signin")
-							.notMatch("/api/test/**")
+							.notMatch("/api/signIn")
 							.notMatch("/api/docs/**")
 							// 拦截的 path 列表，可以写多个 */
 							.match("/**")
@@ -70,48 +67,47 @@ public class WebSharedConfig implements WebMvcConfigurer
 		return new StpLogicJwtForStateless();
 	}
 	
-	/**
-	 * Sa-Token 全局过滤器，处理跨域问题
- 	 */
-	@Bean
-	public SaServletFilter getSaServletFilter() {
-		return new SaServletFilter()
-				// 指定 [拦截路由] 与 [放行路由]
-				.addInclude("/api/**")
-				.addExclude("/api/test/**")
-				.addExclude("/api/docs/**")
-				.addExclude("/api/signin")
-				
-				// 认证函数: 每次请求执行
-//				.setAuth(obj -> {
-//					SaManager.getLog().debug("----- 请求path={}  提交token={}", SaHolder.getRequest().getRequestPath(), StpUtil.getTokenValue());
-//					// ...
+//	/**
+//	 * Sa-Token 全局过滤器，处理跨域问题
+// 	 */
+//	@Bean
+//	public SaServletFilter getSaServletFilter() {
+//		return new SaServletFilter()
+//				// 指定 [拦截路由] 与 [放行路由]
+//				.addInclude("/api/**")
+//				.addExclude("/api/docs/**")
+//				.addExclude("/api/signIn")
+//
+//				// 认证函数: 每次请求执行
+////				.setAuth(obj -> {
+////					SaManager.getLog().debug("----- 请求path={}  提交token={}", SaHolder.getRequest().getRequestPath(), StpUtil.getTokenValue());
+////					// ...
+////				})
+//
+//				// 异常处理函数：每次认证函数发生异常时执行此函数
+////				.setError(e -> {
+////					return SaResult.error(e.getMessage());
+////				})
+//
+//				// 前置函数：在每次认证函数之前执行
+//				.setBeforeAuth(obj -> {
+//					SaHolder.getResponse()
+//							// ---------- 设置跨域响应头 ----------
+//							// 允许指定域访问跨域资源
+//							.setHeader("Access-Control-Allow-Origin", "*")
+//							// 允许所有请求方式
+//							.setHeader("Access-Control-Allow-Methods", "*")
+//							// 允许的header参数
+//							.setHeader("Access-Control-Allow-Headers", "*")
+//							// 有效时间
+//							.setHeader("Access-Control-Max-Age", "3600")
+//					;
+//
+//					// 如果是预检请求，则立即返回到前端
+//					SaRouter.match(SaHttpMethod.OPTIONS)
+//							.free(r -> SaManager.getLog().info("OPTIONS预检请求，不做处理"))
+//							.back();
 //				})
-				
-				// 异常处理函数：每次认证函数发生异常时执行此函数
-//				.setError(e -> {
-//					return SaResult.error(e.getMessage());
-//				})
-				
-				// 前置函数：在每次认证函数之前执行
-				.setBeforeAuth(obj -> {
-					SaHolder.getResponse()
-							// ---------- 设置跨域响应头 ----------
-							// 允许指定域访问跨域资源
-							.setHeader("Access-Control-Allow-Origin", "*")
-							// 允许所有请求方式
-							.setHeader("Access-Control-Allow-Methods", "*")
-							// 允许的header参数
-							.setHeader("Access-Control-Allow-Headers", "*")
-							// 有效时间
-							.setHeader("Access-Control-Max-Age", "3600")
-					;
-					
-					// 如果是预检请求，则立即返回到前端
-					SaRouter.match(SaHttpMethod.OPTIONS)
-							.free(r -> SaManager.getLog().info("OPTIONS预检请求，不做处理"))
-							.back();
-				})
-				;
-	}
+//				;
+//	}
 }
