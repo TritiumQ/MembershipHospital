@@ -1,7 +1,7 @@
-package me.qunqun.shared.exception;
+package me.qunqun.user.exception;
 
 
-import me.qunqun.shared.exception.code.OperationExceptionCode;
+import me.qunqun.shared.exception.CustomException;
 
 public class OperationException extends CustomException
 {

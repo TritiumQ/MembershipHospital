@@ -4,19 +4,19 @@ import jakarta.annotation.Resource;
 import me.qunqun.shared.annotation.LogMethod;
 import me.qunqun.shared.entity.po.User;
 import me.qunqun.user.entity.dto.UserSignInDto;
-import me.qunqun.shared.exception.OperationException;
-import me.qunqun.shared.exception.code.OperationExceptionCode;
+import me.qunqun.user.exception.OperationException;
+import me.qunqun.user.exception.OperationExceptionCode;
 import me.qunqun.shared.repo.UserRepository;
 import me.qunqun.user.entity.dto.UserSignUpDto;
 import me.qunqun.user.entity.vo.UserInfoVo;
-import me.qunqun.user.service.ISignService;
+import me.qunqun.user.service.IUserService;
 import me.qunqun.user.util.UserUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 @Service
 @LogMethod
-public class SignService implements ISignService
+public class UserService implements IUserService
 {
 	@Resource
 	private UserRepository userRepository;
@@ -82,5 +82,22 @@ public class SignService implements ISignService
 		}
 		
 		return new UserInfoVo(user, null);
+	}
+	
+	@Override
+	public UserInfoVo info()
+	{
+		var user = UserUtil.GetUser();
+		Assert.notNull(user, "info(): 获取用户信息失败");
+		return new UserInfoVo(user, null);
+	}
+	
+	@Override
+	public UserInfoVo refresh()
+	{
+		var user = UserUtil.GetUser();
+		Assert.notNull(user, "refresh(): 获取用户信息失败");
+		var token = UserUtil.SetUser(user);
+		return new UserInfoVo(user, token);
 	}
 }

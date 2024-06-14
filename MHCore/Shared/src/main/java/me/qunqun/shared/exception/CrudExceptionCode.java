@@ -1,4 +1,4 @@
-package me.qunqun.shared.exception.code;
+package me.qunqun.shared.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

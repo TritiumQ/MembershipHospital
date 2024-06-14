@@ -1,4 +1,4 @@
-package me.qunqun.config;
+package me.qunqun.user.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;

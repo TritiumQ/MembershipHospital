@@ -2,6 +2,7 @@ package me.qunqun.user.util;
 
 import cn.dev33.satoken.stp.SaLoginConfig;
 import cn.dev33.satoken.stp.StpUtil;
+import jakarta.annotation.Nullable;
 import me.qunqun.shared.entity.po.User;
 import org.springframework.util.Assert;
 
@@ -21,10 +22,20 @@ public class UserUtil
 		return StpUtil.getTokenValue();
 	}
 	
-	
-	public static void GetUser()
+	/**
+	 * 获取用户实体信息
+	 */
+	public static User GetUser()
 	{
+		return (User)StpUtil.getExtra("user");
+	}
 	
+	/**
+	 * 获取用户id
+	 */
+	public static String GetUserId()
+	{
+		return StpUtil.getLoginIdAsString();
 	}
 	
 	

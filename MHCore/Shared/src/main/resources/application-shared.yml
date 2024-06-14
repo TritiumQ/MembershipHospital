@@ -31,7 +31,6 @@ sa-token:
   # 是否输出操作日志
   is-log: true
 
-
 # 日志配置
 logging:
   level:

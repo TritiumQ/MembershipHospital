@@ -4,6 +4,7 @@ import cn.dev33.satoken.exception.SaTokenException;
 import lombok.extern.slf4j.Slf4j;
 import me.qunqun.shared.entity.Result;
 import me.qunqun.shared.exception.CustomException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -36,16 +37,13 @@ public class SharedExceptionHandler
 	/**
 	 * 处理所有系统异常
 	 */
-//	@ExceptionHandler(Exception.class)
-//	public SimpleResult<String> handleException(Exception e) {
-//		// 检测系统环境
-//		if(activeProfile.equals("prod"))
-//		{
-//			log.error("系统异常");
-//			return SimpleResult.error("系统异常");
-//		}
-//		throw new RuntimeException(e);
-//	}
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<String> handleException(Exception e) {
+		var res = ResponseEntity.internalServerError()
+				.body("系统异常, 具体情况请咨询客服德川");
+		log.error("预期外的Exception: ", e);
+		return res;
+	}
 }
 
 
