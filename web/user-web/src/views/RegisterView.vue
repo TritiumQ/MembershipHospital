@@ -36,8 +36,23 @@ const check = (): boolean => {
     if (passwordRepeat.value !== userRegisterParams.value.password) {
         return false;
     }
-
-
+    if (!userRegisterParams.value.id || !userRegisterParams.value.password || !userRegisterParams.value.realName || !userRegisterParams.value.birthday || !userRegisterParams.value.idCard) {
+        errorMsg.value = '请填写完整信息';
+        return false;
+    }
+    if (!/^\d{11}$/.test(userRegisterParams.value.id)) {
+        errorMsg.value = '手机号码格式错误';
+        return false;
+    }
+    if (!/^\d{18}$/.test(userRegisterParams.value.idCard)) {
+        errorMsg.value = '身份证号格式错误';
+        return false;
+    }
+    // 密码要求6-32位，包含数字和字母
+    if (!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,32}$/.test(userRegisterParams.value.password)) {
+        errorMsg.value = '密码要求6-32位，包含数字和字母';
+        return false;
+    }
     return true;
 }
 
