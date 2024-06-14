@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+import DirectToLogin from '@/components/DirectToLogin.vue';
+import { useUserStore } from '@/stores/userStore';
+
 const router = useRouter();
+const userStore = useUserStore();
+
 
 </script>
 <template>
     <!-- 总容器 -->
-    <div class="wrapper">
+    <div class="wrapper" v-if="userStore.isLogin">
         <div class="children">
             <RouterView />
         </div>
@@ -31,6 +36,7 @@ const router = useRouter();
             </ul>
         </footer>
     </div>
+    <DirectToLogin v-else />
 </template>
 
 <style scoped>

@@ -38,7 +38,7 @@ public class SharedWebConfiguration implements WebMvcConfigurer
 									SaManager.getLog().debug(
 											"API请求: {}, id={}, token={}",
 											SaHolder.getRequest().getRequestPath(),
-											StpUtil.getLoginIdAsInt(),
+											StpUtil.getLoginIdAsString(),
 											StpUtil.getTokenValue().substring(0, 10)
 									);
 								}

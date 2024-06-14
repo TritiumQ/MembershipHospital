@@ -1,5 +1,6 @@
-
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
+const router = useRouter();
 </script>
 <template>
 
@@ -12,10 +13,10 @@
 </header>
 <div class="top-ban"></div>
 <section>
-<img src="img/yuyue.png"/>
+<img src="@/assets/img/yuyue.png"/>
 <p>
-<img onclick="location.href='hospital.html'" src="img/benrenyuyue.png"/>
-<img src="img/jiashuyuyue.png"/>
+<img onclick="location.href='hospital.html'" src="@/assets/img/benrenyuyue.png"/>
+<img src="@/assets/img/jiashuyuyue.png"/>
 </p>
 </section>
 <div class="bottom-ban"></div>

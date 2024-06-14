@@ -32,7 +32,7 @@ function login()
         }
     }).catch(err => {
         console.log(err);
-        errorMsg.value = '网络错误: ' + err.response.data;
+        errorMsg.value = '网络错误: ' + err?.response?.data;
     });
 };
 

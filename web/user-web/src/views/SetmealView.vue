@@ -1,169 +1,169 @@
-
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
+const router = useRouter();
 </script>
 <template>
 
-<!-- 总容器 -->
-<div class="wrapper">
-<header>
-<i class="fa fa-angle-left" onclick="history.go(-1)"></i>
-<p>选择体检套餐</p>
-<div></div>
-</header>
-<div class="top-ban"></div>
-<ul class="setmeal">
-<li>
-<div class="item">
-<div class="item-left" onclick="location.href='selectdate.html'">
-<h3>男士套餐</h3>
-<p>普通男士客户-基础套餐</p>
-</div>
-<div class="item-right">
-<p>详情</p>
-<i class="fa fa-angle-down"></i>
-</div>
-</div>
-<div class="item-content">
-<table>
-<tr>
-<th>检查项目</th>
-<th>检查内容</th>
-<th>检查意义</th>
-</tr>
-<tr>
-<td>一般检查</td>
-<td>血压、身高、体重、腰围、臀围。</td>
-<td>通过仪器测定人体基本健康指标。</td>
-</tr>
-<tr>
-<td>血常规</td>
-<td>
+    <!-- 总容器 -->
+    <div class="wrapper">
+        <header>
+            <i class="fa fa-angle-left" onclick="history.go(-1)"></i>
+            <p>选择体检套餐</p>
+            <div></div>
+        </header>
+        <div class="top-ban"></div>
+        <ul class="setmeal">
+            <li>
+                <div class="item">
+                    <div class="item-left" onclick="location.href='selectdate.html'">
+                        <h3>男士套餐</h3>
+                        <p>普通男士客户-基础套餐</p>
+                    </div>
+                    <div class="item-right">
+                        <p>详情</p>
+                        <i class="fa fa-angle-down"></i>
+                    </div>
+                </div>
+                <div class="item-content">
+                    <table>
+                        <tr>
+                            <th>检查项目</th>
+                            <th>检查内容</th>
+                            <th>检查意义</th>
+                        </tr>
+                        <tr>
+                            <td>一般检查</td>
+                            <td>血压、身高、体重、腰围、臀围。</td>
+                            <td>通过仪器测定人体基本健康指标。</td>
+                        </tr>
+                        <tr>
+                            <td>血常规</td>
+                            <td>
                                 血常规24项: 中性粒细胞计数绝对值、红细胞压值、血小板比容、单核细胞计数百分比、平均血小板体积、
                                 大血小板比例、嗜碱性粒细胞计数百分比、平均血红蛋白含量等。
                             </td>
-<td>临床三大常规检测之一，是最基本的血液检验。通过观察血细胞的数量变化及形态分布，从而判断血液状况及相关疾病。</td>
-</tr>
-<tr>
-<td>尿常规</td>
-<td>
+                            <td>临床三大常规检测之一，是最基本的血液检验。通过观察血细胞的数量变化及形态分布，从而判断血液状况及相关疾病。</td>
+                        </tr>
+                        <tr>
+                            <td>尿常规</td>
+                            <td>
                                 尿维生素C测定、尿比重测定、尿液酮体测定、尿胆红素测定、尿亚硝酸盐测定、尿液颜色、尿白细胞计数、尿蛋白定性、
                                 尿液镜检、尿葡萄糖测定、尿液隐血、尿液酸碱度、尿液清晰度、尿胆原。
                             </td>
-<td>临床三大常规检测之一，可反映机体的代谢状况，是很多疾病诊断的重要指标。</td>
-</tr>
-</table>
-</div>
-</li>
-<li>
-<div class="item">
-<div class="item-left" onclick="location.href='selectdate.html'">
-<h3>男士套餐</h3>
-<p>普通男士客户-脑血管系统</p>
-</div>
-<div class="item-right">
-<p>详情</p>
-<i class="fa fa-angle-down"></i>
-</div>
-</div>
-<div class="item-content">
-<table>
-<tr>
-<th>检查项目</th>
-<th>检查内容</th>
-<th>检查意义</th>
-</tr>
-<tr>
-<td>一般检查</td>
-<td>血压、身高、体重、腰围、臀围。</td>
-<td>通过仪器测定人体基本健康指标。</td>
-</tr>
-<tr>
-<td>血常规</td>
-<td>
+                            <td>临床三大常规检测之一，可反映机体的代谢状况，是很多疾病诊断的重要指标。</td>
+                        </tr>
+                    </table>
+                </div>
+            </li>
+            <li>
+                <div class="item">
+                    <div class="item-left" onclick="location.href='selectdate.html'">
+                        <h3>男士套餐</h3>
+                        <p>普通男士客户-脑血管系统</p>
+                    </div>
+                    <div class="item-right">
+                        <p>详情</p>
+                        <i class="fa fa-angle-down"></i>
+                    </div>
+                </div>
+                <div class="item-content">
+                    <table>
+                        <tr>
+                            <th>检查项目</th>
+                            <th>检查内容</th>
+                            <th>检查意义</th>
+                        </tr>
+                        <tr>
+                            <td>一般检查</td>
+                            <td>血压、身高、体重、腰围、臀围。</td>
+                            <td>通过仪器测定人体基本健康指标。</td>
+                        </tr>
+                        <tr>
+                            <td>血常规</td>
+                            <td>
                                 血常规24项: 中性粒细胞计数绝对值、红细胞压值、血小板比容、单核细胞计数百分比、平均血小板体积、
                                 大血小板比例、嗜碱性粒细胞计数百分比、平均血红蛋白含量等。
                             </td>
-<td>临床三大常规检测之一，是最基本的血液检验。通过观察血细胞的数量变化及形态分布，从而判断血液状况及相关疾病。</td>
-</tr>
-<tr>
-<td>尿常规</td>
-<td>
+                            <td>临床三大常规检测之一，是最基本的血液检验。通过观察血细胞的数量变化及形态分布，从而判断血液状况及相关疾病。</td>
+                        </tr>
+                        <tr>
+                            <td>尿常规</td>
+                            <td>
                                 尿维生素C测定、尿比重测定、尿液酮体测定、尿胆红素测定、尿亚硝酸盐测定、尿液颜色、尿白细胞计数、尿蛋白定性、
                                 尿液镜检、尿葡萄糖测定、尿液隐血、尿液酸碱度、尿液清晰度、尿胆原。
                             </td>
-<td>临床三大常规检测之一，可反映机体的代谢状况，是很多疾病诊断的重要指标。</td>
-</tr>
-</table>
-</div>
-</li>
-<li>
-<div class="item">
-<div class="item-left" onclick="location.href='selectdate.html'">
-<h3>男士套餐</h3>
-<p>普通男士客户-肝病检查</p>
-</div>
-<div class="item-right">
-<p>详情</p>
-<i class="fa fa-angle-down"></i>
-</div>
-</div>
-<div class="item-content">
-<table>
-<tr>
-<th>检查项目</th>
-<th>检查内容</th>
-<th>检查意义</th>
-</tr>
-<tr>
-<td>一般检查</td>
-<td>血压、身高、体重、腰围、臀围。</td>
-<td>通过仪器测定人体基本健康指标。</td>
-</tr>
-<tr>
-<td>血常规</td>
-<td>
+                            <td>临床三大常规检测之一，可反映机体的代谢状况，是很多疾病诊断的重要指标。</td>
+                        </tr>
+                    </table>
+                </div>
+            </li>
+            <li>
+                <div class="item">
+                    <div class="item-left" onclick="location.href='selectdate.html'">
+                        <h3>男士套餐</h3>
+                        <p>普通男士客户-肝病检查</p>
+                    </div>
+                    <div class="item-right">
+                        <p>详情</p>
+                        <i class="fa fa-angle-down"></i>
+                    </div>
+                </div>
+                <div class="item-content">
+                    <table>
+                        <tr>
+                            <th>检查项目</th>
+                            <th>检查内容</th>
+                            <th>检查意义</th>
+                        </tr>
+                        <tr>
+                            <td>一般检查</td>
+                            <td>血压、身高、体重、腰围、臀围。</td>
+                            <td>通过仪器测定人体基本健康指标。</td>
+                        </tr>
+                        <tr>
+                            <td>血常规</td>
+                            <td>
                                 血常规24项: 中性粒细胞计数绝对值、红细胞压值、血小板比容、单核细胞计数百分比、平均血小板体积、
                                 大血小板比例、嗜碱性粒细胞计数百分比、平均血红蛋白含量等。
                             </td>
-<td>临床三大常规检测之一，是最基本的血液检验。通过观察血细胞的数量变化及形态分布，从而判断血液状况及相关疾病。</td>
-</tr>
-<tr>
-<td>尿常规</td>
-<td>
+                            <td>临床三大常规检测之一，是最基本的血液检验。通过观察血细胞的数量变化及形态分布，从而判断血液状况及相关疾病。</td>
+                        </tr>
+                        <tr>
+                            <td>尿常规</td>
+                            <td>
                                 尿维生素C测定、尿比重测定、尿液酮体测定、尿胆红素测定、尿亚硝酸盐测定、尿液颜色、尿白细胞计数、尿蛋白定性、
                                 尿液镜检、尿葡萄糖测定、尿液隐血、尿液酸碱度、尿液清晰度、尿胆原。
                             </td>
-<td>临床三大常规检测之一，可反映机体的代谢状况，是很多疾病诊断的重要指标。</td>
-</tr>
-</table>
-</div>
-</li>
-</ul>
-<div class="bottom-ban"></div>
-<footer>
-<ul>
-<li onclick="location.href='index.html'">
-<i class="fa fa-home"></i>
-<p>云医院</p>
-</li>
-<li>
-<i class="fa fa-opencart"></i>
-<p>商城</p>
-</li>
-<li>
-<i class="fa fa-compass"></i>
-<p>发现</p>
-</li>
-<li onclick="location.href='personal.html'">
-<i class="fa fa-user"></i>
-<p>我</p>
-</li>
-</ul>
-</footer>
-</div>
+                            <td>临床三大常规检测之一，可反映机体的代谢状况，是很多疾病诊断的重要指标。</td>
+                        </tr>
+                    </table>
+                </div>
+            </li>
+        </ul>
+        <div class="bottom-ban"></div>
+        <footer>
+            <ul>
+                <li onclick="location.href='index.html'">
+                    <i class="fa fa-home"></i>
+                    <p>云医院</p>
+                </li>
+                <li>
+                    <i class="fa fa-opencart"></i>
+                    <p>商城</p>
+                </li>
+                <li>
+                    <i class="fa fa-compass"></i>
+                    <p>发现</p>
+                </li>
+                <li onclick="location.href='personal.html'">
+                    <i class="fa fa-user"></i>
+                    <p>我</p>
+                </li>
+            </ul>
+        </footer>
+    </div>
 
 </template>
 <style scoped>
 @import '../assets/css/setmeal.css';
 </style>
-        

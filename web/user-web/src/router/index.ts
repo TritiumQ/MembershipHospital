@@ -1,7 +1,7 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import IndexView from '@/views/IndexView.vue';
-import UserLayout from '@/layout/UserLayout.vue';
+import { createRouter, createWebHistory } from "vue-router";
+import HomeView from "../views/HomeView.vue";
+import IndexView from "@/views/IndexView.vue";
+import UserLayout from "@/layout/UserLayout.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -70,8 +70,8 @@ const router = createRouter({
           path: "/setmeal",
           name: "setmeal",
           component: () => import("../views/SetmealView.vue"),
-        }
-      ]
+        },
+      ],
     },
 
     {
@@ -85,7 +85,6 @@ const router = createRouter({
       component: () => import("../views/RegisterView.vue"),
     },
 
-
     {
       path: "/test",
       name: "home",
@@ -94,13 +93,16 @@ const router = createRouter({
   ],
 });
 
+router.beforeEach((to, from, next) => {
+  if (
+    to.name !== "login" &&
+    to.name !== "register" &&
+    !localStorage.getItem("userToken")
+  ) {
+    next({ name: "login" });
+  } else {
+    next();
+  }
+});
 
-// router.beforeEach((to, from, next) => {
-//   if (to.name !== 'login' && to.name !== 'register' && !localStorage.getItem('userToken')) {
-//     next({ name: 'login' })
-//   } else {
-//     next()
-//   }
-// });
-
-export default router
+export default router;

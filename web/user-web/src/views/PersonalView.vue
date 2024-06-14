@@ -1,6 +1,17 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+import { ref } from 'vue';
+import { useUserStore } from '@/stores/userStore';
+
 const router = useRouter();
+const userStore = useUserStore();
+
+const userInfo = ref(userStore.user);
+
+const logout = () => {
+    userStore.logout();
+    router.push('/login');
+};
 
 </script>
 <template>
@@ -17,18 +28,18 @@ const router = useRouter();
                 <div class="content">
                     <img src="@/assets/img/user.png" />
                     <div>
-                        <p>黄药师</p>
-                        <p>账号: 156****4589</p>
+                        <p>{{ userInfo?.realName }}</p>
+                        <p>账号: {{ userInfo?.id }}</p>
                     </div>
                 </div>
             </div>
             <ul>
-                <li>
+                <li @click="() => router.push('appointmentlist') ">
                     <div class="left">
                         <i class="fa fa-user-plus"></i>
                         <p>我的预约</p>
                     </div>
-                    <div class="right" onclick="location.href='appointmentlist.html'">
+                    <div class="right">
                         <i class="fa fa-angle-right"></i>
                     </div>
                 </li>
@@ -68,12 +79,12 @@ const router = useRouter();
                         <i class="fa fa-angle-right"></i>
                     </div>
                 </li>
-                <li>
+                <li @click="logout">
                     <div class="left">
                         <i class="fa fa-sign-out"></i>
                         <p>退出登录</p>
                     </div>
-                    <div class="right" onclick="location.href='login.html'">
+                    <div class="right">
                         <i class="fa fa-angle-right"></i>
                     </div>
                 </li>
