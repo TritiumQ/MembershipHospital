@@ -12,6 +12,6 @@ import java.io.Serializable;
 @Data
 public class UserSignInDto implements Serializable
 {
-	private final String id;
-	private final String password;
+	private String id;
+	private String password;
 }

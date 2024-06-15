@@ -15,11 +15,11 @@ import java.time.LocalDate;
 @Data
 public class UserSignUpDto implements Serializable
 {
-	private final String id;
-	private final String password;
-	private final String realName;
-	private final Integer sex;
-	private final String idCard;
-	private final LocalDate birthday;
-	private final Integer type;
+	private String id;
+	private String password;
+	private String realName;
+	private Integer sex;
+	private String idCard;
+	private LocalDate birthday;
+	private Integer type;
 }

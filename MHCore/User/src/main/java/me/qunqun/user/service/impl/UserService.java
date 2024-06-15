@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 @Service
-@LogMethod
+//@LogMethod
 public class UserService implements IUserService
 {
 	@Resource
@@ -64,15 +64,14 @@ public class UserService implements IUserService
 			throw new OperationException(OperationExceptionCode.USER_ID_EXIST);
 		}
 		
-		var user = User.builder()
-				.id(dto.getId())
-				.password(UserUtil.EncryptPassword(dto.getPassword()))
-				.realName(dto.getRealName())
-				.sex(dto.getSex())
-				.idCard(dto.getIdCard())
-				.birthday(dto.getBirthday())
-				.type(dto.getType())
-				.build();
+		var user = new User();
+		user.setId(dto.getId());
+		user.setPassword(UserUtil.EncryptPassword(dto.getPassword()));
+		user.setRealName(dto.getRealName());
+		user.setSex(dto.getSex());
+		user.setIdCard(dto.getIdCard());
+		user.setBirthday(dto.getBirthday());
+		user.setType(dto.getType());
 		
 		userRepository.save(user);
 		

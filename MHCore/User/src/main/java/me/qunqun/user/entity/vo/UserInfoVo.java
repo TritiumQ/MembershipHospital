@@ -13,14 +13,14 @@ import java.time.LocalDate;
 @Getter
 public class UserInfoVo implements Serializable
 {
-	private final String id;
-	private final String realName;
-	private final Integer sex;
-	private final String idCard;
-	private final LocalDate birthday;
-	private final Integer type;
+	private String id;
+	private String realName;
+	private Integer sex;
+	private String idCard;
+	private LocalDate birthday;
+	private Integer type;
 	
-	private final String token;
+	private String token;
 	
 	public UserInfoVo(User user, String token)
 	{
