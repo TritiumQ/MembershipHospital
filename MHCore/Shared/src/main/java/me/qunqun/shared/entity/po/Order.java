@@ -36,29 +36,39 @@ public class Order
 	/**
 	 * 客户编号
 	 */
+//	@NotNull
+//	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+//	@JoinColumn(name = "user_id", nullable = false)
+//	@ToString.Exclude
+//	private User user;
 	@NotNull
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "user_id", nullable = false)
-	@ToString.Exclude
-	private User user;
+	@Column(name = "user_id", nullable = false)
+	private Integer userId;
 	
 	/**
 	 * 所属医院编号
 	 */
+//	@NotNull
+//	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+//	@JoinColumn(name = "hospital_id", nullable = false)
+//	@ToString.Exclude
+//	private Hospital hospital;
 	@NotNull
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "hospital_id", nullable = false)
-	@ToString.Exclude
-	private Hospital hospital;
+	@Column(name = "hospital_id", nullable = false)
+	private Integer hospitalId;
 	
 	/**
 	 * 所属套餐编号
 	 */
+//	@NotNull
+//	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+//	@JoinColumn(name = "package_id", nullable = false)
+//	@ToString.Exclude
+//	private Package packageField;
 	@NotNull
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "package_id", nullable = false)
-	@ToString.Exclude
-	private Package packageField;
+	@Column(name = "package_id", nullable = false)
+	private Integer packageId;
+	
 	
 	/**
 	 * 订单状态（1：未归档；2：已归档）
@@ -75,5 +85,14 @@ public class Order
 	@OneToMany(mappedBy = "orderId")
 	@ToString.Exclude
 	private Set<OverallResult> overallResults = new LinkedHashSet<>();
+	
+	
+	/**
+	 * 标记删除（0：未删除，非0：已删除）
+	 */
+	@NotNull
+	@ColumnDefault("0")
+	@Column(name = "deprecated", nullable = false)
+	private Boolean deprecated = false;
 	
 }

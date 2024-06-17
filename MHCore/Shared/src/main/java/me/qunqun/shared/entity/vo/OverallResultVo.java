@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import me.qunqun.shared.entity.po.OverallResult;
 
 import java.io.Serializable;
 
@@ -23,4 +24,14 @@ public class OverallResultVo implements Serializable
 	private String title;
 	@Size(max = 400)
 	private String content;
+	@NotNull
+	private Integer orderId;
+	
+	public OverallResultVo(OverallResult overallResult)
+	{
+		this.id = overallResult.getId();
+		this.title = overallResult.getTitle();
+		this.content = overallResult.getContent();
+		this.orderId = overallResult.getOrderId();
+	}
 }

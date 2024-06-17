@@ -71,7 +71,7 @@ public class User
 	@Column(name = "type", nullable = false)
 	private Integer type;
 	
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
 	private Set<Order> orders = new LinkedHashSet<>();
 	
 }

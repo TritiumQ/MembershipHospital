@@ -59,7 +59,7 @@ public class Package
 	private Set<CheckItem> checkItems = new LinkedHashSet<>();
 	
 	
-	@OneToMany(mappedBy = "packageField")
+	@OneToMany(mappedBy = "packageId")
 	@ToString.Exclude
 	@Deprecated
 	private Set<Order> orders = new LinkedHashSet<>();
