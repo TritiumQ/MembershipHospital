@@ -1,11 +1,15 @@
 package me.qunqun.doctor;
 
+import jakarta.persistence.Entity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @Slf4j
+@EnableJpaRepositories(basePackages = "me.qunqun.doctor.repo")
 public class DoctorApplication
 {
 	

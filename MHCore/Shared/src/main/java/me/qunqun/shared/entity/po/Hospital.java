@@ -87,7 +87,7 @@ public class Hospital
 	@Column(name = "state", nullable = false)
 	private Integer state;
 	
-	@OneToMany(mappedBy = "hospitalId", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "hospital", fetch = FetchType.LAZY)
 	@ToString.Exclude
 	private Set<Order> orders = new LinkedHashSet<>();
 	
