@@ -34,9 +34,6 @@ public class OrderVo implements Serializable
 	{
 		this.id = order.getId();
 		this.date = order.getDate();
-		this.userId = order.getUserId();
-		this.hospitalId = order.getHospitalId();
-		this.packageId = order.getPackageId();
 		this.state = order.getState();
 		this.deprecated = order.getDeprecated();
 	}
