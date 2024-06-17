@@ -54,4 +54,8 @@ public class CheckItemReport
 	@OneToMany(mappedBy = "checkItemReport")
 	private Set<CheckItemDetailedReport> checkItemDetailedReports = new LinkedHashSet<>();
 	
+	@Size(max = 255)
+	@Column(name = "review")
+	private String review;
+	
 }

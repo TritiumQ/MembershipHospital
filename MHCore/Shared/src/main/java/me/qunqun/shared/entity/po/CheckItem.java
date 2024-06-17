@@ -26,14 +26,6 @@ public class CheckItem
 	private Integer id;
 	
 	/**
-	 * 检查项名称
-	 */
-	@Size(max = 30)
-	@NotNull
-	@Column(name = "name", nullable = false, length = 30)
-	private String name;
-	
-	/**
 	 * 检查项内容
 	 */
 	@Size(max = 200)

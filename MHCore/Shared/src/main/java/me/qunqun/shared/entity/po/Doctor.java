@@ -60,4 +60,9 @@ public class Doctor
 	@Column(name = "dept_no", nullable = false)
 	private Integer deptNo;
 	
+	@Size(max = 50)
+	@NotNull
+	@Column(name = "email", nullable = false, length = 50)
+	private String email;
+	
 }
