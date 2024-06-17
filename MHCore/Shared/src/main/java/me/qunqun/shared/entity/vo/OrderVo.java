@@ -20,7 +20,7 @@ public class OrderVo implements Serializable
 	@NotNull
 	private final LocalDate date;
 	@NotNull
-	private final Integer userId;
+	private final String userId;
 	@NotNull
 	private final Integer hospitalId;
 	@NotNull
@@ -34,6 +34,9 @@ public class OrderVo implements Serializable
 	{
 		this.id = order.getId();
 		this.date = order.getDate();
+		this.userId = order.getUser().getId();
+		this.hospitalId = order.getHospital().getId();
+		this.packageId = order.getPackageField().getId();
 		this.state = order.getState();
 		this.deprecated = order.getDeprecated();
 	}
