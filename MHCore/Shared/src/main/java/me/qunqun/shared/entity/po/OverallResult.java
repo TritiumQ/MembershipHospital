@@ -36,13 +36,23 @@ public class OverallResult
 	@Size(max = 400)
 	@Column(name = "content", length = 400)
 	private String content;
+
 	
 	/**
 	 * 所属预约编号
 	 */
 	@NotNull
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "order_id", nullable = false)
-	private Order order;
+	@Column(name = "order_id", nullable = false)
+	private Integer orderId;
 	
+	
+//	/**
+//	 * 所属预约
+//	 */
+//	@NotNull
+//	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+//	@JoinColumn(name = "order_id", nullable = false)
+//	@Deprecated
+//	private Order order;
+//
 }

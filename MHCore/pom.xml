@@ -51,7 +51,6 @@
             <artifactId>sa-token-jwt</artifactId>
             <version>1.38.0</version>
         </dependency>
-
         <!-- QueryDSL JPA  -->
         <dependency>
             <groupId>com.querydsl</groupId>
@@ -68,7 +67,6 @@
             <classifier>jakarta</classifier>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -106,6 +104,7 @@
                     </excludes>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>com.mysema.maven</groupId>
                 <artifactId>apt-maven-plugin</artifactId>

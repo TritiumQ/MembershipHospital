@@ -1,25 +1,32 @@
 package me.qunqun.user.service.impl;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import me.qunqun.shared.annotation.LogMethod;
 import me.qunqun.shared.entity.po.User;
 import me.qunqun.user.entity.dto.UserSignInDto;
+import me.qunqun.user.entity.repo.UserRepo;
 import me.qunqun.user.exception.OperationException;
 import me.qunqun.user.exception.OperationExceptionCode;
-import me.qunqun.shared.repo.UserRepository;
 import me.qunqun.user.entity.dto.UserSignUpDto;
 import me.qunqun.user.entity.vo.UserInfoVo;
 import me.qunqun.user.service.IUserService;
 import me.qunqun.user.util.UserUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.Optional;
+
 @Service
 //@LogMethod
+@Slf4j
 public class UserService implements IUserService
 {
 	@Resource
-	private UserRepository userRepository;
+	private UserRepo userRepository;
 	
 	@Override
 	public UserInfoVo signIn(UserSignInDto dto)

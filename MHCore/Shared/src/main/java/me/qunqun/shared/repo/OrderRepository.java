@@ -4,6 +4,6 @@ import me.qunqun.shared.entity.po.Order;
 import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
-public interface OrderRepository extends JpaRepositoryImplementation<Order, Integer>, QuerydslPredicateExecutor<Order>
+public interface OrderRepository extends JpaRepositoryImplementation<Order, Integer>
 {
 }

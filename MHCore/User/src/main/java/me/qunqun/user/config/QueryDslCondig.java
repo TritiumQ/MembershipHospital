@@ -1,4 +1,4 @@
-package me.qunqun.shared.component;
+package me.qunqun.user.config;
 
 
 import com.querydsl.jpa.impl.JPAQueryFactory;

@@ -4,6 +4,6 @@ import me.qunqun.shared.entity.po.CheckItem;
 import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
-public interface CheckItemRepository extends JpaRepositoryImplementation<CheckItem, Integer>, QuerydslPredicateExecutor<CheckItem>
+public interface CheckItemRepository extends JpaRepositoryImplementation<CheckItem, Integer>
 {
 }
