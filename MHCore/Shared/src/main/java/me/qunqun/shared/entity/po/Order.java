@@ -36,38 +36,38 @@ public class Order
 	/**
 	 * 客户编号
 	 */
-//	@NotNull
-//	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-//	@JoinColumn(name = "user_id", nullable = false)
-//	@ToString.Exclude
-//	private User user;
 	@NotNull
-	@Column(name = "user_id", nullable = false)
-	private Integer userId;
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "user_id", nullable = false)
+	@ToString.Exclude
+	private User user;
+//	@NotNull
+//	@Column(name = "user_id", nullable = false)
+//	private String userId;
 	
 	/**
 	 * 所属医院编号
 	 */
-//	@NotNull
-//	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-//	@JoinColumn(name = "hospital_id", nullable = false)
-//	@ToString.Exclude
-//	private Hospital hospital;
 	@NotNull
-	@Column(name = "hospital_id", nullable = false)
-	private Integer hospitalId;
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "hospital_id", nullable = false)
+	@ToString.Exclude
+	private Hospital hospital;
+//	@NotNull
+//	@Column(name = "hospital_id", nullable = false)
+//	private Integer hospitalId;
 	
 	/**
 	 * 所属套餐编号
 	 */
-//	@NotNull
-//	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-//	@JoinColumn(name = "package_id", nullable = false)
-//	@ToString.Exclude
-//	private Package packageField;
 	@NotNull
-	@Column(name = "package_id", nullable = false)
-	private Integer packageId;
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "package_id", nullable = false)
+	@ToString.Exclude
+	private Package packageField;
+//	@NotNull
+//	@Column(name = "package_id", nullable = false)
+//	private Integer packageId;
 	
 	
 	/**
