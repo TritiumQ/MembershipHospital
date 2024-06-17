@@ -41,6 +41,15 @@ public class CheckItem
 	private String meaning;
 	
 	/**
+	 * 检查项名称
+	 */
+	@Size(max = 30)
+	@NotNull
+	@Column(name = "name", nullable = false, length = 30)
+	private String name;
+	
+	
+	/**
 	 * 备注
 	 */
 	@Size(max = 50)
@@ -54,6 +63,5 @@ public class CheckItem
 	@OneToMany(mappedBy = "checkItem")
 	@ToString.Exclude
 	private Set<CheckItemReport> checkItemReports = new LinkedHashSet<>();
-	
-	
+
 }

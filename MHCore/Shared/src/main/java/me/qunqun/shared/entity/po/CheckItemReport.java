@@ -35,12 +35,11 @@ public class CheckItemReport
 	private CheckItem checkItem;
 	
 	/**
-	 * 检查项名称
+	 * 体检项目评价分析
 	 */
-	@Size(max = 30)
-	@NotNull
-	@Column(name = "name", nullable = false, length = 30)
-	private String name;
+	@Size(max = 255)
+	@Column(name = "review")
+	private String review;
 	
 	/**
 	 * 所属预约编号
@@ -53,9 +52,6 @@ public class CheckItemReport
 	
 	@OneToMany(mappedBy = "checkItemReport")
 	private Set<CheckItemDetailedReport> checkItemDetailedReports = new LinkedHashSet<>();
-	
-	@Size(max = 255)
-	@Column(name = "review")
-	private String review;
+
 	
 }
