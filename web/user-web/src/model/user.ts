@@ -16,10 +16,11 @@ interface UserLogin extends User
 interface UserInfo extends User
 {
     realName: string;
-    sex: number;
     idCard: string;
     birthday: string;
     type: number;
+    sex: number;
+    test: number;
 }
 
 

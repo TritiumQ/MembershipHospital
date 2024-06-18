@@ -1,9 +1,7 @@
-package me.qunqun.shared.entity.vo;
+package me.qunqun.user.entity.vo;
 
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.Accessors;
 import me.qunqun.shared.entity.po.CheckItemDetailed;
 
 import java.io.Serializable;

@@ -1,6 +1,6 @@
 package me.qunqun.user.service;
 
-import me.qunqun.shared.entity.vo.HospitalVo;
+import me.qunqun.user.entity.vo.HospitalVo;
 
 import java.util.List;
 

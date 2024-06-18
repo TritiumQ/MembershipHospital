@@ -1,5 +1,7 @@
 import axios, { type AxiosResponse } from "axios";
-
+/**
+ * 统一封装请求
+ */
 class ApiService {
     private instance = axios.create({
         baseURL: "http://localhost:9092/api",
@@ -44,6 +46,9 @@ class ApiService {
         return this.instance.post(url, data).then((res) => this.mapToResponse(res));
     }
 
+    axios() {
+        return this.instance;
+    }
 };
 
 export class Response<T> {

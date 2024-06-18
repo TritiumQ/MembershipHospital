@@ -1,5 +1,6 @@
 package me.qunqun.user.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -93,16 +94,28 @@ public class UserService implements IUserService
 	@Override
 	public UserInfoVo info()
 	{
-		var user = UserUtil.GetUser();
-		Assert.notNull(user, "info(): 获取用户信息失败");
+		StpUtil.checkLogin();
+		var id = UserUtil.GetUserId();
+		var oUser = userRepository.findById(id);
+		if(oUser.isEmpty())
+		{
+			throw new OperationException(OperationExceptionCode.USER_NOT_FOUND);
+		}
+		var user = oUser.get();
 		return new UserInfoVo(user, null);
 	}
 	
 	@Override
 	public UserInfoVo refresh()
 	{
-		var user = UserUtil.GetUser();
-		Assert.notNull(user, "refresh(): 获取用户信息失败");
+		StpUtil.checkLogin();
+		var id = UserUtil.GetUserId();
+		var oUser = userRepository.findById(id);
+		if(oUser.isEmpty())
+		{
+			throw new OperationException(OperationExceptionCode.USER_NOT_FOUND);
+		}
+		var user = oUser.get();
 		var token = UserUtil.SetUser(user);
 		return new UserInfoVo(user, token);
 	}

@@ -83,43 +83,33 @@ const router = useRouter();
             <ul>
                 <li>
                     <img src="@/assets/img/doctor1.jpg" />
-                    <h3>刘长胜</h3>
-                    <p>主任医师</p>
+                    <h3>淳平</h3>
+                    <p>无执照医师</p>
                 </li>
                 <li>
                     <img src="@/assets/img/doctor2.jpg" />
-                    <h3>孙鹿</h3>
+                    <h3>德川</h3>
                     <p>主任医师</p>
                 </li>
                 <li>
                     <img src="@/assets/img/doctor3.jpg" />
-                    <h3>吕文达</h3>
+                    <h3>我修院</h3>
                     <p>主任医师</p>
                 </li>
                 <li>
                     <img src="@/assets/img/doctor4.jpg" />
-                    <h3>李若辰</h3>
+                    <h3>田所浩二</h3>
                     <p>主任医师</p>
                 </li>
                 <li>
                     <img src="@/assets/img/doctor5.jpg" />
-                    <h3>张石凡</h3>
+                    <h3>先辈</h3>
                     <p>主任医师</p>
                 </li>
                 <li>
                     <img src="@/assets/img/doctor6.jpg" />
-                    <h3>赵桂凤</h3>
+                    <h3>远野</h3>
                     <p>副主任医师</p>
-                </li>
-                <li>
-                    <img src="@/assets/img/doctor7.jpg" />
-                    <h3>李文</h3>
-                    <p>主任医师</p>
-                </li>
-                <li>
-                    <img src="@/assets/img/doctor8.jpg" />
-                    <h3>吴晓梦</h3>
-                    <p>主任医师</p>
                 </li>
             </ul>
         </div>
@@ -151,18 +141,18 @@ const router = useRouter();
                 <li>
                     <img src="@/assets/img/info1.png" />
                     <div>
-                        <h3>查出肺结核，我是不是要得肺癌了？</h3>
-                        <span>肺结核一定会导致肺癌吗？</span>
-                        <p><i class="fa fa-commenting-o"></i>3699</p>
+                        <h3>食雪之后，总是呕吐，我是不是变homo了？</h3>
+                        <span>食雪一定会导致homo吗？</span>
+                        <p><i class="fa fa-commenting-o"></i>1145</p>
                     </div>
                 </li>
                 <div class="middle-ban"></div>
                 <li>
                     <img src="@/assets/img/info2.png" />
                     <div>
-                        <h3>体检发现甲状腺结节，怎么办？</h3>
-                        <span>日常需注意什么？</span>
-                        <p><i class="fa fa-commenting-o"></i>4256</p>
+                        <h3>体检结果不好，要被淳平惩罚，怎么办？</h3>
+                        <span>撅什么？</span>
+                        <p><i class="fa fa-commenting-o"></i>1919</p>
                     </div>
                 </li>
             </ul>

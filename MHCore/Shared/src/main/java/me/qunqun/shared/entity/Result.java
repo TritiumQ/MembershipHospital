@@ -4,6 +4,10 @@ package me.qunqun.shared.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+/**
+ * 通用返回结果
+ * @param <T> 返回数据类型
+ */
 @Data
 @AllArgsConstructor
 public class Result<T>

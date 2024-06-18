@@ -18,17 +18,10 @@ public class UserUtil
 	{
 		Assert.notNull(user, "SetUser(): user 不可为 null");
 		// 使用id作为登录凭证
-		StpUtil.login(user.getId(), SaLoginConfig.setExtra("user", user));
+		StpUtil.login(user.getId());
 		return StpUtil.getTokenValue();
 	}
 	
-	/**
-	 * 获取用户实体信息
-	 */
-	public static User GetUser()
-	{
-		return (User)StpUtil.getExtra("user");
-	}
 	
 	/**
 	 * 获取用户id

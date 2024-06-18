@@ -1,4 +1,4 @@
-package me.qunqun.shared.entity.vo;
+package me.qunqun.user.entity.vo;
 
 import lombok.Getter;
 import lombok.ToString;

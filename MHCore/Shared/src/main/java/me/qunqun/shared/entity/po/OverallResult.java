@@ -38,21 +38,21 @@ public class OverallResult
 	private String content;
 
 	
-	/**
-	 * 所属预约编号
-	 */
-	@NotNull
-	@Column(name = "order_id", nullable = false)
-	private Integer orderId;
-	
-	
 //	/**
-//	 * 所属预约
+//	 * 所属预约编号
 //	 */
 //	@NotNull
-//	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-//	@JoinColumn(name = "order_id", nullable = false)
-//	@Deprecated
-//	private Order order;
-//
+//	@Column(name = "order_id", nullable = false)
+//	private Integer orderId;
+	
+	
+	/**
+	 * 所属预约
+	 */
+	@NotNull
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "order_id", nullable = false)
+	@Deprecated
+	private Order order;
+
 }

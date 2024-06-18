@@ -1,9 +1,6 @@
-package me.qunqun.shared.entity.vo;
+package me.qunqun.user.entity.vo;
 
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 import me.qunqun.shared.entity.po.CheckItem;

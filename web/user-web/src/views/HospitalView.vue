@@ -1,78 +1,66 @@
 <script setup lang="ts">
+import type { Hospital } from '@/model/hospital';
+import { apiService } from '@/util/request';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 const router = useRouter();
+
+const hospitalList = ref<Hospital[]>([]);
+
+
+const getHospitalList = () => {
+    apiService.get<Hospital[]>('/hospital/list/1').then((res) => {
+        if (res.isSuccess()) {
+            hospitalList.value = res.data;
+        }
+        else {
+            console.error(res.message);
+        }
+    }).catch((err) => {
+        console.error(err);
+    });
+};
+
+onMounted(() => {
+    getHospitalList();
+});
 </script>
 <template>
 
     <!-- 总容器 -->
     <div class="wrapper">
         <header>
-            <i class="fa fa-angle-left" onclick="history.go(-1)"></i>
+            <i class="fa fa-angle-left" @click="()=>router.back()"></i>
             <p>请您选择体检机构</p>
             <div></div>
+            <!-- <i class="fa fa-repeat" @click="getHospitalList"></i> -->
+
         </header>
         <div class="top-ban"></div>
-        <ul class="hospital">
+        <ul class="hospital" v-for="item, idx in hospitalList">
             <li>
-                <h3 onclick="location.href='setmeal.html'">
-                    沈阳熙康云医院-和平院区
+                <h3 @click="() => router.push({path: '/setmeal', query: { id: item.id, name: item.name }})">
+                    {{ item.name }}
                     <i class="fa fa-angle-right"></i>
                 </h3>
                 <div class="hospita-info">
-                    <img src="@/assets/img/hospita1.png" />
+                    <img :src="item.picture" />
                     <table>
                         <tr>
                             <td>营业时间</td>
-                            <td>周一至周五 7:30-15:30 （周六截止12:00）</td>
+                            <td>{{ item.businessHours }}</td>
                         </tr>
                         <tr>
                             <td>采血截止</td>
-                            <td>采血截止时间 10:30</td>
+                            <td>{{ item.deadline }}</td>
                         </tr>
                         <tr>
                             <td>电话</td>
-                            <td>52433456</td>
+                            <td>{{ item.telephone }}</td>
                         </tr>
                         <tr>
                             <td>地址</td>
-                            <td>文体路7号世贸大厦商都（五里河茶城）四楼西区</td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="about">
-                    <p>
-                        <i class="fa fa-phone"></i>
-                        联系我们
-                    </p>
-                    <p>
-                        <i class="fa fa-map-marker"></i>
-                        查找位置
-                    </p>
-                </div>
-            </li>
-            <li>
-                <h3 onclick="location.href='setmeal.html'">
-                    沈阳熙康云医院-浑南院区
-                    <i class="fa fa-angle-right"></i>
-                </h3>
-                <div class="hospita-info">
-                    <img src="@/assets/img/hospita2.png" />
-                    <table>
-                        <tr>
-                            <td>营业时间</td>
-                            <td>周一至周六 7:30-11:30 </td>
-                        </tr>
-                        <tr>
-                            <td>采血截止</td>
-                            <td>10:30</td>
-                        </tr>
-                        <tr>
-                            <td>电话</td>
-                            <td>52713658</td>
-                        </tr>
-                        <tr>
-                            <td>地址</td>
-                            <td>创新路175号（与智慧大厦交汇处）</td>
+                            <td>{{ item.address }}</td>
                         </tr>
                     </table>
                 </div>
@@ -88,27 +76,6 @@ const router = useRouter();
                 </div>
             </li>
         </ul>
-        <div class="bottom-ban"></div>
-        <footer>
-            <ul>
-                <li onclick="location.href='index.html'">
-                    <i class="fa fa-home"></i>
-                    <p>云医院</p>
-                </li>
-                <li>
-                    <i class="fa fa-opencart"></i>
-                    <p>商城</p>
-                </li>
-                <li>
-                    <i class="fa fa-compass"></i>
-                    <p>发现</p>
-                </li>
-                <li onclick="location.href='personal.html'">
-                    <i class="fa fa-user"></i>
-                    <p>我</p>
-                </li>
-            </ul>
-        </footer>
     </div>
 
 </template>

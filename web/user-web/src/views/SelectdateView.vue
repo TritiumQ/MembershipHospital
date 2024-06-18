@@ -1,18 +1,31 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import dayjs, { Dayjs } from 'dayjs';
+import 'dayjs/locale/zh-cn';
+import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
+dayjs.locale('zh-cn');
 const router = useRouter();
+
+
+const selectDate = ref<Dayjs>(dayjs("2022-01-18"));
+const disabledDate = (current: Dayjs) => {
+    // Can not select days before today and today
+    return current && current < dayjs().endOf('day');
+};
 </script>
 <template>
 
     <!-- 总容器 -->
     <div class="wrapper">
         <header>
-            <i class="fa fa-angle-left" onclick="history.go(-1)"></i>
+            <i class="fa fa-angle-left" @click="() => router.back()"></i>
             <p>选择体检日期</p>
             <div></div>
         </header>
         <div class="top-ban"></div>
-        <section>
+        <a-date-picker :locale="locale" v-model:value="selectDate" format="YYYY-MM-DD" :disabled-date="disabledDate" />
+        <!-- <section>
             <div class="date-box">
                 <i class="fa fa-caret-left"></i>
                 <p>2022年1月</p>
@@ -179,32 +192,11 @@ const router = useRouter();
                     <p>余200</p>
                 </li>
             </ul>
-        </section>
+        </section> -->
         <div class="bottom-btn">
             <div></div>
             <div onclick="location.href='confirmorder.html'">下一步</div>
         </div>
-        <div class="bottom-ban"></div>
-        <footer>
-            <ul>
-                <li onclick="location.href='index.html'">
-                    <i class="fa fa-home"></i>
-                    <p>云医院</p>
-                </li>
-                <li>
-                    <i class="fa fa-opencart"></i>
-                    <p>商城</p>
-                </li>
-                <li>
-                    <i class="fa fa-compass"></i>
-                    <p>发现</p>
-                </li>
-                <li onclick="location.href='personal.html'">
-                    <i class="fa fa-user"></i>
-                    <p>我</p>
-                </li>
-            </ul>
-        </footer>
     </div>
 
 </template>

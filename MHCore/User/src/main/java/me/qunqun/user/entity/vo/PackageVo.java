@@ -1,8 +1,6 @@
-package me.qunqun.shared.entity.vo;
+package me.qunqun.user.entity.vo;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 import me.qunqun.shared.entity.po.Package;
 

@@ -16,6 +16,7 @@ export const useUserStore = defineStore(
             console.log("User Login: " + JSON.stringify(userInfo))
             localStorage.setItem("userToken", userInfo.token)
             user.value = userInfo
+            user.value.test = 1;
         }
         function logout() {
             console.log("User Logout")

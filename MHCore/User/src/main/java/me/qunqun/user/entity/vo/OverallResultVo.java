@@ -1,11 +1,9 @@
-package me.qunqun.shared.entity.vo;
+package me.qunqun.user.entity.vo;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.Accessors;
 import me.qunqun.shared.entity.po.OverallResult;
 
 import java.io.Serializable;
@@ -32,6 +30,6 @@ public class OverallResultVo implements Serializable
 		this.id = overallResult.getId();
 		this.title = overallResult.getTitle();
 		this.content = overallResult.getContent();
-		this.orderId = overallResult.getOrderId();
+		this.orderId = overallResult.getOrder().getId();
 	}
 }

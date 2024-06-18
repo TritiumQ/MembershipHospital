@@ -78,11 +78,11 @@ public class Order
 	@Column(name = "state", nullable = false)
 	private Integer state;
 	
-	@OneToMany(mappedBy = "orderId")
+	@OneToMany(mappedBy = "order")
 	@ToString.Exclude
 	private Set<CheckItemReport> checkItemReports = new LinkedHashSet<>();
 	
-	@OneToMany(mappedBy = "orderId")
+	@OneToMany(mappedBy = "order")
 	@ToString.Exclude
 	private Set<OverallResult> overallResults = new LinkedHashSet<>();
 	

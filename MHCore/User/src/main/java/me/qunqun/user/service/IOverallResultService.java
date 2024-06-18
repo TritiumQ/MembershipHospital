@@ -1,6 +1,6 @@
 package me.qunqun.user.service;
 
-import me.qunqun.shared.entity.vo.OverallResultVo;
+import me.qunqun.user.entity.vo.OverallResultVo;
 
 import java.util.List;
 

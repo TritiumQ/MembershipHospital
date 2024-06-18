@@ -5,8 +5,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import me.qunqun.shared.entity.Result;
-import me.qunqun.shared.entity.vo.OverallResultVo;
+import me.qunqun.user.entity.vo.OverallResultVo;
 import me.qunqun.user.service.IOverallResultService;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +24,7 @@ public class OverallResultController
 	private IOverallResultService overallResultService;
 	
 	@Operation(summary = "获取体检总结列表")
-	@RequestMapping("/list")
+	@PostMapping("/list")
 	public Result<List<OverallResultVo>> list(@RequestBody Integer orderId)
 	{
 		return Result.success(overallResultService.list(orderId));

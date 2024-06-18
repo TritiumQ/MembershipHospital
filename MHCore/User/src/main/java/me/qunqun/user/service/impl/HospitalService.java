@@ -1,7 +1,7 @@
 package me.qunqun.user.service.impl;
 
 import jakarta.annotation.Resource;
-import me.qunqun.shared.entity.vo.HospitalVo;
+import me.qunqun.user.entity.vo.HospitalVo;
 import me.qunqun.shared.repo.HospitalRepository;
 import org.springframework.stereotype.Service;
 

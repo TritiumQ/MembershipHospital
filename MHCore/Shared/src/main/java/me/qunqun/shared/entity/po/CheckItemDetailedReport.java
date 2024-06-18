@@ -47,12 +47,21 @@ public class CheckItemDetailedReport
 	@ToString.Exclude
 	private CheckItemReport checkItemReport;
 	
+//	/**
+//	 * 所属预约编号
+//	 */
+//	@NotNull
+//	@Column(name = "order_id", nullable = false)
+//	private Integer orderId;
+//
 	/**
 	 * 所属预约编号
 	 */
 	@NotNull
-	@Column(name = "order_id", nullable = false)
-	private Integer orderId;
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "order_id", nullable = false)
+	@ToString.Exclude
+	private Order order;
 	
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
