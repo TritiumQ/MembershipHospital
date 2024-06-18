@@ -3,10 +3,8 @@ package me.qunqun.user;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
 import jakarta.transaction.Transactional;
-import me.qunqun.shared.entity.po.QCheckItem;
-import me.qunqun.shared.entity.po.QPackage;
 import me.qunqun.shared.entity.po.QUser;
-import me.qunqun.shared.repo.PackageRepository;
+import me.qunqun.user.entity.repo.PackageRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
