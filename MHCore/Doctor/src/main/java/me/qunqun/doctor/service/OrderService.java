@@ -29,7 +29,9 @@ public class OrderService {
             Page<Order> orderPage;
             if (orderQueryDTO == null) {
                 PageRequest pageRequest = PageRequest.of(page, size);
-                orderPage = orderRepository.findAll(pageRequest);
+                // 查询deprecated为0的数据
+                orderPage = orderRepository.findAllByDeprecated(false, pageRequest);
+//                orderPage = orderRepository.findAll(pageRequest);
             }else {
                 PageRequest pageRequest = PageRequest.of(page, size);
                 orderPage = orderRepository.findAll(OrderSpecification.getOrders(orderQueryDTO), pageRequest);
@@ -76,11 +78,11 @@ public class OrderService {
     }
 
     public Integer getOrderCountByHospitalId(Integer hospitalId) {
-        return orderRepository.countByHospital_Id(hospitalId);
+        return orderRepository.countByHospital_IdAndDeprecated(hospitalId, false);
     }
 
     public Integer getOrderCountByHospitalIdAndDate(Integer hospitalId, LocalDate date) {
-        return orderRepository.countByHospital_IdAndDate(hospitalId, date);
+        return orderRepository.countByHospital_IdAndDateAndDeprecated(hospitalId, date, false);
     }
 
     public OrderVO getOrderVO(int orderId) {

@@ -8,7 +8,7 @@ spring:
     show-sql: true
     properties:
       # 格式化输出的 SQL
-      "hibernate.format_sql": true  
+      "hibernate.format_sql": true
 
   # Json 配置
   jackson:

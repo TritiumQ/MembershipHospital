@@ -1,11 +1,13 @@
 package me.qunqun.doctor.config;
 
 import me.qunqun.doctor.interceptor.LoginInterceptor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@Configuration
+//@Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
@@ -14,4 +16,5 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/user/login"); // 这些路径不需要JWT验证
     }
+
 }
