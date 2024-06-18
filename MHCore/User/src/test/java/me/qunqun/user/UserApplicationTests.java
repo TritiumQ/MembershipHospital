@@ -5,6 +5,7 @@ import jakarta.annotation.Resource;
 import jakarta.transaction.Transactional;
 import me.qunqun.shared.entity.po.QUser;
 import me.qunqun.user.entity.repo.PackageRepository;
+import me.qunqun.user.service.impl.CalenderService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -32,6 +33,17 @@ class UserApplicationTests
 		var qUser = QUser.user;
 		var query = jpaQueryFactory.selectFrom(qUser);
 		System.out.println(query);
+	}
+	
+	@Resource
+	CalenderService calenderService;
+	
+	@Test
+	@Transactional
+	void TestCalenderService()
+	{
+		var calender = calenderService.get(1);
+		System.out.println(calender);
 	}
 	
 }

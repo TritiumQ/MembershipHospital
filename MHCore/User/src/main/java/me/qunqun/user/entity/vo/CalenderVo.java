@@ -7,6 +7,7 @@ import lombok.ToString;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadPoolExecutor;
 
 @Getter
 @ToString
@@ -14,7 +15,9 @@ import java.util.Map;
 public class CalenderVo
 {
 	private LocalDate generateDate;
-	private List<Map<LocalDate, Integer>> appointmentCounts;
+	private List<AppointmentCount> appointmentCounts;
 	
-	
+	public record AppointmentCount(LocalDate date, Integer dayOfWeek, Long count)
+	{
+	}
 }
