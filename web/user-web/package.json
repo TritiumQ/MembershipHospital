@@ -11,6 +11,7 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
+    "@vuepic/vue-datepicker": "^8.8.0",
     "ant-design-vue": "4.x",
     "axios": "^1.7.2",
     "dayjs": "^1.11.11",

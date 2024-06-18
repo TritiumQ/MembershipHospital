@@ -52,7 +52,6 @@ public class OverallResult
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "order_id", nullable = false)
-	@Deprecated
 	private Order order;
 
 }

@@ -3,10 +3,11 @@ import type { Hospital } from '@/model/hospital';
 import { apiService } from '@/util/request';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useUserStore } from '@/stores/userStore';
 const router = useRouter();
+const userStore = useUserStore();
 
 const hospitalList = ref<Hospital[]>([]);
-
 
 const getHospitalList = () => {
     apiService.get<Hospital[]>('/hospital/list/1').then((res) => {
@@ -20,6 +21,11 @@ const getHospitalList = () => {
         console.error(err);
     });
 };
+
+const toNext = (h: Hospital) => {
+    userStore.hospital = h;
+    router.push('/setmeal');
+}
 
 onMounted(() => {
     getHospitalList();
@@ -39,7 +45,7 @@ onMounted(() => {
         <div class="top-ban"></div>
         <ul class="hospital" v-for="item, idx in hospitalList">
             <li>
-                <h3 @click="() => router.push({path: '/setmeal', query: { id: item.id, name: item.name }})">
+                <h3 @click="()=>toNext(item)">
                     {{ item.name }}
                     <i class="fa fa-angle-right"></i>
                 </h3>

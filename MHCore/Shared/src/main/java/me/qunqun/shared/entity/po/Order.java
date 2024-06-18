@@ -73,7 +73,6 @@ public class Order
 	/**
 	 * 订单状态（1：未归档；2：已归档）
 	 */
-	@NotNull
 	@ColumnDefault("1")
 	@Column(name = "state", nullable = false)
 	private Integer state;
@@ -90,7 +89,6 @@ public class Order
 	/**
 	 * 标记删除（0：未删除，非0：已删除）
 	 */
-	@NotNull
 	@ColumnDefault("0")
 	@Column(name = "deprecated", nullable = false)
 	private Boolean deprecated = false;

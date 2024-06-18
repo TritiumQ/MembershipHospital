@@ -4,10 +4,15 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
 import jakarta.transaction.Transactional;
 import me.qunqun.shared.entity.po.QUser;
+import me.qunqun.user.entity.dto.OrderDto;
 import me.qunqun.user.entity.repo.PackageRepository;
+import me.qunqun.user.service.IOrderService;
 import me.qunqun.user.service.impl.CalenderService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+
+import java.time.LocalDate;
 
 @SpringBootTest
 class UserApplicationTests
@@ -44,6 +49,23 @@ class UserApplicationTests
 	{
 		var calender = calenderService.get(1);
 		System.out.println(calender);
+	}
+	
+	@Resource
+	IOrderService orderService;
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	void TestOrderService()
+	{
+		var orderDto = new OrderDto();
+		orderDto.setDate(LocalDate.now());
+		orderDto.setUserId("12345671111");
+		orderDto.setPackageId(4);
+		orderDto.setHospitalId(1);
+		orderService.create(orderDto);
+		orderService.list("12345671111").forEach(System.out::println);
 	}
 	
 }

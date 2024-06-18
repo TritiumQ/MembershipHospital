@@ -42,6 +42,11 @@ const router = createRouter({
           component: () => import("../views/AppointmentsuccessView.vue"),
         },
         {
+          path: "/appointmentfailed",
+          name: "appointmentfailed",
+          component: () => import("../views/AppointmentfailedView.vue"),
+        },
+        {
           path: "/confirmorder",
           name: "confirmorder",
           component: () => import("../views/ConfirmorderView.vue"),

@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
@@ -13,6 +14,7 @@ import java.util.Set;
 
 @Getter
 @Setter
+@Accessors(chain = true)
 @ToString
 @Entity
 @Table(name = "user")
@@ -72,6 +74,7 @@ public class User
 	private Integer type;
 	
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	@ToString.Exclude
 	private Set<Order> orders = new LinkedHashSet<>();
 	
 }

@@ -1,14 +1,12 @@
 package me.qunqun.user.entity.po;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Immutable;
+import org.hibernate.annotations.View;
 
 import java.time.LocalDate;
 
@@ -24,12 +22,21 @@ import java.time.LocalDate;
 public class AppointmentCount
 {
 	/**
-	 * 预约日期
+	 * 虚拟主键
 	 */
 	@Id
+	@Column(name = "v_id")
+	private Integer vId;
+	/**
+	 * 预约日期
+	 */
 	@NotNull
 	@Column(name = "date", nullable = false)
 	private LocalDate date;
+	
+	@NotNull
+	@Column(name = "hospital_id", nullable = false)
+	private Integer hospitalId;
 	
 	@NotNull
 	@Column(name = "count", nullable = false)

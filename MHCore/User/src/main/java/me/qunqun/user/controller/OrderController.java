@@ -5,9 +5,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import me.qunqun.shared.entity.Result;
+import me.qunqun.user.entity.dto.OrderDto;
 import me.qunqun.user.entity.vo.OrderInfoVo;
 import me.qunqun.user.entity.vo.OrderVo;
 import me.qunqun.user.service.IOrderService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,6 +47,16 @@ public class OrderController
 	{
 		orderService.remove(orderId);
 		return Result.success();
+	}
+	
+	
+	@Operation(summary = "创建订单")
+	@PostMapping("/create")
+	@Transactional
+	public Result<OrderInfoVo> create(@RequestBody OrderDto orderDto)
+	{
+		var order = orderService.create(orderDto);
+		return Result.success(order);
 	}
 	
 }

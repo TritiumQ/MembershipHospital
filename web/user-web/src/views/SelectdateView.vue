@@ -1,18 +1,79 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import dayjs, { Dayjs } from 'dayjs';
-import 'dayjs/locale/zh-cn';
-import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
-dayjs.locale('zh-cn');
+import { computed, onMounted, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import type { Calender } from '@/model/calender';
+import { apiService } from '@/util/request';
+import { useUserStore } from '@/stores/userStore';
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
+
 const router = useRouter();
+const route = useRoute();
+const userStore = useUserStore();
 
+const hospitalId = ref<number>(userStore.hospital?.id!);
 
-const selectDate = ref<Dayjs>(dayjs("2022-01-18"));
-const disabledDate = (current: Dayjs) => {
-    // Can not select days before today and today
-    return current && current < dayjs().endOf('day');
-};
+const calender = ref<Calender | null>(null);
+// tomorrow
+const today = new Date();
+const selectDate = ref<Date>(new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1));
+
+const errorMsg = ref<string>('');
+const toNext = (date: string) => {
+    if((new Date(date) <= today))
+    {
+        errorMsg.value = '请选择正确的日期';
+        return;
+    }
+    userStore.appointmentDate = date;
+    router.push('/confirmorder');
+}
+
+const getCount = (date: Date) => {
+    return computed(() => {
+        return calender.value?.appointmentCounts?.find((item) => compareDate(date, new Date(item.date)))?.count ?? 0;
+    })
+}
+
+const compareDate = (date1: Date, date2: Date) => {
+    return (date1.getFullYear() === date2.getFullYear())
+        && (date1.getMonth() === date2.getMonth())
+        && (date1.getDate() === date2.getDate());
+}
+
+const allowedDates = computed(() => {
+    return calender.value?.appointmentCounts?.map((item) => new Date(item.date));
+});
+
+const formatDate = (date: Date) => {
+    // 月份设置为两位数
+    // const year = date.getFullYear();
+    // const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    // const day = date.getDate().toString().padStart(2, '0');
+    // return `${year}-${month}-${day}`;
+    return date.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
+}
+
+const getCalender = async () => {
+    if (userStore.hasHospital)
+    {
+        await apiService.get<Calender>(`/calender/get/${hospitalId.value}`).then((res) => {
+            if (res.isSuccess()) {
+                calender.value = res.data;
+            }
+            else {
+                console.log(res.message);
+            }
+        }).catch((err) => {
+            console.log(err);
+        });
+    }
+}
+
+onMounted(async () => {
+    await getCalender();
+});
+
 </script>
 <template>
     <!-- 总容器 -->
@@ -23,182 +84,48 @@ const disabledDate = (current: Dayjs) => {
             <div></div>
         </header>
         <div class="top-ban"></div>
-        <a-date-picker :locale="locale" v-model:value="selectDate" format="YYYY-MM-DD" :disabled-date="disabledDate" />
-        <!-- <section>
-            <div class="date-box">
-                <i class="fa fa-caret-left"></i>
-                <p>2022年1月</p>
-                <i class="fa fa-caret-right"></i>
-            </div>
-            <table>
-                <tr>
-                    <th>日</th>
-                    <th>一</th>
-                    <th>二</th>
-                    <th>三</th>
-                    <th>四</th>
-                    <th>五</th>
-                    <th>六</th>
-                </tr>
-            </table>
-            <ul>
-                <li>
-                    <p></p>
-                    <p></p>
-                </li>
-                <li>
-                    <p></p>
-                    <p></p>
-                </li>
-                <li>
-                    <p></p>
-                    <p></p>
-                </li>
-                <li>
-                    <p></p>
-                    <p></p>
-                </li>
-                <li>
-                    <p></p>
-                    <p></p>
-                </li>
-                <li>
-                    <p></p>
-                    <p></p>
-                </li>
-                <li>
-                    <p>1</p>
-                    <p></p>
-                </li>
-                <li>
-                    <p>2</p>
-                    <p></p>
-                </li>
-                <li>
-                    <p>3</p>
-                    <p></p>
-                </li>
-                <li>
-                    <p>4</p>
-                    <p></p>
-                </li>
-                <li>
-                    <p>5</p>
-                    <p></p>
-                </li>
-                <li>
-                    <p>6</p>
-                    <p></p>
-                </li>
-                <li>
-                    <p>7</p>
-                    <p></p>
-                </li>
-                <li>
-                    <p>8</p>
-                    <p></p>
-                </li>
-                <li>
-                    <p>9</p>
-                    <p></p>
-                </li>
-                <li>
-                    <p>10</p>
-                    <p></p>
-                </li>
-                <li>
-                    <p>11</p>
-                    <p></p>
-                </li>
-                <li>
-                    <p>12</p>
-                    <p></p>
-                </li>
-                <li>
-                    <p>13</p>
-                    <p></p>
-                </li>
-                <li>
-                    <p>14</p>
-                    <p></p>
-                </li>
-                <li>
-                    <p>15</p>
-                    <p></p>
-                </li>
-                <li>
-                    <p>16</p>
-                    <p></p>
-                </li>
-                <li>
-                    <p>17</p>
-                    <p></p>
-                </li>
-                <li>
-                    <p class="fontcolor pselect">18</p>
-                    <p>余56</p>
-                </li>
-                <li>
-                    <p class="fontcolor">19</p>
-                    <p>余66</p>
-                </li>
-                <li>
-                    <p class="fontcolor">20</p>
-                    <p>余123</p>
-                </li>
-                <li>
-                    <p class="fontcolor">21</p>
-                    <p>余178</p>
-                </li>
-                <li>
-                    <p class="fontcolor">22</p>
-                    <p>余200</p>
-                </li>
-                <li>
-                    <p class="fontcolor">23</p>
-                    <p>余200</p>
-                </li>
-                <li>
-                    <p class="fontcolor">24</p>
-                    <p>余200</p>
-                </li>
-                <li>
-                    <p class="fontcolor">25</p>
-                    <p>余200</p>
-                </li>
-                <li>
-                    <p class="fontcolor">26</p>
-                    <p>余200</p>
-                </li>
-                <li>
-                    <p class="fontcolor">27</p>
-                    <p>余200</p>
-                </li>
-                <li>
-                    <p class="fontcolor">28</p>
-                    <p>余200</p>
-                </li>
-                <li>
-                    <p class="fontcolor">29</p>
-                    <p>余200</p>
-                </li>
-                <li>
-                    <p class="fontcolor">30</p>
-                    <p>余200</p>
-                </li>
-                <li>
-                    <p class="fontcolor">31</p>
-                    <p>余200</p>
-                </li>
-            </ul>
-        </section> -->
+        <p class="error" v-if="calender == null">暂无日期信息</p>
+        <VueDatePicker v-else v-model="selectDate" inline auto-apply class="custom-date-picker"
+            locale="zh-CN" :enable-time-picker="false" :allowed-dates="allowedDates">
+            <template #day="{ date, day }">
+                <div>
+                    {{ day }}
+                    <br />
+                    <p class="count-text">余{{getCount(date)}}</p>
+                </div>
+            </template>
+        </VueDatePicker>
+        <p class="message">当前选择: {{ formatDate(selectDate) }}</p>
+        <p class="error">{{ errorMsg }}</p>
         <div class="bottom-btn">
             <div></div>
-            <div onclick="location.href='confirmorder.html'">下一步</div>
+            <div @click="() => toNext(formatDate(selectDate))">下一步</div>
         </div>
     </div>
 
 </template>
 <style scoped>
 @import '../assets/css/selectdate.css';
+
+.error {
+    text-align: center;
+    margin-top: 20px;
+    color: red
+}
+
+.count-text {
+    text-align: center;
+    font-size: 8px;
+    color: red;
+}
+
+.slot-icon {
+    height: 20px;
+    width: auto;
+}
+
+.custom-date-picker {
+    width: 100%;
+    height: 100%;
+}
 </style>

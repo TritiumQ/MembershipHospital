@@ -6,7 +6,7 @@ const router = useRouter();
     <!-- 总容器 -->
     <div class="wrapper">
         <header>
-            <i class="fa fa-angle-left" onclick="history.go(-1)"></i>
+            <i class="fa fa-angle-left" @click="() => router.back()"></i>
             <p>用户体检预约</p>
             <div></div>
         </header>

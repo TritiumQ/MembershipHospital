@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.qunqun.shared.entity.po.QHospital;
 import me.qunqun.shared.exception.CrudExceptionCode;
 import me.qunqun.shared.exception.CustomException;
+import me.qunqun.user.entity.po.QAppointmentCount;
 import me.qunqun.user.entity.repo.AppointmentCountRepo;
 import me.qunqun.user.entity.vo.CalenderVo;
 import me.qunqun.user.exception.OperationException;
@@ -52,11 +53,14 @@ public class CalenderService implements me.qunqun.user.service.ICalenderService
 			throw new CustomException(OperationExceptionCode.ERROR);
 		}
 		// 查询已预约数量
-		var appointmentCountViews = appointmentCountRepo.findAll();
+		//var appointmentCountViews = appointmentCountRepo.findAll();
+		var qA = QAppointmentCount.appointmentCount;
+		var query2 = queryFactory.selectFrom(qA).where(qA.hospitalId.eq(hospitalId));
+		var appointmentCountViews = query2.fetch();
 		
 		var now = LocalDate.now();
 		List<CalenderVo.AppointmentCount> appointmentCounts = new ArrayList<>();
-		for(int i = 0; i < 30; i++)
+		for(int i = 1; i <= 30; i++)
 		{
 			var date = now.plusDays(i);
 			// idx - dayofweek : 0 - sunday 7, 1 - monday 1, 2 - tuesday 2, 3 - wednesday 3, 4 - thursday 4, 5 - friday 5, 6 - saturday 6
