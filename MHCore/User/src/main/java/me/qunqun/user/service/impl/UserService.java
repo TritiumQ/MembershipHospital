@@ -1,25 +1,19 @@
 package me.qunqun.user.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import me.qunqun.shared.annotation.LogMethod;
 import me.qunqun.shared.entity.po.User;
+import me.qunqun.shared.exception.CustomException;
 import me.qunqun.user.entity.dto.UserSignInDto;
 import me.qunqun.user.entity.repo.UserRepo;
-import me.qunqun.user.exception.OperationException;
 import me.qunqun.user.exception.OperationExceptionCode;
 import me.qunqun.user.entity.dto.UserSignUpDto;
 import me.qunqun.user.entity.vo.UserInfoVo;
 import me.qunqun.user.service.IUserService;
 import me.qunqun.user.util.UserUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-
-import java.util.Optional;
 
 @Service
 //@LogMethod
@@ -40,14 +34,14 @@ public class UserService implements IUserService
 		
 		if(oUser.isEmpty())
 		{
-			throw new OperationException(OperationExceptionCode.USER_NOT_FOUND);
+			throw new CustomException(OperationExceptionCode.USER_NOT_FOUND);
 		}
 		
 		var user = oUser.get();
 		
 		if(UserUtil.CheckPassword(dto.getPassword(), user.getPassword()) == false)
 		{
-			throw new OperationException(OperationExceptionCode.USER_PASSWORD_ERROR);
+			throw new CustomException(OperationExceptionCode.USER_PASSWORD_ERROR);
 		}
 		
 		var token = UserUtil.SetUser(user);
@@ -69,7 +63,7 @@ public class UserService implements IUserService
 		
 		if(userRepository.existsById(dto.getId()) == true)
 		{
-			throw new OperationException(OperationExceptionCode.USER_ID_EXIST);
+			throw new CustomException(OperationExceptionCode.USER_ID_EXIST);
 		}
 		
 		var user = new User();
@@ -85,7 +79,7 @@ public class UserService implements IUserService
 		
 		if(userRepository.existsById(dto.getId()) == false)
 		{
-			throw new OperationException(OperationExceptionCode.USER_NOT_FOUND);
+			throw new CustomException(OperationExceptionCode.USER_NOT_FOUND);
 		}
 		
 		return new UserInfoVo(user, null);
@@ -99,7 +93,7 @@ public class UserService implements IUserService
 		var oUser = userRepository.findById(id);
 		if(oUser.isEmpty())
 		{
-			throw new OperationException(OperationExceptionCode.USER_NOT_FOUND);
+			throw new CustomException(OperationExceptionCode.USER_NOT_FOUND);
 		}
 		var user = oUser.get();
 		return new UserInfoVo(user, null);
@@ -113,7 +107,7 @@ public class UserService implements IUserService
 		var oUser = userRepository.findById(id);
 		if(oUser.isEmpty())
 		{
-			throw new OperationException(OperationExceptionCode.USER_NOT_FOUND);
+			throw new CustomException(OperationExceptionCode.USER_NOT_FOUND);
 		}
 		var user = oUser.get();
 		var token = UserUtil.SetUser(user);

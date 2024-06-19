@@ -10,15 +10,12 @@ import me.qunqun.shared.exception.CustomException;
 import me.qunqun.user.entity.po.QAppointmentCount;
 import me.qunqun.user.entity.repo.AppointmentCountRepo;
 import me.qunqun.user.entity.vo.CalenderVo;
-import me.qunqun.user.exception.OperationException;
 import me.qunqun.user.exception.OperationExceptionCode;
-import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
