@@ -31,21 +31,6 @@ class UserApplicationTests
 	@Transactional
 	void test()
 	{
-		var msg1 = smsManager.sendCaptcha("12345671111", "12345671111");
-		System.out.println(msg1);
-		var msg2 = smsManager.sendCaptcha("12345671111", "12345671111");
-		System.out.println(msg2);
-		// 等待1分钟
-		try
-		{
-			Thread.sleep(1 * 60 * 1000);
-		}
-		catch (InterruptedException e)
-		{
-			e.printStackTrace();
-		}
-		var msg3 = smsManager.sendCaptcha("12345671111", "12345671111");
-		System.out.println(msg3);
 	}
 	
 	@Test

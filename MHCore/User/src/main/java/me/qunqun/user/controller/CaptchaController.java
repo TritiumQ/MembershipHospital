@@ -5,12 +5,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import me.qunqun.shared.entity.Result;
-import me.qunqun.shared.exception.CustomException;
-import me.qunqun.user.exception.OperationExceptionCode;
 import me.qunqun.user.manager.CaptchaManager;
-import me.qunqun.user.manager.SmsManager;
 import me.qunqun.user.util.UserUtil;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,15 +18,13 @@ public class CaptchaController
 {
 	@Resource
 	private CaptchaManager captchaManager;
-	@Resource
-	private SmsManager smsManager;
 	
 	@Operation(summary = "短信验证码")
 	@RequestMapping("/sms/send")
 	public Result<String> sendSmsCaptcha()
 	{
 		var userId = UserUtil.GetUserId();
-		var msg = smsManager.sendCaptcha(userId, userId);
+		var msg = captchaManager.sendCaptcha(userId, userId);
 		return Result.success(msg);
 	}
 	
@@ -39,12 +33,25 @@ public class CaptchaController
 	public Result<String> verifySmsCaptcha(String code)
 	{
 		var userId = UserUtil.GetUserId();
-		var ok = smsManager.verifyCaptcha(userId, userId, code);
+		var ok = captchaManager.verifyCaptcha(userId, userId, code);
 		if (ok)
 		{
 			return Result.success("验证成功");
 		}
 		throw new RuntimeException("verifySmsCaptch(): 预期外的错误: 验证码验证失败");
+	}
+	
+	@Operation(summary = "生成图片验证码", description = "生成图片验证码, 返回Base64编码的图片数据")
+	@RequestMapping("/image")
+	public Result<String> createImageCaptcha()
+	{
+		var userId = UserUtil.GetUserId();
+		var base64 = captchaManager.generateImageCaptcha(userId);
+		if(base64 == null)
+		{
+			throw new RuntimeException("createImageCaptcha(): 预期外的错误: 验证码图片生成失败");
+		}
+		return Result.success("验证码生成成功");
 	}
 	
 	

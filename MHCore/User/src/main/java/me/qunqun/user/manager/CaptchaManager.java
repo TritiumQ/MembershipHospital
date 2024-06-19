@@ -2,7 +2,11 @@ package me.qunqun.user.manager;
 
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
+import jakarta.annotation.Resource;
+import me.qunqun.shared.exception.CustomException;
+import me.qunqun.user.exception.OperationExceptionCode;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 /**
  * 验证码管理器
@@ -10,11 +14,81 @@ import org.springframework.stereotype.Service;
 @Service
 public class CaptchaManager
 {
+	@Resource
+	private RedisManager redisManager;
+	@Resource
+	private SmsManager smsManager;
 	
-	public void createCaptcha()
+	private static final String MESSAGE_CAPTCHA_REDIS_PREFIX = "message:captcha:";
+	private static final String IMAGE_CAPTCHA_REDIS_PREFIX = "image:captcha:";
+	
+	private static long CAPTCHA_EXPIRE_TIME = 300;
+	
+	private static long MESSAGE_CAPTCHA_RESEND_TIME = 60;
+	
+	/**
+	 * 发送短信验证码
+	 */
+	public String sendCaptcha(String id, String phone)
+	{
+		Assert.notNull(id, "SmsManager.sendSmsCaptcha(): id不能为空");
+		Assert.notNull(phone, "SmsManager.sendSmsCaptcha(): phone不能为空");
+		// 先判断是否在一分钟内已经发送过验证码
+		var key = MESSAGE_CAPTCHA_REDIS_PREFIX + id + ":" + phone;
+		var expireTime = redisManager.getExpireTime(key);
+		if (expireTime > CAPTCHA_EXPIRE_TIME - MESSAGE_CAPTCHA_RESEND_TIME)
+		{
+			return "1分钟内不能重复发送验证码";
+		}
+		// 生成验证码
+		var captcha = generateSmsCaptcha();
+		// 保存验证码
+		redisManager.setString(key, captcha, CAPTCHA_EXPIRE_TIME);
+		// 发送验证码
+		smsManager.sendSms(phone, captcha);
+		return "验证码发送成功, 请在5分钟内完成验证";
+	}
+	
+	/**
+	 * 验证短信验证码
+	 */
+	public boolean verifyCaptcha(String id, String phone, String captcha)
+	{
+		Assert.notNull(id, "SmsManager.verifyCaptcha(): id不能为空");
+		Assert.notNull(phone, "SmsManager.verifyCaptcha(): phone不能为空");
+		Assert.notNull(captcha, "SmsManager.verifyCaptcha(): captcha不能为空");
+		var key = MESSAGE_CAPTCHA_REDIS_PREFIX + id + ":" + phone;
+		var redisCaptcha = redisManager.getString(key);
+		if (redisCaptcha == null)
+		{
+			throw new CustomException(OperationExceptionCode.CAPTCHA_NOT_FOUND);
+		}
+		if (!redisCaptcha.equals(captcha))
+		{
+			throw new CustomException(OperationExceptionCode.CAPTCHA_ERROR);
+		}
+		redisManager.deleteKey(key);
+		return true;
+	}
+	
+	/**
+	 * 生成6位数字短信验证码
+	 * @return
+	 */
+	private String generateSmsCaptcha()
+	{
+		// TODO: 更改生成算法
+		return String.valueOf((int)((Math.random() * 9 + 1) * 100000));
+	}
+	
+	/**
+	 * 生成图片验证码, 返回文件的BASE64编码
+	 */
+	public String generateImageCaptcha(String userId)
 	{
 		LineCaptcha lineCaptcha = CaptchaUtil.createLineCaptcha(200, 100);
-		lineCaptcha.createCode();
-		lineCaptcha.write("d:/line.png");
+		var code = lineCaptcha.getCode();
+		var base64 = lineCaptcha.getImageBase64();
+		return base64;
 	}
 }
