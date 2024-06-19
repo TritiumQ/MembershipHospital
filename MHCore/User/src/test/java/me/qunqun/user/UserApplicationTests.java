@@ -8,9 +8,11 @@ import me.qunqun.user.entity.dto.OrderDto;
 import me.qunqun.user.entity.dto.OrderQueryDto;
 import me.qunqun.user.entity.repo.PackageRepository;
 import me.qunqun.user.manager.RedisManager;
+import me.qunqun.user.manager.SmsManager;
 import me.qunqun.user.service.IOrderService;
 import me.qunqun.user.service.impl.CalenderService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
@@ -23,14 +25,28 @@ class UserApplicationTests
 	PackageRepository packageRepository;
 	@Resource
 	private JPAQueryFactory jpaQueryFactory;
+	@Resource
+	SmsManager smsManager;
 	
 	@Test
 	@Transactional
 	void test()
 	{
-		var pack = packageRepository.findById(1).get();
-		var checkItems = pack.getCheckItems();
-		System.out.println(checkItems);
+		var msg1 = smsManager.sendCaptchaMessage("12345671111", "12345671111");
+		System.out.println(msg1);
+		var msg2 = smsManager.sendCaptchaMessage("12345671111", "12345671111");
+		System.out.println(msg2);
+		// 等待1分钟
+		try
+		{
+			Thread.sleep(1 * 60 * 1000);
+		}
+		catch (InterruptedException e)
+		{
+			e.printStackTrace();
+		}
+		var msg3 = smsManager.sendCaptchaMessage("12345671111", "12345671111");
+		System.out.println(msg3);
 	}
 	
 	@Test

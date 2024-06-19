@@ -41,8 +41,6 @@ public class SmsManager
 		return "验证码发送成功, 请在5分钟内完成验证";
 	}
 	
-	
-	
 	private void sendSms(String phone, String captcha)
 	{
 		// 发送短信, 预留接入SMS服务商接口
