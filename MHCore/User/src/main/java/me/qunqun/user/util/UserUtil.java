@@ -3,6 +3,7 @@ package me.qunqun.user.util;
 import cn.dev33.satoken.stp.SaLoginConfig;
 import cn.dev33.satoken.stp.StpUtil;
 import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.NotNull;
 import me.qunqun.shared.entity.po.User;
 import org.springframework.util.Assert;
 
@@ -26,9 +27,12 @@ public class UserUtil
 	/**
 	 * 获取用户id
 	 */
+	@NotNull
 	public static String GetUserId()
 	{
-		return StpUtil.getLoginIdAsString();
+		var id =  StpUtil.getLoginIdAsString();
+		Assert.notNull(id, "GetUserId(): 预期外的错误, 获取用户id失败");
+		return id;
 	}
 	
 	

@@ -29,7 +29,7 @@ public class CaptchaManager
 	/**
 	 * 发送短信验证码
 	 */
-	public String sendCaptcha(String id, String phone)
+	public String sendMessageCaptcha(String id, String phone)
 	{
 		Assert.notNull(id, "SmsManager.sendSmsCaptcha(): id不能为空");
 		Assert.notNull(phone, "SmsManager.sendSmsCaptcha(): phone不能为空");
@@ -41,7 +41,7 @@ public class CaptchaManager
 			return "1分钟内不能重复发送验证码";
 		}
 		// 生成验证码
-		var captcha = generateSmsCaptcha();
+		var captcha = generateMessageCaptcha();
 		// 保存验证码
 		redisManager.setString(key, captcha, CAPTCHA_EXPIRE_TIME);
 		// 发送验证码
@@ -52,30 +52,20 @@ public class CaptchaManager
 	/**
 	 * 验证短信验证码
 	 */
-	public boolean verifyCaptcha(String id, String phone, String captcha)
+	public boolean verifyMessageCaptcha(String id, String phone, String captcha)
 	{
 		Assert.notNull(id, "SmsManager.verifyCaptcha(): id不能为空");
 		Assert.notNull(phone, "SmsManager.verifyCaptcha(): phone不能为空");
 		Assert.notNull(captcha, "SmsManager.verifyCaptcha(): captcha不能为空");
 		var key = MESSAGE_CAPTCHA_REDIS_PREFIX + id + ":" + phone;
-		var redisCaptcha = redisManager.getString(key);
-		if (redisCaptcha == null)
-		{
-			throw new CustomException(OperationExceptionCode.CAPTCHA_NOT_FOUND);
-		}
-		if (!redisCaptcha.equals(captcha))
-		{
-			throw new CustomException(OperationExceptionCode.CAPTCHA_ERROR);
-		}
-		redisManager.deleteKey(key);
-		return true;
+		return verify(captcha, key);
 	}
 	
 	/**
 	 * 生成6位数字短信验证码
 	 * @return
 	 */
-	private String generateSmsCaptcha()
+	private String generateMessageCaptcha()
 	{
 		// TODO: 更改生成算法
 		return String.valueOf((int)((Math.random() * 9 + 1) * 100000));
@@ -86,9 +76,42 @@ public class CaptchaManager
 	 */
 	public String generateImageCaptcha(String userId)
 	{
+		Assert.notNull(userId, "CaptchaManager.generateImageCaptcha(): userId不能为空");
 		LineCaptcha lineCaptcha = CaptchaUtil.createLineCaptcha(200, 100);
 		var code = lineCaptcha.getCode();
 		var base64 = lineCaptcha.getImageBase64();
+		var key = IMAGE_CAPTCHA_REDIS_PREFIX + userId;
+		redisManager.setString(key, code, CAPTCHA_EXPIRE_TIME);
 		return base64;
+	}
+	
+	
+	/**
+	 * 验证图片验证码
+	 */
+	public boolean verifyImageCaptcha(String userId, String code)
+	{
+		Assert.notNull(userId, "CaptchaManager.verifyImageCaptcha(): userId不能为空");
+		Assert.notNull(code, "CaptchaManager.verifyImageCaptcha(): code不能为空");
+		var key = IMAGE_CAPTCHA_REDIS_PREFIX + userId;
+		return verify(code, key);
+	}
+	
+	/**
+	 * 验证验证码
+	 */
+	private boolean verify(String code, String key)
+	{
+		var redisCode = redisManager.getString(key);
+		if (redisCode == null)
+		{
+			throw new CustomException(OperationExceptionCode.CAPTCHA_NOT_FOUND);
+		}
+		if (!redisCode.equals(code))
+		{
+			throw new CustomException(OperationExceptionCode.CAPTCHA_ERROR);
+		}
+		redisManager.deleteKey(key);
+		return true;
 	}
 }
