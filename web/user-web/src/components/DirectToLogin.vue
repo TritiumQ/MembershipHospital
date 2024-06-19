@@ -1,8 +1,10 @@
 <script setup  lang="ts">
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { message } from 'ant-design-vue';
 const router = useRouter();
 onMounted(() => {
+    message.info('尚未登录，即将跳转到登录页面');
     setTimeout(() => {
         router.push('login');
     }, 3000);

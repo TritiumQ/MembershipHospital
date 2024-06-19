@@ -28,7 +28,7 @@ const route = useRoute();
             <div class="info">
                 <p>您的信息已经发送至体检机构</p>
                 <p>预约成功后会发送短信至您的手机</p>
-                <p>客服电话<span>4008-XXX-XXX</span></p>
+                <p>客服电话<span>114-514-1919-810</span></p>
             </div>
         </section>
     </div>

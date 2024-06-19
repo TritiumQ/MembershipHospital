@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
 import me.qunqun.shared.entity.po.*;
 import me.qunqun.user.entity.dto.OrderDto;
+import me.qunqun.user.entity.dto.OrderQueryDto;
 import me.qunqun.user.entity.repo.OrderRepo;
 import me.qunqun.user.entity.vo.OrderInfoVo;
 import me.qunqun.user.entity.vo.OrderVo;
@@ -26,12 +27,36 @@ public class OrderService implements me.qunqun.user.service.IOrderService
 	private OrderRepo orderRepo;
 	
 	@Override
-	public List<OrderVo> list(String userId)
+	public List<OrderInfoVo> list(OrderQueryDto orderQueryDto)
 	{
+		//System.out.println(orderQueryDto);
 		var qOrder = QOrder.order;
-		var query = jpaQueryFactory.selectFrom(qOrder)
-			.where(qOrder.user.id.eq(userId));
-		return query.fetch().stream().map(OrderVo::new).toList();
+		var query = jpaQueryFactory.selectFrom(qOrder);
+		if(orderQueryDto.getUserId() != null)
+		{
+			query.where(qOrder.user.id.eq(orderQueryDto.getUserId()));
+		}
+		if(orderQueryDto.getHospitalId() != null)
+		{
+			query.where(qOrder.hospital.id.eq(orderQueryDto.getHospitalId()));
+		}
+		if(orderQueryDto.getStartDate() != null)
+		{
+			query.where(qOrder.date.goe(orderQueryDto.getStartDate()));
+		}
+		if(orderQueryDto.getEndDate() != null)
+		{
+			query.where(qOrder.date.loe(orderQueryDto.getEndDate()));
+		}
+		if(orderQueryDto.getState() != null)
+		{
+			query.where(qOrder.state.eq(orderQueryDto.getState()));
+		}
+		if(orderQueryDto.getDeprecated() != null)
+		{
+			query.where(qOrder.deprecated.eq(orderQueryDto.getDeprecated()));
+		}
+		return query.fetch().stream().map(OrderInfoVo::new).toList();
 	}
 	
 	
@@ -46,13 +71,16 @@ public class OrderService implements me.qunqun.user.service.IOrderService
 	}
 	
 	@Override
-	public void remove(Integer orderId)
+	@Transactional
+	public void cancel(Integer orderId)
 	{
+		
 		var qOrder = QOrder.order;
-		var query = jpaQueryFactory.delete(qOrder)
+		var query = jpaQueryFactory.update(qOrder)
+			.set(qOrder.deprecated, true)
 			.where(qOrder.id.eq(orderId));
 		var result = query.execute();
-		if(result == 0)
+		if(result <= 0L)
 		{
 			throw new CustomException(CrudExceptionCode.DELETE_ERROR);
 		}
@@ -109,7 +137,7 @@ public class OrderService implements me.qunqun.user.service.IOrderService
 		}
 		order.setUser(user);
 		
-		order.setState(0);
+		order.setState(1);
 		order.setDeprecated(false);
 		
 		orderRepo.save(order);

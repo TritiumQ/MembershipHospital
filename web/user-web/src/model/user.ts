@@ -20,7 +20,6 @@ interface UserInfo extends User
     birthday: string;
     type: number;
     sex: number;
-    test: number;
 }
 
 
@@ -30,6 +29,7 @@ interface UserInfoWithToken extends UserInfo, Token
 
 interface UserRegister extends UserLogin, UserInfo
 {
+    code: number;
 }
 
 export type 

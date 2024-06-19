@@ -5,6 +5,7 @@ import jakarta.annotation.Resource;
 import jakarta.transaction.Transactional;
 import me.qunqun.shared.entity.po.QUser;
 import me.qunqun.user.entity.dto.OrderDto;
+import me.qunqun.user.entity.dto.OrderQueryDto;
 import me.qunqun.user.entity.repo.PackageRepository;
 import me.qunqun.user.service.IOrderService;
 import me.qunqun.user.service.impl.CalenderService;
@@ -59,13 +60,10 @@ class UserApplicationTests
 	@Rollback(true)
 	void TestOrderService()
 	{
-		var orderDto = new OrderDto();
-		orderDto.setDate(LocalDate.now());
-		orderDto.setUserId("12345671111");
-		orderDto.setPackageId(4);
-		orderDto.setHospitalId(1);
-		orderService.create(orderDto);
-		orderService.list("12345671111").forEach(System.out::println);
+		var queryD = new OrderQueryDto(null,null,"12345671111",null,null,null,null);
+		var list = orderService.list(queryD);
+		System.out.println(list);
+		
 	}
 	
 }

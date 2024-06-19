@@ -20,9 +20,15 @@ const selectDate = ref<Date>(new Date(today.getFullYear(), today.getMonth(), tod
 
 const errorMsg = ref<string>('');
 const toNext = (date: string) => {
-    if((new Date(date) <= today))
+    // validate date
+    if((new Date(date) <= today) || (new Date(date) > new Date(today.getFullYear(), today.getMonth(), today.getDate() + 30)))
     {
         errorMsg.value = '请选择正确的日期';
+        return;
+    }
+    if(getCountByString(date) <= 0)
+    {
+        errorMsg.value = '该日期不可预约或已约满';
         return;
     }
     userStore.appointmentDate = date;
@@ -33,6 +39,10 @@ const getCount = (date: Date) => {
     return computed(() => {
         return calender.value?.appointmentCounts?.find((item) => compareDate(date, new Date(item.date)))?.count ?? 0;
     })
+}
+
+const getCountByString = (date: string) => {
+    return calender.value?.appointmentCounts?.find((item) => item.date === date)?.count ?? 0;
 }
 
 const compareDate = (date1: Date, date2: Date) => {

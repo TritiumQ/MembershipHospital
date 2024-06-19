@@ -25,6 +25,8 @@ public class OrderVo implements Serializable
 	@NotNull
 	private final Integer packageId;
 	@NotNull
+	private final String packageName;
+	@NotNull
 	private final Integer state;
 	@NotNull
 	private final Boolean deprecated;
@@ -36,6 +38,7 @@ public class OrderVo implements Serializable
 		this.userId = order.getUser().getId();
 		this.hospitalId = order.getHospital().getId();
 		this.packageId = order.getPackageField().getId();
+		this.packageName = order.getPackageField().getName();
 		this.state = order.getState();
 		this.deprecated = order.getDeprecated();
 	}

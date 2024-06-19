@@ -1,13 +1,36 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import { computed, onMounted, ref } from 'vue';
+import type { DetailedReport, CheckReport } from '../model/check';
+import { useUserStore } from '@/stores/userStore';
+
 const router = useRouter();
+const route = useRoute();
+const userStore = useUserStore();
+
+const report = ref<CheckReport | null>(null);
+const errorItems = computed(() => {
+    let items: DetailedReport[] = [];
+    report.value?.checkItemReports.forEach((item) => {
+        item.detailedReports.forEach((detailed) => {
+            if (detailed.error === 1) {
+                items.push(detailed);
+            }
+        });
+    });
+    return items;
+});
+
+onMounted(() => {
+    report.value = userStore.checkReport;
+});
+
 </script>
 <template>
-
     <!-- 总容器 -->
     <div class="wrapper">
         <header>
-            <i class="fa fa-angle-left" onclick="history.go(-1)"></i>
+            <i class="fa fa-angle-left" @click="() => router.back()"></i>
             <p>体检报告</p>
             <div></div>
         </header>
@@ -16,281 +39,77 @@ const router = useRouter();
             <div>报告详情</div>
         </nav>
         <div class="top-ban"></div>
-        <div class="nav-content-item">
-            <div class="item">
-                <div class="title">异常项</div>
-                <ul>
-                    <li>
-                        <div class="indications">
-                            <div class="left">
-                                <div>异</div>
-                                <p>收缩压</p>
+        <p v-if="!report">
+        <div class="error" @click="() => router.push('/appointment')">暂无报告, 点击前往预约</div>
+        </p>
+        <div v-else>
+            <div class="nav-content-item">
+                <div class="item">
+                    <div class="title">异常项</div>
+                    <ul v-for="i, idx in errorItems">
+                        <li>
+                            <div class="indications">
+                                <div class="left">
+                                    <div>异</div>
+                                    <p>{{ i.checkItemDetailed.name }}</p>
+                                </div>
+                                <div class="right">
+                                    <p>{{ i.value }} {{ i.checkItemDetailed.unit ?? '' }}</p>
+                                    <p>正常值范围：{{ i.checkItemDetailed.normalValueDescription ?? '' }}</p>
+                                </div>
                             </div>
-                            <div class="right">
-                                <p>149</p>
-                                <p>正常值范围：&lt;140</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="indications">
-                            <div class="left">
-                                <div>异</div>
-                                <p>白细胞计数</p>
-                            </div>
-                            <div class="right">
-                                <p>3.56 10^9/L</p>
-                                <p>正常值范围：4-10</p>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="item">
+                    <div class="title">一、尊敬的顾客，您本次体检结论如下：</div>
+                    <ul v-for="c, idx in report?.overallResults">
+                        <li class="conclusion-title">{{ idx + 1 }}、{{ c.title }}</li>
+                    </ul>
+                </div>
+                <div class="item">
+                    <div class="title">二、尊敬的顾客，您本次体检建议信息如下：</div>
+                    <ul v-for="c, idx in report?.overallResults">
+                        <li class="conclusion-content">
+                            <h3>{{ idx + 1 }}、{{ c.title }}</h3>
+                            <p>{{ c.content }}</p>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div class="item">
-                <div class="title">一、尊敬的顾客，您本次体检结论如下：</div>
-                <ul>
-                    <li class="conclusion-title">1、超重</li>
-                    <li class="conclusion-title">2、血压增高</li>
-                    <li class="conclusion-title">3、血常规异常</li>
-                </ul>
-            </div>
-            <div class="item">
-                <div class="title">二、尊敬的顾客，您本次体检建议信息日下：</div>
-                <ul>
-                    <li class="conclusion-content">
-                        <h3>1、超重</h3>
-                        <p>
-                            您的体重指标属超重。体内脂肪过度增加，使体重超过正常范围，可引起高血压、高血脂、糖尿病、冠心病以及免疫功能降低等并发症。
-                            建议: 合理膳食，以低盐、低脂、高纤维为原则；三餐定时，不吃零食；根据自身情况适量运动，以消耗体内脂肪，维持正常体重。
-                        </p>
-                    </li>
-                    <li class="conclusion-content">
-                        <h3>2、血压增高</h3>
-                        <p>
-                            此次检测血压增高，已经达到高血压的诊断标准，建议就诊心血管内科进一步明确高血压诊断，积极控制好血压。低盐、低脂、低胆固醇饮食。
-                            戒烟酒，避免情绪激动，长期过度紧张工作或劳累，保存心境平和，保证充足睡眠。定期到医院系统复查，预防并发症。
-                        </p>
-                    </li>
-                    <li class="conclusion-content">
-                        <h3>3、血常规异常</h3>
-                        <p>
-                            此次检测白细胞减少，将会导致免疫功能的下降。建议就诊做进一步诊断。
-                            同时注意：胆固醇高不要吃油的，甜的，多吃水果和蔬菜，多吃富含蛋白质的食物，如牛奶和豆奶。注意锻炼，坚持每天三次，超过10分钟，中等强度，每周锻炼不少于5次。
-                        </p>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="nav-content-item">
-            <div class="item">
-                <div class="title">一般检测</div>
-                <ul>
-                    <li>
-                        <div class="indications">
-                            <div class="left">
-                                <div>异</div>
-                                <p>收缩压</p>
-                            </div>
-                            <div class="right">
-                                <p>149</p>
-                                <p>正常值范围：&lt;140</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="indications">
-                            <div class="left">
-                                <p>舒张压</p>
-                            </div>
-                            <div class="right">
-                                <p>90</p>
-                                <p>正常值范围：&lt;90</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="indications">
-                            <div class="left">
-                                <p>身高</p>
-                            </div>
-                            <div class="right">
-                                <p>177.00 cm</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="indications">
-                            <div class="left">
-                                <p>体重</p>
-                            </div>
-                            <div class="right">
-                                <p>80 kg</p>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="item">
-                <div class="title">血常规</div>
-                <ul>
-                    <li>
-                        <div class="indications">
-                            <div class="left">
-                                <div>异</div>
-                                <p>白细胞计数</p>
-                            </div>
-                            <div class="right">
-                                <p>3.56 10^9/L</p>
-                                <p>正常值范围：4-10</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="indications">
-                            <div class="left">
-                                <p>红细胞压值</p>
-                            </div>
-                            <div class="right">
-                                <p>47.4 %</p>
-                                <p>正常值范围：36-50</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="indications">
-                            <div class="left">
-                                <p>淋巴细胞计数百分比</p>
-                            </div>
-                            <div class="right">
-                                <p>19.03 %</p>
-                                <p>正常值范围：18.3-47.9</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="indications">
-                            <div class="left">
-                                <p>单核细胞计数百分比</p>
-                            </div>
-                            <div class="right">
-                                <p>8.00 %</p>
-                                <p>正常值范围：4.2-15.2</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="indications">
-                            <div class="left">
-                                <p>嗜酸性粒细胞计数百分比</p>
-                            </div>
-                            <div class="right">
-                                <p>1.20 %</p>
-                                <p>正常值范围：0.2-7.6</p>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="item">
-                <div class="title">尿常规</div>
-                <ul>
-                    <li>
-                        <div class="indications">
-                            <div class="left">
-                                <p>尿白细胞</p>
-                            </div>
-                            <div class="right">
-                                <p>- /ul</p>
-                                <p>正常值范围：-</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="indications">
-                            <div class="left">
-                                <p>尿亚硝酸盐</p>
-                            </div>
-                            <div class="right">
-                                <p>-</p>
-                                <p>正常值范围：阴性</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="indications">
-                            <div class="left">
-                                <p>尿液酸碱度</p>
-                            </div>
-                            <div class="right">
-                                <p>6.0</p>
-                                <p>正常值范围：5.5-6.5</p>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="item">
-                <div class="title">妇科检查</div>
-                <ul>
-                    <li class="indications">
-                        <div class="indications-type-4">
-                            <div>
-                                <p>盆腔检查</p>
-                            </div>
-                            <div>
-                                <p>
-                                    盆腔检查结果内容，盆腔检查结果内容，盆腔检查结果内容，盆腔检查结果内容，盆腔检查结果内容，盆腔检查结果内容，盆腔检查结果内容。
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="indications">
-                        <div class="indications-type-4">
-                            <div>
-                                <p>乳腺检查</p>
-                            </div>
-                            <div>
-                                <p>正常</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="indications">
-                        <div class="indications-type-4">
-                            <div>
-                                <p>子宫检查</p>
-                            </div>
-                            <div>
-                                <p>正常</p>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+            <div class="nav-content-item">
+                <div v-for="item, idx in report?.checkItemReports">
+                    <div class="item">
+                        <div class="title">{{ item.checkItem.name }}</div>
+                        <ul v-for="d, idx in item.detailedReports">
+                            <li>
+                                <div class="indications">
+                                    <div class="left">
+                                        <div v-if="d.error === 1">异</div>
+                                        <p>{{ d.checkItemDetailed.name }}</p>
+                                    </div>
+                                    <div class="right">
+                                        <p>{{ d.value }} {{ d.checkItemDetailed.unit ?? '' }}</p>
+                                        <p v-if="d.checkItemDetailed.type !== 3 && d.checkItemDetailed.type !== 4">
+                                            正常值范围：{{
+                                                d.checkItemDetailed.normalValueDescription ?? '' }}</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="bottom-ban"></div>
-        <footer>
-            <ul>
-                <li onclick="location.href='index.html'">
-                    <i class="fa fa-home"></i>
-                    <p>云医院</p>
-                </li>
-                <li>
-                    <i class="fa fa-opencart"></i>
-                    <p>商城</p>
-                </li>
-                <li>
-                    <i class="fa fa-compass"></i>
-                    <p>发现</p>
-                </li>
-                <li onclick="location.href='personal.html'">
-                    <i class="fa fa-user"></i>
-                    <p>我</p>
-                </li>
-            </ul>
-        </footer>
     </div>
 
 </template>
 <style scoped>
 @import '../assets/css/report.css';
+.error {
+    text-align: center;
+    margin-top: 20px;
+    color: blue;
+}
 </style>

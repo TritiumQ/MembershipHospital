@@ -12,7 +12,8 @@ const userRegisterParams = ref<UserRegister>({
     birthday: '',
     sex: 1,
     idCard: '',
-    type: 1
+    type: 1,
+    code: 0,
 });
 
 const passwordRepeat = ref('');
@@ -76,6 +77,10 @@ const regSuccess = ref(false);
             <tr>
                 <td>手机号码</td>
                 <td><input placeholder="请输入手机号码" type="text" v-model="userRegisterParams.id" /></td>
+            </tr>
+            <tr>
+                <td>验证码</td>
+                <td><input placeholder="请输入验证码" type="text" v-model="userRegisterParams.code"/></td>
             </tr>
             <tr>
                 <td>真实姓名</td>

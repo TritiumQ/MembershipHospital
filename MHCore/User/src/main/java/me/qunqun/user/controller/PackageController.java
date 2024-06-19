@@ -21,14 +21,14 @@ public class PackageController
 	@Resource
 	private IPackageService packageService;
 	
-	@Operation
+	@Operation(summary = "获取套餐列表")
 	@GetMapping("/list/{type}")
 	public Result<List<PackageInfoVo>> list(@PathVariable Integer type)
 	{
 		return Result.success(packageService.list(type));
 	}
 	
-	@Operation
+	@Operation(summary = "获取套餐详情")
 	@GetMapping("/get/{id}")
 	public Result<PackageInfoVo> get(@PathVariable Integer id)
 	{

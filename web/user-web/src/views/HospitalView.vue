@@ -9,8 +9,8 @@ const userStore = useUserStore();
 
 const hospitalList = ref<Hospital[]>([]);
 
-const getHospitalList = () => {
-    apiService.get<Hospital[]>('/hospital/list/1').then((res) => {
+const getHospitalList = async () => {
+    await apiService.get<Hospital[]>('/hospital/list/1').then((res) => {
         if (res.isSuccess()) {
             hospitalList.value = res.data;
         }

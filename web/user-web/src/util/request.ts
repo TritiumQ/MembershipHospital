@@ -12,7 +12,7 @@ class ApiService {
         this.instance.interceptors.request.use(
             (config) => {
                 const token = localStorage.getItem("userToken");
-                console.log("Token: " + token);
+                //console.log("Token: " + token);
                 if (token) {
                     config.headers.Authorization = `Bearer ${token}`;
                 }
@@ -22,29 +22,33 @@ class ApiService {
                 return Promise.reject(error);
             }
         );
-
-        this.instance.interceptors.response.use(
-            (response) => {
-                console.log(JSON.stringify(response.data));
-                return response;
-            },
-            (error) => {
-                return Promise.reject(error);
-            }
-        );
     }
 
-    mapToResponse<T>(res: AxiosResponse): Response<T> {
+    mapToResponse<T>(res: AxiosResponse, fullLogging: boolean): Response<T> {
+        if (fullLogging) {
+            console.log(`Response: ${JSON.stringify(res)}`);
+        }
+        else {
+            console.log(`Response: ${JSON.stringify(res.data).substring(0, 100)}... (data too long)`);
+        }
         return new Response<T>(res.data.code, res.data.message, res.data.data);
     }
 
-    async get<T>(url: string): Promise<Response<T>> {
-        return this.instance.get(url).then((res) => this.mapToResponse(res));
+    async get<T>(url: string, fullLogging: boolean = false): Promise<Response<T>> {
+        console.log(`GET ${url}`);
+        return this.instance.get(url).then((res) => this.mapToResponse(res, fullLogging));
     }
 
-    async post<T>(url: string, data: any): Promise<Response<T>> {
-        return this.instance.post(url, data).then((res) => this.mapToResponse(res));
+    async post<T>(url: string, data: any, fullLogging: boolean = false): Promise<Response<T>> {
+        if (fullLogging) {
+            console.log(`POST ${url} with data: ${JSON.stringify(data)}`);
+        }
+        else {
+            console.log(`POST ${url} with data: ${JSON.stringify(data).substring(0, 100)}... (data too long)`);
+        }
+        return this.instance.post(url, data).then((res) => this.mapToResponse(res, fullLogging));
     }
+
 
     axios() {
         return this.instance;

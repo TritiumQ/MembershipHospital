@@ -4,6 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import me.qunqun.shared.entity.po.QOrder;
+import me.qunqun.shared.entity.po.QUser;
 import me.qunqun.shared.exception.CustomException;
 import me.qunqun.user.entity.vo.ReportVo;
 import me.qunqun.user.exception.OperationExceptionCode;
@@ -13,24 +14,33 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class CheckReportService
+public class ReportService implements me.qunqun.user.service.IReportService
 {
 	@Resource
 	private JPAQueryFactory jpaQueryFactory;
 	
+	@Override
 	public List<ReportVo> getReportList(String userId)
 	{
+		var qUser = QUser.user;
+		var queryUser = jpaQueryFactory.selectFrom(qUser).where(qUser.id.eq(userId));
+		var user = queryUser.fetchOne();
+		if(user == null)
+		{
+			throw new CustomException(OperationExceptionCode.USER_NOT_FOUND);
+		}
 		var qOrder = QOrder.order;
-		var query = jpaQueryFactory
+		var queryOrder = jpaQueryFactory
 				.selectFrom(qOrder)
 				.where(qOrder.user.id.eq(userId)
 						.and(qOrder.state.eq(2))
 						.and(qOrder.deprecated.eq(false)));
-		var orders = query.fetch();
+		var orders = queryOrder.fetch();
 		return orders.stream().map(ReportVo::new).toList();
 	}
 	
-	public ReportVo getReportInfo(Integer orderId)
+	@Override
+	public ReportVo getReport(Integer orderId)
 	{
 		var qOrder = QOrder.order;
 		var query = jpaQueryFactory.selectFrom(qOrder).where(qOrder.id.eq(orderId));
