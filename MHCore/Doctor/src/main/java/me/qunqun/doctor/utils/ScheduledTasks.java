@@ -1,5 +1,7 @@
 package me.qunqun.doctor.utils;
 
+import jakarta.annotation.PreDestroy;
+import lombok.extern.slf4j.Slf4j;
 import me.qunqun.doctor.entity.reps.WeatherResponse;
 import me.qunqun.doctor.service.WeatherService;
 import me.qunqun.shared.entity.po.Doctor;
@@ -7,10 +9,13 @@ import me.qunqun.doctor.entity.dto.OrderQueryDTO;
 import me.qunqun.doctor.service.DoctorService;
 import me.qunqun.doctor.service.EmailService;
 import me.qunqun.doctor.service.OrderService;
+import me.qunqun.shared.entity.po.Order;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -21,6 +26,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 @Component
 public class ScheduledTasks {
 
@@ -32,35 +38,62 @@ public class ScheduledTasks {
     private OrderService orderService;
     @Autowired
     private WeatherService weatherService;
+    @Autowired
+    private PlatformTransactionManager transactionManager;
 
-    private static final int THREAD_POOL_SIZE = 10; // Define the number of threads in the pool
+    private static final int THREAD_POOL_SIZE = 10;
+    private final ExecutorService executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 
-    @Scheduled(cron = "0 0 8 * * MON-FRI")
+    @Transactional
+    @Scheduled(cron = "0 11 11 * * MON-FRI")
     public void sendScheduledEmail() {
         WeatherResponse weather = weatherService.getWeather("广东", "广州");
         List<Doctor> doctors = doctorService.getAllDoctors();
         LocalDate currentDate = getCurrentLocalDate();
-        String weatherText = "Weather: " + weather.getWeather1() + " to " + weather.getWeather2() + ", temperature: " + weather.getTemperature() + "°C, wind: " + weather.getWindDirection() + " " + weather.getWindSpeed() + "m/s\n";
+        String weatherText = String.format("Weather: %s to %s, temperature: %s°C, wind: %s %sm/s\n",
+                weather.getWeather1(), weather.getWeather2(), weather.getTemperature(), weather.getWindDirection(), weather.getWindSpeed());
+        try {
+            for (Doctor doctor : doctors) {
+                executorService.submit(() -> {
+                    try {
+                        TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
+                        transactionTemplate.execute(status -> {
+                            sendEmailToDoctor(doctor, currentDate, weatherText);
+                            return null;
+                        });
+//                        sendEmailToDoctor(doctor, currentDate, weatherText);
+                    } catch (Exception e) {
+                        log.error("Error sending email to doctor: {}", doctor.getId(), e);
+                    }
+                });
+            }
+        } catch (Exception e) {
+            log.error("Error scheduling email tasks", e);
+        }
+    }
 
-        ExecutorService executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
-        for (Doctor doctor : doctors) {
+    @Scheduled(cron = "0 11 11 * * ?")
+    public void sendCheckSms() {
+        log.info("sendCheckSms start");
+        LocalDate tomorrow = LocalDate.now().plusDays(1);
+        List<Order> orders = orderService.getOrdersByDateAndDeprecated(tomorrow);
+        for (Order order : orders) {
+            String date = tomorrow.toString();
+            String hospitalName = order.getHospital().getName();
+            String mobile = order.getUser().getId();
+            String userName = order.getUser().getRealName();
+            String orderId = order.getId().toString();
             executorService.submit(() -> {
                 try {
-                    sendEmailToDoctor(doctor, currentDate, weatherText);
+                    SendSms.sendSMSTip(mobile, userName, orderId, hospitalName, date);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    log.error("Error sending SMS for order: {}", order.getId(), e);
                 }
             });
         }
-        executorService.shutdown();
-        try {
-            if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
-                executorService.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            executorService.shutdownNow();
-        }
+        log.info("sendCheckSms end");
     }
+
 
     private void sendEmailToDoctor(Doctor doctor, LocalDate currentDate, String weatherText) {
         String subject = "Daily Report";
@@ -79,6 +112,8 @@ public class ScheduledTasks {
         emailService.sendEmail(to, subject, text.toString());
     }
 
+
+
     private Date getCurrentDate() {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -94,5 +129,40 @@ public class ScheduledTasks {
 
     private Date convertToDate(LocalDate localDate) {
         return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
+
+    // 内部类用于传递 SMS 数据
+    private static class SmsData {
+        String mobile;
+        String userName;
+        String orderId;
+        String hospitalName;
+        String date;
+
+        SmsData(String mobile, String userName, String orderId, String hospitalName, String date) {
+            this.mobile = mobile;
+            this.userName = userName;
+            this.orderId = orderId;
+            this.hospitalName = hospitalName;
+            this.date = date;
+        }
+    }
+
+
+    @PreDestroy
+    public void onDestroy() {
+        log.info("Shutting down ExecutorService");
+        executorService.shutdown();
+        try {
+            if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
+                executorService.shutdownNow();
+                if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
+                    log.error("ExecutorService did not terminate");
+                }
+            }
+        } catch (InterruptedException e) {
+            executorService.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
     }
 }

@@ -1,6 +1,5 @@
 package me.qunqun.doctor.service;
 
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import me.qunqun.shared.entity.po.Order;
 import me.qunqun.doctor.entity.dto.OrderQueryDTO;
@@ -14,7 +13,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -91,5 +89,13 @@ public class OrderService {
             return null;
         }
         return new OrderVO().fromOrder(order);
+    }
+
+    public List<Order> getOrdersByDateAndDeprecated(LocalDate tomorrow) {
+        return orderRepository.findByDateAndDeprecated(tomorrow);
+    }
+
+    public Order getOrderById(Integer id) {
+        return orderRepository.findById(id).orElse(null);
     }
 }

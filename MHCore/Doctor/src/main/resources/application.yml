@@ -90,3 +90,15 @@ ollama:
   api:
     url: http://localhost:11434/api/generate
     medel: qwen2:7b
+
+aliyun:
+  sms:
+    access-key-id-env: OSS_ACCESS_KEY_ID
+    access-key-secret-env: OSS_ACCESS_KEY_SECRET
+    sign-name: 熙心健康体检
+    REGION_ID: cn-shanghai
+    PRODUCT: Dysmsapi
+    DOMAIN: dysmsapi.aliyuncs.com
+    template-code:
+      report: SMS_468195539
+      tip: SMS_468320452

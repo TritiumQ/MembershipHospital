@@ -69,7 +69,7 @@ public class CheckController {
             checkReportVO.setOverallResults(resOverallResults.getData());
             return Result.success(checkReportVO);
         } catch (RuntimeException e) {
-            return Result.error(500, "检查项目报告查询失败");
+            return Result.error(500, "检查项目报告查询失败" + e.getMessage());
         }
     }
 

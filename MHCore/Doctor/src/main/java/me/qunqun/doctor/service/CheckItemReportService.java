@@ -2,6 +2,7 @@ package me.qunqun.doctor.service;
 
 import lombok.extern.slf4j.Slf4j;
 import me.qunqun.doctor.entity.dto.EditReportDTO;
+import me.qunqun.doctor.entity.vo.OverallResultVO;
 import me.qunqun.doctor.repo.*;
 import me.qunqun.shared.entity.po.*;
 import me.qunqun.doctor.entity.vo.CheckItemDetailedReportVO;
@@ -33,9 +34,9 @@ public class CheckItemReportService {
     public Result<List<CheckItemReportVO>> getCheckItemReports(OrderVO orderVO) {
         try {
             List<CheckItemDetailedReport> checkItemDetailedReports = checkItemDetailedReportRepository.findByOrderId(orderVO.getOrderId());
-//            log.info("checkItemDetailedReports: {}", checkItemDetailedReports);
-//            log.info("checkItemDetailedReports.size(): {}", checkItemDetailedReports.size());
-//            log.info("checkItemDetailedReports.isEmpty(): {}", checkItemDetailedReports.isEmpty());
+            log.info("checkItemDetailedReports: {}", checkItemDetailedReports);
+            log.info("checkItemDetailedReports.size(): {}", checkItemDetailedReports.size());
+            log.info("checkItemDetailedReports.isEmpty(): {}", checkItemDetailedReports.isEmpty());
             if (checkItemDetailedReports.isEmpty()) {
                 // 初始化检查项目报告
                 Integer packageId = orderVO.getPackageId();
@@ -43,17 +44,19 @@ public class CheckItemReportService {
                 if (checkItemSet == null) {
                     return Result.error("检查项目为空，查询失败");
                 }
+                Order order = orderRepository.findById(orderVO.getOrderId()).orElse(null);
                 for (CheckItem checkItem : checkItemSet) {
                     CheckItemReport checkItemReport = new CheckItemReport();
                     checkItemReport.setCheckItem(checkItem);
                     // checkItemReport.setOrderId(orderVO.getOrderId());
-                    checkItemReport.setOrder(orderRepository.findById(orderVO.getOrderId()).orElse(null));
+                    checkItemReport.setOrder(order);
                     checkItemReport.setReview(null);
                     checkItemReportRepository.save(checkItemReport);
                     for (CheckItemDetailed checkItemDetailed : checkItem.getCheckItemDetaileds()) {
                         CheckItemDetailedReport checkItemDetailedReport = new CheckItemDetailedReport();
                         checkItemDetailedReport.setCheckItemReport(checkItemReport);
                         // checkItemDetailedReport.setOrderId(orderVO.getOrderId());
+                        checkItemDetailedReport.setOrder(order);
                         checkItemDetailedReport.setCheckItemDetailed(checkItemDetailed);
                         checkItemDetailedReport.setValue(null);
                         checkItemDetailedReport.setError(0);
