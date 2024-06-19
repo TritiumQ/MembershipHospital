@@ -45,7 +45,7 @@ public class CaptchaManager
 		// 保存验证码
 		redisManager.setString(key, captcha, CAPTCHA_EXPIRE_TIME);
 		// 发送验证码
-		smsManager.sendSms(phone, captcha);
+		smsManager.sendCaptcha(phone, captcha);
 		return "验证码发送成功, 请在5分钟内完成验证";
 	}
 	

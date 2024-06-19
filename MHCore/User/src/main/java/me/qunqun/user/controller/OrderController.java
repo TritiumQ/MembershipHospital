@@ -9,6 +9,7 @@ import me.qunqun.user.entity.dto.OrderDto;
 import me.qunqun.user.entity.dto.OrderQueryDto;
 import me.qunqun.user.entity.vo.OrderInfoVo;
 import me.qunqun.user.entity.vo.OrderVo;
+import me.qunqun.user.manager.SmsManager;
 import me.qunqun.user.service.IOrderService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,9 @@ public class OrderController
 {
 	@Resource
 	IOrderService orderService;
+	
+	@Resource
+	SmsManager smsManager;
 	
 	@Operation(summary = "订单列表")
 	@PostMapping("/list")
@@ -55,6 +59,8 @@ public class OrderController
 	public Result<OrderInfoVo> create(@RequestBody OrderDto orderDto)
 	{
 		var order = orderService.create(orderDto);
+		var msg = "您的体检预约登记成功，" + "订单号:" + order.getId() + "，预约时间：" + order.getDate() + "，请您准时到达。";
+		smsManager.sendCaptcha(order.getUserId(), msg);
 		return Result.success(order);
 	}
 	
