@@ -20,5 +20,4 @@ server:
 
 app:
   redis:
-    expire:
-      minutes: 10
+    expire: 300

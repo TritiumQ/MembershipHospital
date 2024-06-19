@@ -1,6 +1,7 @@
 package me.qunqun.user.manager;
 
 import jakarta.annotation.Resource;
+import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -28,32 +29,31 @@ public class RedisManager
 	@Resource
 	private JsonRedisTemplate jsonRedisTemplate;
 	
-	// 默认过期时间 10 分钟
-	@Value("${app.redis.expire.minutes:10}")
+	// 默认过期时间 300 秒
+	@Value("${app.redis.expire:300}")
 	@Getter
-	private int expireMinutes;
+	private long expireSeconds;
 	
 	/**
 	 * 储存字符串
 	 */
 	public String setString(String key, String value)
 	{
-		return setString(key, value, this.expireMinutes);
+		return setString(key, value, this.expireSeconds);
 	}
 	
 	/**
 	 * 储存字符串, 使用默认过期时间
 	 */
-	public String setString(String key, String value, int expireMinutes)
+	public String setString(String key, String value, long expireSeconds)
 	{
 		Assert.notNull(key, "RedisManager setString(): key值不可为空");
 		Assert.notNull(key, "RedisManager setString(): key值不可为空");
 		var fKey = generateFormattedKey(key);
 		stringRedisTemplate.opsForValue().set(fKey, value);
-		stringRedisTemplate.expire(fKey, Duration.ofMinutes(expireMinutes));
+		stringRedisTemplate.expire(fKey, Duration.ofSeconds(expireSeconds));
 		return key;
 	}
-	
 	
 	/**
 	 * 读取字符串
@@ -65,17 +65,18 @@ public class RedisManager
 		var fKey = generateFormattedKey(key);
 		return stringRedisTemplate.opsForValue().get(fKey);
 	}
+
 	
 	/**
 	 * 储存对象
 	 */
-	public String setObject(String key, Object value, int expireMinutes)
+	public String setObject(String key, Object value, long expireSeconds)
 	{
 		Assert.notNull(key, "RedisManager setObject(): key值不可为空");
 		Assert.notNull(value, "RedisManager setObject(): value值不可为空");
 		var fKey = generateFormattedKey(key);
 		jsonRedisTemplate.opsForValue().set(fKey, value);
-		jsonRedisTemplate.expire(fKey, Duration.ofMinutes(expireMinutes));
+		jsonRedisTemplate.expire(fKey, Duration.ofSeconds(expireSeconds));
 		return key;
 	}
 	
@@ -84,7 +85,7 @@ public class RedisManager
 	 */
 	public String setObject(String key, Object value)
 	{
-		return setObject(key, value, this.expireMinutes);
+		return setObject(key, value, this.expireSeconds);
 	}
 	
 	/**
@@ -95,6 +96,22 @@ public class RedisManager
 	{
 		var fKey = generateFormattedKey(key);
 		return jsonRedisTemplate.opsForValue().get(fKey);
+	}
+	
+	/**
+	 * 获取过期时间(秒)
+	 */
+	@Nullable
+	public Long getExpireTime(String key)
+	{
+		Assert.notNull(key, "RedisManager getObjectExpireTime(): key值不可为空");
+		var fKey = generateFormattedKey(key);
+		var expireTime = jsonRedisTemplate.getExpire(fKey);
+		if (expireTime != null)
+		{
+			return expireTime;
+		}
+		return null;
 	}
 	
 	
