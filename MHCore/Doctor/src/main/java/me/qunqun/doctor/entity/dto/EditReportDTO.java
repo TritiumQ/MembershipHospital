@@ -1,14 +1,15 @@
-package me.qunqun.doctor.entity.vo;
+package me.qunqun.doctor.entity.dto;
 
 import lombok.Data;
+import me.qunqun.doctor.entity.vo.OverallResultVO;
 import me.qunqun.shared.entity.po.OverallResult;
+import me.qunqun.doctor.entity.vo.CheckItemReportVO;
 
-import java.util.Date;
 import java.util.List;
 
 @Data
-public class CheckReportVO {
-    private OrderVO order;
+public class EditReportDTO {
+    private Integer orderId;
     private List<CheckItemReportVO> checkItemReports;
     private List<OverallResultVO> overallResults;
 

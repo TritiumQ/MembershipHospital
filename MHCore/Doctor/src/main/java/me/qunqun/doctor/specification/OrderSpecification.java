@@ -36,6 +36,7 @@ public class OrderSpecification {
             if (orderQueryDTO.getStatus() != null) {
                 predicates.add(criteriaBuilder.equal(root.get("state"), orderQueryDTO.getStatus()));
             }
+            predicates.add(criteriaBuilder.equal(root.get("deprecated"), false));
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };

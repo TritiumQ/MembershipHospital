@@ -5,6 +5,7 @@ import me.qunqun.shared.entity.po.CheckItemDetailedReport;
 
 @Data
 public class CheckItemDetailedReportVO {
+    private Integer id;
     private String detailName;
     private String value;
     private String error;
@@ -17,6 +18,7 @@ public class CheckItemDetailedReportVO {
     private String normalValueDescription;
 
     public CheckItemDetailedReportVO fromCheckItemDetailedReport(CheckItemDetailedReport checkItemDetailedReport) {
+        this.id = checkItemDetailedReport.getId();
         this.detailName = checkItemDetailedReport.getCheckItemDetailed().getName();
         this.value = checkItemDetailedReport.getValue();
         this.error = checkItemDetailedReport.getError() == 0 ? "无异常" : "异常";
