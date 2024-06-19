@@ -29,7 +29,7 @@ interface UserInfoWithToken extends UserInfo, Token
 
 interface UserRegister extends UserLogin, UserInfo
 {
-    code: number;
+    code: string;
 }
 
 export type 

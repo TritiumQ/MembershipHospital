@@ -1,3 +1,4 @@
+import type { contentQuotesLinter } from "ant-design-vue/es/_util/cssinjs/linters";
 import axios, { type AxiosResponse } from "axios";
 /**
  * 统一封装请求
@@ -23,6 +24,8 @@ class ApiService {
             }
         );
     }
+
+    // fullLogging: 是否打印完整的返回数据, 默认截取打印
 
     mapToResponse<T>(res: AxiosResponse, fullLogging: boolean): Response<T> {
         if (fullLogging) {

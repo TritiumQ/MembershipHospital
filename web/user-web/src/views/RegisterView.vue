@@ -13,7 +13,7 @@ const userRegisterParams = ref<UserRegister>({
     sex: 1,
     idCard: '',
     type: 1,
-    code: 0,
+    code: '',
 });
 
 const passwordRepeat = ref('');
@@ -54,6 +54,7 @@ const check = (): boolean => {
         errorMsg.value = '密码要求6-32位，包含数字和字母';
         return false;
     }
+    errorMsg.value = '';
     return true;
 }
 
@@ -80,7 +81,7 @@ const regSuccess = ref(false);
             </tr>
             <tr>
                 <td>验证码</td>
-                <td><input placeholder="请输入验证码" type="text" v-model="userRegisterParams.code"/></td>
+                <td><input placeholder="请输入验证码" type="text" v-model="userRegisterParams.code" /></td>
             </tr>
             <tr>
                 <td>真实姓名</td>
@@ -109,13 +110,9 @@ const regSuccess = ref(false);
                 <td>确认密码</td>
                 <td><input placeholder="请再次输入密码" type="password" v-model="passwordRepeat" /></td>
             </tr>
-            <tr>
-                <p v-if="passwordRepeat !== userRegisterParams.password" class="error-msg">两次密码不一致</p>
-            </tr>
-            <tr>
-                <p v-if="errorMsg" class="error-msg">注册失败: {{ errorMsg }}</p>
-            </tr>
         </table>
+        <p v-if="passwordRepeat !== userRegisterParams.password" class="error-msg">两次密码不一致</p>
+        <p v-if="errorMsg" class="error-msg">注册失败: {{ errorMsg }}</p>
         <div class="btn" @click="register">完成</div>
     </div>
     <div class="wrapper" :hidden="!regSuccess">

@@ -3,6 +3,12 @@ spring:
     name: user
   profiles:
     include: shared
+  data:
+    redis:
+      host: ${RDS_REDIS_HOST:localhost}
+      port: ${RDS_REDIS_PORT:6379}
+      password: ${RDS_REDIS_PASSWORD:root}
+
 
 server:
   port: 9092
