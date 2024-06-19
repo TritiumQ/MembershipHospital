@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import type { UserRegister } from '@/model/user';
 import { apiService } from '@/util/request';
+import { message } from 'ant-design-vue';
 const router = useRouter();
 
 const userRegisterParams = ref<UserRegister>({
@@ -16,14 +17,23 @@ const userRegisterParams = ref<UserRegister>({
     code: '',
 });
 
+const code = ref('');
+
 const passwordRepeat = ref('');
 
 const register = async () => {
     //console.log(JSON.stringify(userRegisterParams.value));
+    // 验证参数
     if (!check()) return;
+    // 验证验证码
+    if (!checkCaptcha()) return;
+    // 最后注册
     apiService.post('/signup', userRegisterParams.value).then((res) => {
         if (res.isSuccess()) {
             regSuccess.value = true;
+            setTimeout(() => {
+                router.push('/login');
+            }, 1000);
         } else {
             errorMsg.value = res.message;
         }
@@ -33,11 +43,35 @@ const register = async () => {
     })
 }
 
+const checkCaptcha = () => {
+    // 验证验证码
+    apiService.post<string>('/captcha/image/verify', {uuid: uuidStr.value, code:code.value}).then((res) => {
+        if (res.isSuccess()) {
+            message.success('验证码正确');
+        } else {
+            errorMsg.value = '验证码错误';
+            setTimeout(() => {
+                getCaptcha();
+            }, 300);
+            return false;
+        }
+    }).catch((err) => {
+        console.log(err);
+        errorMsg.value = '验证码错误';
+        setTimeout(() => {
+            getCaptcha();
+        }, 300);
+        return false;
+    });
+    errorMsg.value = '';
+    return true;
+}
+
 const check = (): boolean => {
     if (passwordRepeat.value !== userRegisterParams.value.password) {
         return false;
     }
-    if (!userRegisterParams.value.id || !userRegisterParams.value.password || !userRegisterParams.value.realName || !userRegisterParams.value.birthday || !userRegisterParams.value.idCard) {
+    if (!userRegisterParams.value.id || !userRegisterParams.value.password || !userRegisterParams.value.realName || !userRegisterParams.value.birthday || !userRegisterParams.value.idCard || !code.value) {
         errorMsg.value = '请填写完整信息';
         return false;
     }
@@ -62,6 +96,30 @@ const errorMsg = ref('');
 
 const regSuccess = ref(false);
 
+
+const captchaImage = ref('');
+const uuidStr = ref('');
+const imageSpinning = ref(false);
+
+const getCaptcha = async () => {
+    imageSpinning.value = true;
+    setTimeout(() => {
+        console.log('get captcha');
+    }, 100);
+    await apiService.get<{uuid: string, image:string}>('/captcha/image').then((res) => {
+        if (res.isSuccess()) {
+            uuidStr.value = res.data.uuid;
+            captchaImage.value = `data:image/png;base64,${res.data.image}`;
+        } else {
+            console.log(res.message);
+        }
+    }).catch((err) => {
+        console.log(err);
+    }).finally(() => {
+        imageSpinning.value = false;
+    });
+}
+
 </script>
 
 <template>
@@ -79,10 +137,7 @@ const regSuccess = ref(false);
                 <td>手机号码</td>
                 <td><input placeholder="请输入手机号码" type="text" v-model="userRegisterParams.id" /></td>
             </tr>
-            <tr>
-                <td>验证码</td>
-                <td><input placeholder="请输入验证码" type="text" v-model="userRegisterParams.code" /></td>
-            </tr>
+
             <tr>
                 <td>真实姓名</td>
                 <td><input placeholder="真实姓名便于查看体检报告" type="text" v-model="userRegisterParams.realName" /></td>
@@ -110,7 +165,15 @@ const regSuccess = ref(false);
                 <td>确认密码</td>
                 <td><input placeholder="请再次输入密码" type="password" v-model="passwordRepeat" /></td>
             </tr>
+            <tr>
+                <td>验证码</td>
+                <td><input placeholder="请输入验证码" type="text" v-model="code" /></td>
+            </tr>
         </table>
+        <a-spin :spinning="imageSpinning">
+            <img :src="captchaImage" class="captcha" @click="getCaptcha" />
+            <p>点击图片刷新验证码</p>
+        </a-spin>
         <p v-if="passwordRepeat !== userRegisterParams.password" class="error-msg">两次密码不一致</p>
         <p v-if="errorMsg" class="error-msg">注册失败: {{ errorMsg }}</p>
         <div class="btn" @click="register">完成</div>
@@ -136,5 +199,10 @@ const regSuccess = ref(false);
     align-items: center;
     justify-content: center;
     height: 100%;
+}
+.captcha {
+    width: 150px;
+    height: 50px;
+    margin-right: 10px;
 }
 </style>

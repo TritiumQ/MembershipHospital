@@ -5,6 +5,8 @@ import cn.hutool.captcha.LineCaptcha;
 import jakarta.annotation.Resource;
 import me.qunqun.shared.exception.CustomException;
 import me.qunqun.user.exception.OperationExceptionCode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -14,6 +16,7 @@ import org.springframework.util.Assert;
 @Service
 public class CaptchaManager
 {
+	private static final Logger log = LoggerFactory.getLogger(CaptchaManager.class);
 	@Resource
 	private RedisManager redisManager;
 	@Resource
@@ -56,9 +59,10 @@ public class CaptchaManager
 	{
 		Assert.notNull(id, "SmsManager.verifyCaptcha(): id不能为空");
 		Assert.notNull(phone, "SmsManager.verifyCaptcha(): phone不能为空");
-		Assert.notNull(captcha, "SmsManager.verifyCaptcha(): captcha不能为空");
 		var key = MESSAGE_CAPTCHA_REDIS_PREFIX + id + ":" + phone;
-		return verify(captcha, key);
+		var redisCode = redisManager.getString(key);
+		redisManager.deleteKey(key);
+		return verify(captcha, key, redisCode);
 	}
 	
 	/**
@@ -79,6 +83,7 @@ public class CaptchaManager
 		Assert.notNull(userId, "CaptchaManager.generateImageCaptcha(): userId不能为空");
 		LineCaptcha lineCaptcha = CaptchaUtil.createLineCaptcha(200, 100);
 		var code = lineCaptcha.getCode();
+		log.info("生成图片验证码: userId: {}, code: {}", userId, code);
 		var base64 = lineCaptcha.getImageBase64();
 		var key = IMAGE_CAPTCHA_REDIS_PREFIX + userId;
 		redisManager.setString(key, code, CAPTCHA_EXPIRE_TIME);
@@ -92,17 +97,17 @@ public class CaptchaManager
 	public boolean verifyImageCaptcha(String userId, String code)
 	{
 		Assert.notNull(userId, "CaptchaManager.verifyImageCaptcha(): userId不能为空");
-		Assert.notNull(code, "CaptchaManager.verifyImageCaptcha(): code不能为空");
 		var key = IMAGE_CAPTCHA_REDIS_PREFIX + userId;
-		return verify(code, key);
+		var redisCode = redisManager.getString(key);
+		redisManager.deleteKey(key);
+		return verify(code, key, redisCode);
 	}
 	
 	/**
 	 * 验证验证码
 	 */
-	private boolean verify(String code, String key)
+	private boolean verify(String code, String key, String redisCode)
 	{
-		var redisCode = redisManager.getString(key);
 		if (redisCode == null)
 		{
 			throw new CustomException(OperationExceptionCode.CAPTCHA_NOT_FOUND);
@@ -111,7 +116,6 @@ public class CaptchaManager
 		{
 			throw new CustomException(OperationExceptionCode.CAPTCHA_ERROR);
 		}
-		redisManager.deleteKey(key);
 		return true;
 	}
 }
