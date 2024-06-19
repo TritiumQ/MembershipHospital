@@ -114,6 +114,16 @@ public class RedisManager
 		return null;
 	}
 	
+	/**
+	 * 删除 key
+	 */
+	public void deleteKey(String key)
+	{
+		Assert.notNull(key, "RedisManager deleteKey(): key值不可为空");
+		var fKey = generateFormattedKey(key);
+		stringRedisTemplate.delete(fKey);
+	}
+	
 	
 	/**
 	 * 生成格式化的 key

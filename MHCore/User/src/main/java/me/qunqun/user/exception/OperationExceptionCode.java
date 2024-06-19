@@ -22,6 +22,13 @@ public enum OperationExceptionCode implements IExceptionCode
 	ORDER_STATE_ERROR(20002, "订单状态错误"),
 	ORDER_HAS_BEEN_CANCELED(20003, "订单已取消"),
 	ORDER_EXITED(20004, "订单已存在"),
+	
+	//TODO 验证码相关错误
+	CAPTCHA_NOT_FOUND(30001, "验证码不存在"),
+	CAPTCHA_ERROR(30002, "验证码错误"),
+	CAPTCHA_EXPIRED(30003, "验证码已过期"),
+	CAPTCHA_VERIFY_ERROR(30004, "验证码验证错误"),
+	
 	;
 	private final int code;
 	private final String message;

@@ -2,7 +2,10 @@ package me.qunqun.user.manager;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import me.qunqun.shared.exception.CustomException;
+import me.qunqun.user.exception.OperationExceptionCode;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 
 /**
@@ -23,8 +26,10 @@ public class SmsManager
 	/**
 	 * 发送短信验证码
 	 */
-	public String sendCaptchaMessage(String id, String phone)
+	public String sendCaptcha(String id, String phone)
 	{
+		Assert.notNull(id, "SmsManager.sendSmsCaptcha(): id不能为空");
+		Assert.notNull(phone, "SmsManager.sendSmsCaptcha(): phone不能为空");
 		// 先判断是否在一分钟内已经发送过验证码
 		var key = SMS_CAPTCHA_REDIS_PREFIX + id + ":" + phone;
 		var expireTime = redisManager.getExpireTime(key);
@@ -39,6 +44,28 @@ public class SmsManager
 		// 发送验证码
 		sendSms(phone, captcha);
 		return "验证码发送成功, 请在5分钟内完成验证";
+	}
+	
+	/**
+	 * 验证短信验证码
+	 */
+	public boolean verifyCaptcha(String id, String phone, String captcha)
+	{
+		Assert.notNull(id, "SmsManager.verifyCaptcha(): id不能为空");
+		Assert.notNull(phone, "SmsManager.verifyCaptcha(): phone不能为空");
+		Assert.notNull(captcha, "SmsManager.verifyCaptcha(): captcha不能为空");
+		var key = SMS_CAPTCHA_REDIS_PREFIX + id + ":" + phone;
+		var redisCaptcha = redisManager.getString(key);
+		if (redisCaptcha == null)
+		{
+			throw new CustomException(OperationExceptionCode.CAPTCHA_NOT_FOUND);
+		}
+		if (!redisCaptcha.equals(captcha))
+		{
+			throw new CustomException(OperationExceptionCode.CAPTCHA_ERROR);
+		}
+		redisManager.deleteKey(key);
+		return true;
 	}
 	
 	private void sendSms(String phone, String captcha)
