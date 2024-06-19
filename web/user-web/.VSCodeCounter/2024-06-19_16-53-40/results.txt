@@ -1,0 +1,125 @@
+Date : 2024-06-19 16:53:40
+Directory : c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src
+Total : 78 files,  12431 codes, 233 comments, 514 blanks, all 13178 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| CSS        |         18 |      4,153 |         94 |        218 |      4,465 |
+| XML        |          2 |      2,672 |          0 |          2 |      2,674 |
+| SCSS       |         14 |      1,758 |         44 |         48 |      1,850 |
+| Less       |         14 |      1,758 |         44 |         48 |      1,850 |
+| vue        |         20 |      1,677 |         31 |        139 |      1,847 |
+| TypeScript |         10 |        413 |         20 |         59 |        492 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                             | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                                |         78 |     12,431 |        233 |        514 |     13,178 |
+| . (Files)                                                                                                                        |          2 |         21 |          8 |         16 |         45 |
+| assets                                                                                                                           |         48 |     10,341 |        182 |        316 |     10,839 |
+| assets (Files)                                                                                                                   |          3 |        102 |          2 |         21 |        125 |
+| assets\css                                                                                                                       |         13 |      1,709 |         78 |        196 |      1,983 |
+| assets\framework                                                                                                                 |         32 |      8,530 |        102 |         99 |      8,731 |
+| assets\framework (Files)                                                                                                         |          1 |         15 |          1 |          0 |         16 |
+| assets\framework\font-awesome                                                                                                    |         31 |      8,515 |        101 |         99 |      8,715 |
+| assets\framework\font-awesome\css                                                                                                |          2 |      2,328 |         13 |          2 |      2,343 |
+| assets\framework\font-awesome\fonts                                                                                              |          1 |      2,671 |          0 |          1 |      2,672 |
+| assets\framework\font-awesome\less                                                                                               |         14 |      1,758 |         44 |         48 |      1,850 |
+| assets\framework\font-awesome\scss                                                                                               |         14 |      1,758 |         44 |         48 |      1,850 |
+| components                                                                                                                       |          1 |         41 |          0 |          4 |         45 |
+| layout                                                                                                                           |          2 |        116 |          1 |         21 |        138 |
+| model                                                                                                                            |          6 |        174 |          1 |         25 |        200 |
+| router                                                                                                                           |          1 |        108 |          0 |          6 |        114 |
+| stores                                                                                                                           |          1 |         57 |          6 |          6 |         69 |
+| util                                                                                                                             |          1 |         61 |          5 |         10 |         76 |
+| views                                                                                                                            |         16 |      1,512 |         30 |        110 |      1,652 |
++----------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                                                         | language   | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\App.vue                                                     | vue        |          8 |          0 |          4 |         12 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\base.css                                             | CSS        |         71 |          2 |         14 |         87 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\css\appointment.css                                  | CSS        |         77 |          5 |         12 |         94 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\css\appointmentlist.css                              | CSS        |         84 |          5 |         12 |        101 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\css\appointmentsuccess.css                           | CSS        |        140 |          5 |         15 |        160 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\css\confirmorder.css                                 | CSS        |        119 |          6 |         15 |        140 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\css\hospital.css                                     | CSS        |        133 |          5 |         16 |        154 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\css\index.css                                        | CSS        |        309 |         10 |         27 |        346 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\css\login.css                                        | CSS        |         88 |          4 |         10 |        102 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\css\personal.css                                     | CSS        |        120 |          5 |         11 |        136 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\css\register.css                                     | CSS        |         60 |          6 |         10 |         76 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\css\report.css                                       | CSS        |        188 |         10 |         23 |        221 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\css\reportlist.css                                   | CSS        |        106 |          5 |         10 |        121 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\css\selectdate.css                                   | CSS        |        147 |          6 |         20 |        173 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\css\setmeal.css                                      | CSS        |        138 |          6 |         15 |        159 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\css\font-awesome.css          | CSS        |      2,327 |         10 |          1 |      2,338 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\css\font-awesome.min.css      | CSS        |          1 |          3 |          1 |          5 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\fonts\fontawesome-webfont.svg | XML        |      2,671 |          0 |          1 |      2,672 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\less\animated.less            | Less       |         28 |          2 |          5 |         35 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\less\bordered-pulled.less     | Less       |         17 |          3 |          6 |         26 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\less\core.less                | Less       |          8 |          2 |          3 |         13 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\less\fixed-width.less         | Less       |          4 |          2 |          1 |          7 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\less\font-awesome.less        | Less       |         13 |          4 |          2 |         19 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\less\icons.less               | Less       |        786 |          2 |          2 |        790 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\less\larger.less              | Less       |          9 |          3 |          2 |         14 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\less\list.less                | Less       |         16 |          2 |          2 |         20 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\less\mixins.less              | Less       |         41 |         10 |         10 |         61 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\less\path.less                | Less       |         11 |          3 |          2 |         16 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\less\rotated-flipped.less     | Less       |         12 |          4 |          5 |         21 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\less\screen-reader.less       | Less       |          2 |          2 |          2 |          6 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\less\stacked.less             | Less       |         17 |          2 |          2 |         21 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\less\variables.less           | Less       |        794 |          3 |          4 |        801 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\scss\_animated.scss           | SCSS       |         28 |          2 |          5 |         35 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\scss\_bordered-pulled.scss    | SCSS       |         17 |          3 |          6 |         26 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\scss\_core.scss               | SCSS       |          8 |          2 |          3 |         13 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\scss\_fixed-width.scss        | SCSS       |          4 |          2 |          1 |          7 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\scss\_icons.scss              | SCSS       |        786 |          2 |          2 |        790 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\scss\_larger.scss             | SCSS       |          9 |          3 |          2 |         14 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\scss\_list.scss               | SCSS       |         16 |          2 |          2 |         20 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\scss\_mixins.scss             | SCSS       |         41 |         10 |         10 |         61 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\scss\_path.scss               | SCSS       |         11 |          3 |          2 |         16 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\scss\_rotated-flipped.scss    | SCSS       |         12 |          4 |          5 |         21 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\scss\_screen-reader.scss      | SCSS       |          2 |          2 |          2 |          6 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\scss\_stacked.scss            | SCSS       |         17 |          2 |          2 |         21 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\scss\_variables.scss          | SCSS       |        794 |          3 |          4 |        801 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\font-awesome\scss\font-awesome.scss        | SCSS       |         13 |          4 |          2 |         19 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\framework\reset.css                                  | CSS        |         15 |          1 |          0 |         16 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\logo.svg                                             | XML        |          1 |          0 |          1 |          2 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\assets\main.css                                             | CSS        |         30 |          0 |          6 |         36 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\components\DirectToLogin.vue                                | vue        |         41 |          0 |          4 |         45 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\layout\BasicLayout.vue                                      | vue        |          3 |          0 |          0 |          3 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\layout\UserLayout.vue                                       | vue        |        113 |          1 |         21 |        135 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\main.ts                                                     | TypeScript |         13 |          8 |         12 |         33 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\model\calender.ts                                           | TypeScript |         16 |          0 |          2 |         18 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\model\check.ts                                              | TypeScript |         49 |          0 |          7 |         56 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\model\hospital.ts                                           | TypeScript |         13 |          0 |          1 |         14 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\model\order.ts                                              | TypeScript |         43 |          1 |          6 |         50 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\model\package.ts                                            | TypeScript |         17 |          0 |          2 |         19 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\model\user.ts                                               | TypeScript |         36 |          0 |          7 |         43 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\router\index.ts                                             | TypeScript |        108 |          0 |          6 |        114 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\stores\userStore.ts                                         | TypeScript |         57 |          6 |          6 |         69 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\util\request.ts                                             | TypeScript |         61 |          5 |         10 |         76 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\views\AppointmentView.vue                                   | vue        |         24 |          3 |          1 |         28 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\views\AppointmentcancelView.vue                             | vue        |         37 |          1 |          1 |         39 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\views\AppointmentfailedView.vue                             | vue        |         33 |          6 |          2 |         41 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\views\AppointmentlistView.vue                               | vue        |        241 |          5 |         27 |        273 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\views\AppointmentsuccessView.vue                            | vue        |         36 |          1 |          2 |         39 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\views\ConfirmorderView.vue                                  | vue        |        201 |          1 |          9 |        211 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\views\HomeView.vue                                          | vue        |         15 |          0 |          4 |         19 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\views\HospitalView.vue                                      | vue        |         81 |          2 |          7 |         90 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\views\IndexView.vue                                         | vue        |        159 |          4 |          2 |        165 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\views\LoginView.vue                                         | vue        |         73 |          1 |          6 |         80 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\views\PersonalView.vue                                      | vue        |         92 |          1 |          5 |         98 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\views\RegisterView.vue                                      | vue        |        130 |          1 |          9 |        140 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\views\ReportView.vue                                        | vue        |        109 |          1 |          5 |        115 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\views\ReportlistView.vue                                    | vue        |         50 |          1 |          3 |         54 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\views\SelectdateView.vue                                    | vue        |        123 |          1 |         17 |        141 |
+| c:\Users\Tritium\Desktop\neusoft\MembershipHospital\web\user-web\src\views\SetmealView.vue                                       | vue        |        108 |          1 |         10 |        119 |
+| Total                                                                                                                            |            |     12,431 |        233 |        514 |     13,178 |
++----------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
