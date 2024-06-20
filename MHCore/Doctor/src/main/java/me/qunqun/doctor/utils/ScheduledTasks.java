@@ -45,11 +45,11 @@ public class ScheduledTasks {
     private final ExecutorService executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 
     @Transactional
-    @Scheduled(cron = "0 11 11 * * MON-FRI")
+    @Scheduled(cron = "0 0 9 * * MON-FRI")
     public void sendScheduledEmail() {
         WeatherResponse weather = weatherService.getWeather("广东", "广州");
         List<Doctor> doctors = doctorService.getAllDoctors();
-        LocalDate currentDate = getCurrentLocalDate();
+        LocalDate currentDate = getCurrentLocalDate().plusDays(1); // 加1查询时包括当天
         String weatherText = String.format("Weather: %s to %s, temperature: %s°C, wind: %s %sm/s\n",
                 weather.getWeather1(), weather.getWeather2(), weather.getTemperature(), weather.getWindDirection(), weather.getWindSpeed());
         try {
@@ -72,7 +72,7 @@ public class ScheduledTasks {
         }
     }
 
-    @Scheduled(cron = "0 11 11 * * ?")
+    @Scheduled(cron = "0 0 10 * * ?")
     public void sendCheckSms() {
         log.info("sendCheckSms start");
         LocalDate tomorrow = LocalDate.now().plusDays(1);
@@ -99,7 +99,8 @@ public class ScheduledTasks {
         String subject = "Daily Report";
         String to = doctor.getEmail();
         StringBuilder text = new StringBuilder();
-        Integer orderNum = orderService.getOrderCountByHospitalIdAndDate(doctor.getDeptNo(), currentDate);
+//        Integer orderNum = orderService.getOrderCountByHospitalIdAndDate(doctor.getDeptNo(), currentDate);
+        Integer orderNum = orderService.getOrderCountByHospitalIdAndDateBeforeAndState(doctor.getDeptNo(), currentDate, 1);
         text.append("Dear Dr.")
                 .append(doctor.getRealName())
                 .append(", you have ")

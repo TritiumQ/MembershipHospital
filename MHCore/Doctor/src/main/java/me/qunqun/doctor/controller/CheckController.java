@@ -2,12 +2,12 @@ package me.qunqun.doctor.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import me.qunqun.shared.entity.po.*;
 import me.qunqun.doctor.entity.dto.OrderQueryDTO;
 import me.qunqun.doctor.entity.vo.CheckItemReportVO;
 import me.qunqun.doctor.entity.vo.CheckReportVO;
 import me.qunqun.doctor.entity.vo.OrderVO;
-import me.qunqun.doctor.repo.OrderRepository;
 import me.qunqun.doctor.service.*;
 import me.qunqun.doctor.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Tag(name = "Check", description = "检查单接口")
+@Slf4j
 @RestController
 @RequestMapping("/api/check")
 public class CheckController {
@@ -31,6 +32,7 @@ public class CheckController {
     public Result<List<OrderVO> > OrderList(@RequestBody OrderQueryDTO orderQueryDTO,
                                             @RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "10") int size) {
+//        log.info("OrderList: {}", orderQueryDTO);
         if (orderQueryDTO == null) {
             return Result.error(400, "参数错误");
         }

@@ -129,6 +129,8 @@ public class CheckItemReportService {
                 checkItemReport.setReview(checkItemReportVO.getReview());
                 checkItemReportRepository.save(checkItemReport);
             }
+            // 删除原有综合结果
+            overallResultRepository.deleteByOrderId(order.getId());
             // 保存综合结果
             for (OverallResult overallResult : overallResults) {
                 overallResult.setOrder(order);
