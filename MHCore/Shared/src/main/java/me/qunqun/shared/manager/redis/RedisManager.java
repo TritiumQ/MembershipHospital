@@ -13,7 +13,6 @@ import java.time.Duration;
 
 /**
  * Redis 管理器默认实现 <br>
- * 目前具有字符串存储和对象存储两种方式 <br>
  */
 @Service
 @Slf4j
@@ -80,6 +79,14 @@ public class RedisManager implements IRedisManager
 	{
 		var fKey = generateFormattedKey(key);
 		return jsonRedisTemplate.opsForValue().get(fKey);
+	}
+	
+	@Override
+	public String getObjectJson(String key)
+	{
+		Assert.notNull(key, "RedisManager getObjectJson(): key值不可为空");
+		var fKey = generateFormattedKey(key);
+		return stringRedisTemplate.opsForValue().get(fKey);
 	}
 	
 	@Override

@@ -34,6 +34,12 @@ public interface IRedisManager
 	Object getObject(@NonNull String key);
 	
 	/**
+	 * 读取对象Json值
+	 */
+	@Nullable
+	String getObjectJson(@NonNull String key);
+	
+	/**
 	 * 获取剩余过期时间(秒)
 	 */
 	@Nullable
