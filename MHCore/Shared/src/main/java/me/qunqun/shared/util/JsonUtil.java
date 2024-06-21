@@ -1,5 +1,6 @@
 package me.qunqun.shared.util;
 
-public class AssertUtil
+public class JsonUtil
 {
+
 }

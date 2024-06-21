@@ -1,4 +1,4 @@
-package me.qunqun.user.manager;
+package me.qunqun.shared.manager.sms;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

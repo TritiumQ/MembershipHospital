@@ -1,4 +1,4 @@
-package me.qunqun.user.manager;
+package me.qunqun.shared.manager.pay;
 
 import org.springframework.stereotype.Service;
 

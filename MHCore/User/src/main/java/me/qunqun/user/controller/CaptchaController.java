@@ -7,8 +7,8 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import me.qunqun.shared.entity.Result;
 import me.qunqun.shared.exception.CustomException;
-import me.qunqun.user.exception.OperationExceptionCode;
-import me.qunqun.user.manager.CaptchaManager;
+import me.qunqun.shared.exception.CaptchaExceptionCode;
+import me.qunqun.shared.manager.captcha.CaptchaManager;
 import me.qunqun.user.util.UserUtil;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,7 +40,7 @@ public class CaptchaController
 		var userId = UserUtil.GetUserId();
 		if(code == null || code.isEmpty())
 		{
-			throw new CustomException(OperationExceptionCode.CAPTCHA_EMPTY);
+			throw new CustomException(CaptchaExceptionCode.CAPTCHA_EMPTY);
 		}
 		var ok = captchaManager.verifyMessageCaptcha(userId, userId, code);
 		if (ok)

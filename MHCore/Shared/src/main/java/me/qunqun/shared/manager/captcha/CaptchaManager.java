@@ -1,10 +1,13 @@
-package me.qunqun.user.manager;
+package me.qunqun.shared.manager.captcha;
 
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import me.qunqun.shared.exception.CustomException;
-import me.qunqun.user.exception.OperationExceptionCode;
+import me.qunqun.shared.manager.redis.RedisManager;
+import me.qunqun.shared.manager.sms.SmsManager;
+import me.qunqun.shared.exception.CaptchaExceptionCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -14,9 +17,9 @@ import org.springframework.util.Assert;
  * 验证码管理器
  */
 @Service
+@Slf4j
 public class CaptchaManager
 {
-	private static final Logger log = LoggerFactory.getLogger(CaptchaManager.class);
 	@Resource
 	private RedisManager redisManager;
 	@Resource
@@ -25,8 +28,9 @@ public class CaptchaManager
 	private static final String MESSAGE_CAPTCHA_REDIS_PREFIX = "message:captcha:";
 	private static final String IMAGE_CAPTCHA_REDIS_PREFIX = "image:captcha:";
 	
+	// 验证码过期时间
 	private static long CAPTCHA_EXPIRE_TIME = 300;
-	
+	// 重发时间
 	private static long MESSAGE_CAPTCHA_RESEND_TIME = 60;
 	
 	/**
@@ -38,7 +42,7 @@ public class CaptchaManager
 		Assert.notNull(phone, "SmsManager.sendSmsCaptcha(): phone不能为空");
 		// 先判断是否在一分钟内已经发送过验证码
 		var key = MESSAGE_CAPTCHA_REDIS_PREFIX + id + ":" + phone;
-		var expireTime = redisManager.getExpireTime(key);
+		var expireTime = redisManager.getExpireSeconds(key);
 		if (expireTime > CAPTCHA_EXPIRE_TIME - MESSAGE_CAPTCHA_RESEND_TIME)
 		{
 			return "1分钟内不能重复发送验证码";
@@ -110,11 +114,11 @@ public class CaptchaManager
 	{
 		if (redisCode == null)
 		{
-			throw new CustomException(OperationExceptionCode.CAPTCHA_NOT_FOUND);
+			throw new CustomException(CaptchaExceptionCode.CAPTCHA_NOT_FOUND);
 		}
 		if (!redisCode.equals(code))
 		{
-			throw new CustomException(OperationExceptionCode.CAPTCHA_ERROR);
+			throw new CustomException(CaptchaExceptionCode.CAPTCHA_ERROR);
 		}
 		return true;
 	}

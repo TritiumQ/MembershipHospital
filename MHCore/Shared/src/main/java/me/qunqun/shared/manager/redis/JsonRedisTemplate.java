@@ -1,4 +1,4 @@
-package me.qunqun.user.templete;
+package me.qunqun.shared.manager.redis;
 
 
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
