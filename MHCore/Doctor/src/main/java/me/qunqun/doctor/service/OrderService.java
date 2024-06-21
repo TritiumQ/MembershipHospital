@@ -83,6 +83,10 @@ public class OrderService {
         return orderRepository.countByHospital_IdAndDateAndDeprecated(hospitalId, date, false);
     }
 
+    public Integer getOrderCountByHospitalIdAndDateBeforeAndState(Integer hospitalId, LocalDate date, Integer state) {
+        return orderRepository.countByHospital_IdAndDateBeforeAndDeprecatedAndState(hospitalId, date, false, state);
+    }
+
     public OrderVO getOrderVO(int orderId) {
         Order order = orderRepository.findById(orderId).orElse(null);
         if (order == null) {

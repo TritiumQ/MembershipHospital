@@ -10,4 +10,6 @@ import java.util.List;
 public interface OverallResultRepository extends BaseRepo<OverallResult, Integer> {
 
     List<OverallResult> findByOrderId(Integer orderId);
+
+    void deleteByOrderId(Integer id);
 }

@@ -1,23 +1,91 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
+import { usePermissStore } from '../store/permiss';
+import Home from '../views/home.vue';
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
+const routes: RouteRecordRaw[] = [
+
+
+    // {
+    //     path: '/room/:date',
+    //     name:'room',
+    //     component: () => import('../views/room/index.vue'),
+    //     props: true,
+    // },
     {
-      path: '/',
-      name: 'home',
-      component: HomeView
+        path: '/login',
+        name: 'login',
+        component: () => import('../views/login/index.vue'),
+
+    },
+    
+    {
+        path: '/',
+        redirect: '/dashboard',
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
+        path: '/',
+        name: 'Home',
+        component: Home,
+        children: [
+            {
+                path: '/dashboard',
+                name: 'dashboard',
+                meta: {
+                    title: '系统首页',
+                    permiss: '0',
+                },
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/dashboard.vue'),
+            },
+            // {
+            //     path: '/room-check',
+            //     name: 'room-check',
+            //     meta: {
+            //         title: '查看排课课表',
+            //         permiss: '0',
+            //     },
+            //     component: () => import(/* webpackChunkName: "dashboard" */ '../views/room.vue'),
+            // },
+            {
+                path: '/checkList',
+                name: 'check',
+                meta: {
+                    title: '体检报告列表',
+                    permiss: '1',
+                },
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/doctor/checkList.vue'),
+            }
+        ],
+    },
+
+];
+
+const router = createRouter({
+    history: createWebHashHistory(),
+    routes,
+});
+
+router.beforeEach((to, from, next) => {
+    NProgress.start();
+    const role = localStorage.getItem('token');
+    if(!role&&to.path!='/login'&&to.name!='room'){next('/login')}
+    if(to.path === '/'){
+        if(role) {
+            next('/dashboard');
+        }
+        else{
+            next('/login');
+        }
+       
     }
-  ]
+    next();
+});
+
+router.afterEach(() => {
+    const permiss = usePermissStore();
+    permiss.setKey();
+    NProgress.done()
 })
 
-export default router
+export default router;

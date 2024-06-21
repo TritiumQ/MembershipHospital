@@ -27,6 +27,7 @@ public class ReportController {
 
     @RequestMapping("/editReport")
     public Result<String> editReport(@RequestBody EditReportDTO editReportDTO) {
+        log.info("editReport: {}", editReportDTO);
         try {
             if (editReportDTO == null) {
                 return Result.error(400, "参数错误");
@@ -50,6 +51,7 @@ public class ReportController {
 
     @RequestMapping("/saveReport")
     public Result<String> saveReport(@RequestBody EditReportDTO editReportDTO) {
+        log.info("saveReport: {}", editReportDTO);
         try {
             if (editReportDTO == null) {
                 return Result.error(400, "参数错误");

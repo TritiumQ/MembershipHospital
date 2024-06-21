@@ -15,6 +15,8 @@ public interface OrderRepository extends BaseRepo<Order, Integer> {
 
     Integer countByHospital_IdAndDateAndDeprecated(Integer hospitalId, LocalDate status, Boolean deprecated);
 
+    Integer countByHospital_IdAndDateBeforeAndDeprecatedAndState(Integer hospitalId, LocalDate date, Boolean deprecated, Integer state);
+
     Page<Order> findAllByDeprecated(Boolean deprecated, PageRequest pageRequest);
 
     List<Order> findAllByDateAndDeprecated(LocalDate tomorrow, boolean b);
