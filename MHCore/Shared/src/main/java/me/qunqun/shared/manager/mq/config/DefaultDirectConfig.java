@@ -13,15 +13,6 @@ import org.springframework.context.annotation.Configuration;
 public class DefaultDirectConfig
 {
 	/*
-	 * 消息转换器, 配置使用Jackson来序列化和反序列化消息体
-	 * */
-	@Bean
-	public MessageConverter messageConverter(){
-		return new Jackson2JsonMessageConverter();
-	}
-	
-	
-	/*
 	 * 基础Direct队列配置
 	 * */
 	

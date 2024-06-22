@@ -9,7 +9,7 @@ import org.springframework.lang.Nullable;
 import java.util.UUID;
 
 /**
- * 消息基类
+ * Object消息基类
  * @param <T> 消息数据类型
  */
 @Data
@@ -23,7 +23,6 @@ public class ObjectMessage<T>
 	private String message;
 	@Nullable
 	private T messageData;
-	
 	
 	public static <T> ObjectMessage<T> create(String message, T messageData)
 	{
