@@ -1,6 +1,8 @@
 package me.qunqun.doctor.service;
 
 import lombok.extern.slf4j.Slf4j;
+import me.qunqun.doctor.annotation.RedisCacheEvict;
+import me.qunqun.doctor.annotation.RedisCacheable;
 import me.qunqun.doctor.entity.dto.EditReportDTO;
 import me.qunqun.doctor.repo.*;
 import me.qunqun.shared.entity.po.*;
@@ -30,6 +32,7 @@ public class CheckItemReportService {
 
 
     @Transactional
+    @RedisCacheable(keyPrefix = "checkItemReports")
     public Result<List<CheckItemReportVO>> getCheckItemReports(OrderVO orderVO) {
         try {
             List<CheckItemDetailedReport> checkItemDetailedReports = checkItemDetailedReportRepository.findByOrderId(orderVO.getOrderId());
@@ -100,6 +103,7 @@ public class CheckItemReportService {
     }
 
     @Transactional
+    @RedisCacheEvict(keyPrefix = "checkItemReports")
     public Result<String> editReport(EditReportDTO editReportDTO) {
         try {
             List<CheckItemReportVO> checkItemReportVOs = editReportDTO.getCheckItemReports();
@@ -151,6 +155,7 @@ public class CheckItemReportService {
     }
 
     @Transactional
+    @RedisCacheEvict(keyPrefix = "checkItemReports")
     public Result<String> saveReport(EditReportDTO editReportDTO) {
         try {
             Result<String> res = editReport(editReportDTO);

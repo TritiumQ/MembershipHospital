@@ -3,6 +3,7 @@ package me.qunqun.doctor.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import me.qunqun.doctor.entity.vo.OrderPageVO;
 import me.qunqun.shared.entity.po.*;
 import me.qunqun.doctor.entity.dto.OrderQueryDTO;
 import me.qunqun.doctor.entity.vo.CheckItemReportVO;
@@ -29,9 +30,9 @@ public class CheckController {
 
     @Operation(summary = "获取检查单列表")
     @RequestMapping("/Orders")
-    public Result<List<OrderVO> > OrderList(@RequestBody OrderQueryDTO orderQueryDTO,
-                                            @RequestParam(defaultValue = "0") int page,
-                                            @RequestParam(defaultValue = "10") int size) {
+    public Result<OrderPageVO> OrderList(@RequestBody OrderQueryDTO orderQueryDTO,
+                                         @RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(defaultValue = "10") int size) {
 //        log.info("OrderList: {}", orderQueryDTO);
         if (orderQueryDTO == null) {
             return Result.error(400, "参数错误");
@@ -41,7 +42,7 @@ public class CheckController {
 
     @Operation(summary = "获取所有检查单列表")
     @RequestMapping("/OrdersAll")
-    public Result<List<OrderVO> > OrderListAll(@RequestParam(defaultValue = "0") int page,
+    public Result<OrderPageVO> OrderListAll(@RequestParam(defaultValue = "0") int page,
                                                @RequestParam(defaultValue = "10") int size) {
         return orderService.getOrders(null, page, size);
     }

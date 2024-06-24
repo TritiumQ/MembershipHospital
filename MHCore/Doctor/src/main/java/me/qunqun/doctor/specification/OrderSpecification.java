@@ -31,7 +31,7 @@ public class OrderSpecification {
                 predicates.add(criteriaBuilder.equal(root.get("date"), orderQueryDTO.getOrderDate()));
             }
             if (orderQueryDTO.getPackageId() != null) {
-                predicates.add(criteriaBuilder.equal(root.join("packageInfo").get("id"), orderQueryDTO.getPackageId()));
+                predicates.add(criteriaBuilder.equal(root.join("packageField").get("id"), orderQueryDTO.getPackageId()));
             }
             if (orderQueryDTO.getStatus() != null) {
                 predicates.add(criteriaBuilder.equal(root.get("state"), orderQueryDTO.getStatus()));

@@ -1,10 +1,12 @@
 package me.qunqun.doctor.entity.reps;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 @Data
 @Slf4j
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Result<T> {
     private int code;
     private String message;
@@ -35,7 +37,6 @@ public class Result<T> {
         result.setMessage(message);
         return result;
     }
-
 
     public boolean isError() {
         return code != 200;

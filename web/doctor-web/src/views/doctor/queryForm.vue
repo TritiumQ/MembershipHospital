@@ -37,8 +37,18 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="套餐ID" prop="packageId">
-            <el-input v-model="query.packageId" />
+<!--          <el-form-item label="套餐ID" prop="packageId">-->
+<!--            <el-input v-model="query.packageId" />-->
+<!--          </el-form-item>-->
+          <el-form-item label="套餐名称" prop="packageId">
+            <el-select v-model="query.packageId" placeholder="请选择套餐">
+              <el-option
+                  v-for="pkg in filteredPackages"
+                  :key="pkg.id"
+                  :label="pkg.name"
+                  :value="pkg.id"
+              />
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
@@ -59,8 +69,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-
+import {computed, onMounted, ref, watchEffect} from 'vue';
+import myAxios from "../../api/myAxios";
+const packages = ref([]);
 const query = ref({
   orderId: null,
   userPhone: null,
@@ -78,6 +89,40 @@ const handleSubmit = () => {
   query.value.hospitalId = localStorage.getItem('deptNo');
   emit('submit', query.value);
 };
+
+const fetchPackages = async () => {
+  try {
+    const response = await myAxios.get('/api/package/getAll');
+    packages.value = response.data.data.map(pkg => ({
+      id: pkg.id,
+      name: pkg.name,
+      type: pkg.type,
+      price: pkg.price,
+    }));
+    console.log('套餐列表:', packages.value);
+  } catch (error) {
+    console.error('获取套餐列表失败:', error);
+  }
+};
+
+const filteredPackages = computed(() => {
+  if (query.value.userSex === null) {
+    return packages.value;
+  }
+  return packages.value.filter(pkg => pkg.type === query.value.userSex);
+});
+
+// 监听 userSex 的变化，确保在性别变化时重置 packageId
+watchEffect(() => {
+  if (query.value.userSex !== null) {
+    query.value.packageId = null;
+  }
+});
+
+onMounted(() => {
+  fetchPackages();
+});
+
 </script>
 
 <style scoped>

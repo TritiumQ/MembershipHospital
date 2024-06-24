@@ -2,6 +2,8 @@ package me.qunqun.doctor.service;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import me.qunqun.doctor.annotation.RedisCacheable;
+import me.qunqun.doctor.entity.vo.OrderPageVO;
 import me.qunqun.shared.entity.po.Order;
 import me.qunqun.doctor.entity.dto.OrderQueryDTO;
 import me.qunqun.doctor.entity.vo.OrderVO;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -27,7 +30,7 @@ public class OrderService {
     @Resource
     private RedisManager redisManager;
 
-    public Result<List<OrderVO>> getOrders(OrderQueryDTO orderQueryDTO, int page, int size) {
+    public Result<OrderPageVO> getOrders(OrderQueryDTO orderQueryDTO, int page, int size) {
         try {
             Page<Order> orderPage;
             if (orderQueryDTO == null) {
@@ -39,6 +42,7 @@ public class OrderService {
                 PageRequest pageRequest = PageRequest.of(page, size);
                 orderPage = orderRepository.findAll(OrderSpecification.getOrders(orderQueryDTO), pageRequest);
             }
+            Integer pageNum = orderPage.getTotalPages();
             List<OrderVO> orders = orderPage.stream().map(order -> {
                 OrderVO orderVO = new OrderVO();
                 orderVO.setOrderId(order.getId());
@@ -53,7 +57,10 @@ public class OrderService {
                 orderVO.setStatus(order.getState());
                 return orderVO;
             }).toList();
-            return Result.success(orders);
+            OrderPageVO orderPageVO = new OrderPageVO();
+            orderPageVO.setOrders(orders);
+            orderPageVO.setPageNum(pageNum);
+            return Result.success(orderPageVO);
         } catch (Exception e) {
             log.error("getOrders error: {}", e.getMessage());
             return Result.error(500, "服务器错误");
@@ -92,6 +99,7 @@ public class OrderService {
         return orderRepository.countByHospital_IdAndDateBeforeAndDeprecatedAndState(hospitalId, date, false, state);
     }
 
+    @RedisCacheable(keyPrefix = "orderId")
     public OrderVO getOrderVO(int orderId) {
         Order order = orderRepository.findById(orderId).orElse(null);
         if (order == null) {
@@ -107,4 +115,7 @@ public class OrderService {
     public Order getOrderById(Integer id) {
         return orderRepository.findById(id).orElse(null);
     }
+
+
+
 }

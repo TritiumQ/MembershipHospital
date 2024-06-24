@@ -71,6 +71,12 @@ const items = [
     permiss: '1',
   },
   {
+    icon: 'Calendar',
+    index: '/data',
+    title: '数据管理',
+    permiss: '2',
+  },
+  {
     icon: 'Avatar',
     index: '0',
     title: '平台用户管理',

@@ -55,6 +55,15 @@ const routes: RouteRecordRaw[] = [
                     permiss: '1',
                 },
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/doctor/checkList.vue'),
+            },
+            {
+                path: '/data',
+                name: 'data',
+                meta: {
+                    title: '数据管理',
+                    permiss: '2',
+                },
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/chart/charts.vue'),
             }
         ],
     },

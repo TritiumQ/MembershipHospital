@@ -6,44 +6,23 @@
           :data="orders"
           style="width: 100%"
           :loading="loading"
+          class="custom-table"
+          stripe border
+          max-height="500"
       >
-        <el-table-column
-            prop="orderId"
-            label="预约单ID"
-        />
-        <el-table-column
-            prop="userName"
-            label="姓名"
-        />
-        <el-table-column
-            prop="userSex"
-            label="性别"
-        />
-        <el-table-column
-            prop="userPhone"
-            label="手机号"
-        />
-        <el-table-column
-            prop="hospitalName"
-            label="医院名称"
-        />
-        <el-table-column
-            prop="orderDate"
-            label="预约日期"
-        />
-        <el-table-column
-            prop="packageId"
-            label="套餐ID"
-        />
-        <el-table-column
-            prop="packageName"
-            label="套餐名称"
-        />
-        <el-table-column
-            prop="status"
-            label="状态"
-        />
-        <el-table-column label="操作" width="120">
+        <el-table-column prop="orderId" label="预约单ID" align="center" sortable/>
+        <el-table-column label="客户信息">
+          <el-table-column prop="userName" label="姓名" align="center"/>
+          <el-table-column prop="userSex" label="性别" align="center"/>
+          <el-table-column prop="userPhone" label="手机号" align="center"/>
+        </el-table-column>
+        <el-table-column label="体检单信息">
+          <el-table-column prop="hospitalName" label="医院名称" align="center"/>
+          <el-table-column prop="packageName" label="套餐名称" align="center"/>
+          <el-table-column prop="orderDate" label="预约日期" align="center" sortable/>
+          <el-table-column prop="status" label="状态" align="center"/>
+        </el-table-column>
+        <el-table-column label="操作" width="120" align="center" fixed="right">
           <template #default="scope">
             <el-button type="primary" size="small" @click="openDetails(scope.row.orderId)">详情</el-button>
           </template>
@@ -51,12 +30,18 @@
       </el-table>
     </div>
 
-    <el-pagination
-        :current-page="currentPage"
-        :page-size="pageSize"
-        layout="total, prev, pager, next"
-        @current-change="handlePageChange"
-    />
+    <div class="demo-pagination-block">
+      <el-pagination
+          v-model:current-page="currentPage"
+          v-model:page-size="pageSize"
+          :page-sizes="[10, 20, 30, 50]"
+          :background="background"
+          layout="sizes, prev, pager, next"
+          :total="totalPage * pageSize"
+          @size-change="handleSizeChange"
+          @current-change="handlePageChange"
+      />
+    </div>
 
     <el-dialog v-model="detailsDialogVisible" width="70%" title="体检报告详情" :before-close="handleClose" destroy-on-close>
       <order-info :order="orderDetails.order" />
@@ -68,7 +53,7 @@
           v-model="orderDetails.overallResults"
           @update:modelValue="updateOverallResults"
       />
-      <el-divider content-position="left">AI功能测试</el-divider>
+      <el-divider content-position="left">AI功能内测</el-divider>
       <a-i-inquiry :orderId="orderIdGable" :checkItemReports="orderDetails.checkItemReports" :overallResults="orderDetails.overallResults" />
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="handleSave">保存</el-button>
@@ -79,7 +64,7 @@
 </template>
 
 <script setup>
-import {ref, onMounted, reactive} from 'vue';
+import {ref, onMounted, reactive, computed} from 'vue';
 import { ElLoading, ElMessage, ElMessageBox } from 'element-plus';
 import QueryForm from './QueryForm.vue';
 import myAxios from '../../api/myAxios';
@@ -92,7 +77,9 @@ const orders = ref([]);
 const loading = ref(false);
 const currentPage = ref(1);
 const pageSize = ref(10);
+const totalPage = ref(10);
 const defaultHospitalId = localStorage.getItem('deptNo');
+const background = ref(true)
 const lastQuery = ref({
   hospitalId: defaultHospitalId,
   status: 1,
@@ -103,6 +90,16 @@ const lastQuery = ref({
   orderDate: null,
   packageId: null,
 });
+
+const detailsDialogVisible = ref(false);
+const orderDetails = ref({
+  order: {},
+  checkItemReports: [],
+  overallResults: [],
+});
+
+const orderIdGable = ref(null);
+
 
 const formatDateToISO = (date) => {
   const newDate = new Date(date);
@@ -127,12 +124,15 @@ const fetchOrders = async (query, page = 1, size = 10) => {
         size: size
       }
     });
-    orders.value = response.data.data.map(order => ({
+    console.log('Orders:', response.data.data);
+    // response.data.data.get("orders");
+    orders.value = response.data.data.orders.map(order => ({
       ...order,
       userPhone: order.userId,
       userSex: order.userSex === 1 ? '男' : '女',
       status: order.status === 1 ? '未归档' : '归档'
     }));
+    totalPage.value = response.data.data.pageNum;
   } catch (error) {
     console.error('Error fetching orders:', error);
   } finally {
@@ -151,18 +151,17 @@ const handlePageChange = (page) => {
   fetchOrders(lastQuery.value, page, pageSize.value);
 };
 
+const handleSizeChange = (val) => {
+  pageSize.value = val;
+  fetchOrders(lastQuery.value, currentPage.value, val);
+};
+
 onMounted(() => {
   fetchOrders(lastQuery.value, currentPage.value, pageSize.value);
 });
 
-const detailsDialogVisible = ref(false);
-const orderDetails = ref({
-  order: {},
-  checkItemReports: [],
-  overallResults: [],
-});
 
-const orderIdGable = ref(null);
+
 
 const openDetails = async (orderId) => {
   const loadingInstance = ElLoading.service({
@@ -198,6 +197,7 @@ const updateCheckItems = (newCheckItems) => {
 const updateOverallResults = (newOverallResults) => {
   orderDetails.value.overallResults = newOverallResults;
 };
+
 
 const handleSave = async () => {
   const loadingInstance = ElLoading.service({
@@ -292,5 +292,18 @@ const handleClose = (done) => {
 }
 .dialog-footer {
   text-align: right;
+}
+
+.demo-pagination-block {
+  margin-top: 10px;
+}
+
+.custom-table .el-table__cell {
+  text-align: center;
+  border-right: 1px solid #e0e0e0;
+}
+
+.custom-table .el-table__cell:last-child {
+  border-right: none;
 }
 </style>
