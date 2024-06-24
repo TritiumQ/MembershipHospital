@@ -9,7 +9,7 @@ import me.qunqun.doctor.entity.vo.CheckItemReportVO;
 import me.qunqun.doctor.entity.vo.CheckReportVO;
 import me.qunqun.doctor.entity.vo.OrderVO;
 import me.qunqun.doctor.service.*;
-import me.qunqun.doctor.utils.Result;
+import me.qunqun.doctor.entity.reps.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

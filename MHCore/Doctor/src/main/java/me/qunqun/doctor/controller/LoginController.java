@@ -9,8 +9,7 @@ import me.qunqun.shared.entity.po.Doctor;
 import me.qunqun.doctor.entity.dto.LoginDTO;
 import me.qunqun.doctor.entity.vo.DoctorVO;
 import me.qunqun.doctor.service.DoctorService;
-import me.qunqun.doctor.utils.JwtUtil;
-import me.qunqun.doctor.utils.Result;
+import me.qunqun.doctor.entity.reps.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +32,6 @@ public class LoginController {
             return Result.error(rd.getCode(), rd.getMessage());
         }else {
             DoctorVO vo = DoctorVO.fromDoctor(rd.getData(), false);
-//            String token = JwtUtil.generateToken(vo.getCode());
             StpUtil.login(vo.getCode(), SaLoginConfig.setExtra("doctor", vo));
             var token = StpUtil.getTokenValue();
             vo.setToken(token);

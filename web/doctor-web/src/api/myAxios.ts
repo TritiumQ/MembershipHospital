@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const myAxios = axios.create({
   baseURL: '/api',
-  timeout: 5000,
+  timeout: 50000,
   headers: {
     'Content-Type': 'application/json'
   },
@@ -26,7 +26,7 @@ myAxios.interceptors.response.use(
     return response;
   },
   function(error) {
-    if (error.response.status === 401) {
+    if (error.response.code === 401) {
       router.push('/login');
       ElMessage.error('登录过期，请重新登录');
     }

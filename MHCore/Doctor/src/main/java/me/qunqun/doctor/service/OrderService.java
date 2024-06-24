@@ -1,12 +1,14 @@
 package me.qunqun.doctor.service;
 
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import me.qunqun.shared.entity.po.Order;
 import me.qunqun.doctor.entity.dto.OrderQueryDTO;
 import me.qunqun.doctor.entity.vo.OrderVO;
 import me.qunqun.doctor.repo.OrderRepository;
 import me.qunqun.doctor.specification.OrderSpecification;
-import me.qunqun.doctor.utils.Result;
+import me.qunqun.doctor.entity.reps.Result;
+import me.qunqun.shared.manager.redis.RedisManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +23,9 @@ import java.util.stream.Collectors;
 public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
+
+    @Resource
+    private RedisManager redisManager;
 
     public Result<List<OrderVO>> getOrders(OrderQueryDTO orderQueryDTO, int page, int size) {
         try {

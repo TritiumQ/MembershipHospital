@@ -1,6 +1,9 @@
 package me.qunqun.doctor.service;
 
+import lombok.extern.slf4j.Slf4j;
 import me.qunqun.doctor.entity.reps.ModelResponse;
+import me.qunqun.doctor.entity.vo.CheckItemReportVO;
+import me.qunqun.doctor.utils.ReportConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
@@ -16,79 +19,42 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+@Slf4j
 @Service
 public class ModelApiService {
 
-    @Value("${model.api.url}")
-    private static final String API_URL = "http://localhost:11434/api/generate";
+    @Value("${model.api.url:http://localhost:11434/api/generate}")
+    private String API_URL;
     private final HttpClient httpClient;
-    @Value("${model.api.model}")
-    private static final String model = "qwen2:7b";
-    private static final String reportAdvisePrompt = "请你从一位专业医生的角度对这份体检报告进行分析，指出其中存在的问题，并用中文给出相应的建议，所有输出内容限制在150字中文以内。按json格式输出为{'analysis':xxx,\n'advise':xxx},注意{}也要输出，并且不要输出除此之外的任何内容。";
+    @Value("${model.api.model:qwen2:7b}")
+    private String model = "qwen2:7b";
+//    private static final String reportAdvisePrompt = "请你从一位专业医生的角度对这份体检报告进行分析，指出其中存在的问题，并用中文给出相应的建议，所有输出内容限制在150字中文以内。按json格式输出为{'分析':xxx,\n'建议':xxx},注意{}也要输出，并且不要输出除此之外的任何内容。";
+    private static final String reportAdvisePrompt = "请你从一位专业医生的角度对这份体检报告进行分析，帮助医生指出其中存在的问题，并帮助医生提供相应的建议，所有输出内容限制在150字中文以内。按以下风格中文输出为\"分析:xxx。\n建议:xxx\",分析和建议需要换行，注意不要输出除此之外的任何内容。";;
+
+    private static final int THREAD_POOL_SIZE = 10;
+    private final ExecutorService executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 
     public ModelApiService() {
         this.httpClient = HttpClient.newHttpClient();
     }
 
-    public ModelResponse generateCompletion(String prompt, boolean stream) throws Exception {
-        JSONObject requestBody = new JSONObject();
-        requestBody.put("model", model);
-        requestBody.put("prompt", prompt);
-        requestBody.put("stream", stream);
-
-        return sendPostRequest(API_URL, requestBody.toString());
-    }
 
     public ModelResponse generateReportAdvise(String prompt, boolean stream) throws Exception {
         String query = prompt + reportAdvisePrompt;
         JSONObject requestBody = new JSONObject();
         requestBody.put("model", model);
-        requestBody.put("prompt", prompt);
+        requestBody.put("prompt", query);
         requestBody.put("stream", stream);
-        return sendPostRequest(API_URL, requestBody.toString());
+        return sendPostRequest(requestBody.toString());
     }
 
-    public ModelResponse generateCompletionWithOptions(String prompt, boolean stream, JSONObject options) throws Exception {
-        JSONObject requestBody = new JSONObject();
-        requestBody.put("model", model);
-        requestBody.put("prompt", prompt);
-        requestBody.put("stream", stream);
-        requestBody.put("options", options);
 
-        return sendPostRequest(API_URL, requestBody.toString());
-    }
-
-    public ModelResponse generateCompletionWithImages(String prompt, boolean stream, List<String> base64Images) throws Exception {
-        JSONObject requestBody = new JSONObject();
-        requestBody.put("model", model);
-        requestBody.put("prompt", prompt);
-        requestBody.put("stream", stream);
-        requestBody.put("images", base64Images);
-
-        return sendPostRequest(API_URL, requestBody.toString());
-    }
-
-    public ModelResponse generateCompletionRaw(String prompt, boolean raw) throws Exception {
-        JSONObject requestBody = new JSONObject();
-        requestBody.put("model", model);
-        requestBody.put("prompt", prompt);
-        requestBody.put("raw", raw);
-        requestBody.put("stream", false);
-
-        return sendPostRequest(API_URL, requestBody.toString());
-    }
-
-    public ModelResponse loadModel(String model) throws Exception {
-        JSONObject requestBody = new JSONObject();
-        requestBody.put("model", model);
-
-        return sendPostRequest(API_URL, requestBody.toString());
-    }
-
-    private ModelResponse sendPostRequest(String url, String json) throws Exception {
+    private ModelResponse sendPostRequest(String json) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI(url))
+                .uri(new URI(API_URL))
                 .header("Content-Type", "application/json")
                 .POST(BodyPublishers.ofString(json))
                 .build();
@@ -101,6 +67,7 @@ public class ModelApiService {
             throw new Exception("Error: " + response.statusCode() + " - " + response.body());
         }
     }
+
 
     private ModelResponse parseResponse(String responseBody) throws JSONException {
         JSONObject jsonObject = new JSONObject(responseBody);
@@ -137,6 +104,42 @@ public class ModelApiService {
         }
 
         return apiResponse;
+    }
+
+    public String transCheckItemReportVO(List<CheckItemReportVO> checkItemReportVO) throws Exception {
+        String res = ReportConverter.convertToReport(checkItemReportVO);
+        log.info(res);
+        return res;
+    }
+
+    public ModelResponse generateCompletionWithOptions(String prompt, boolean stream, JSONObject options) throws Exception {
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("model", model);
+        requestBody.put("prompt", prompt);
+        requestBody.put("stream", stream);
+        requestBody.put("options", options);
+
+        return sendPostRequest(requestBody.toString());
+    }
+
+    public ModelResponse generateCompletionWithImages(String prompt, boolean stream, List<String> base64Images) throws Exception {
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("model", model);
+        requestBody.put("prompt", prompt);
+        requestBody.put("stream", stream);
+        requestBody.put("images", base64Images);
+
+        return sendPostRequest(requestBody.toString());
+    }
+
+    public ModelResponse generateCompletionRaw(String prompt, boolean raw) throws Exception {
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("model", model);
+        requestBody.put("prompt", prompt);
+        requestBody.put("raw", raw);
+        requestBody.put("stream", false);
+
+        return sendPostRequest(requestBody.toString());
     }
 }
 

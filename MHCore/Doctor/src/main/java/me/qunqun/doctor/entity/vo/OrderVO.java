@@ -11,6 +11,7 @@ public class OrderVO {
     private Integer orderId;
     private String userId;
     private String userName;
+    private String userBirthday;
     private Integer userSex;
     private Integer hospitalId;
     private String hospitalName;
@@ -23,6 +24,7 @@ public class OrderVO {
         this.setOrderId(order.getId());
         this.setUserId(order.getUser().getId());
         this.setUserName(order.getUser().getRealName());
+        this.setUserBirthday(order.getUser().getBirthday().toString());
         this.setUserSex(order.getUser().getSex());
         this.setOrderDate(order.getDate());
         this.setHospitalId(order.getHospital().getId());

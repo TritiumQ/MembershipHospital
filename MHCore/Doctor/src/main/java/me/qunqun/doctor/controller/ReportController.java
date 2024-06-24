@@ -1,13 +1,13 @@
 package me.qunqun.doctor.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import me.qunqun.doctor.entity.dto.EditReportDTO;
+import me.qunqun.doctor.entity.reps.AiResponse;
 import me.qunqun.doctor.entity.vo.OrderVO;
-import me.qunqun.doctor.service.CheckItemReportService;
-import me.qunqun.doctor.service.OrderService;
-import me.qunqun.doctor.service.SmsService;
-import me.qunqun.doctor.utils.Result;
+import me.qunqun.doctor.service.*;
+import me.qunqun.doctor.entity.reps.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +23,13 @@ public class ReportController {
     private CheckItemReportService checkItemReportService;
     @Autowired
     private SmsService smsService;
+    @Autowired
+    private ModelApiService modelApiService;
+    @Autowired
+    private AiService aiService;
 
 
+    @Operation(summary = "保存检查单")
     @RequestMapping("/editReport")
     public Result<String> editReport(@RequestBody EditReportDTO editReportDTO) {
         log.info("editReport: {}", editReportDTO);
@@ -49,6 +54,7 @@ public class ReportController {
         }
     }
 
+    @Operation(summary = "归档检查单")
     @RequestMapping("/saveReport")
     public Result<String> saveReport(@RequestBody EditReportDTO editReportDTO) {
         log.info("saveReport: {}", editReportDTO);
@@ -75,6 +81,31 @@ public class ReportController {
         } catch (RuntimeException e) {
             log.error("saveReport error: {}", e.getMessage());
             return Result.error(500, "检查单编辑失败");
+        }
+    }
+
+    @Operation(summary = "询问AI")
+    @RequestMapping("/askAI")
+    public Result<String> askAI(@RequestBody EditReportDTO editReportDTO) throws Exception {
+        try {
+            if (editReportDTO == null) {
+                return Result.error(400, "参数错误");
+            }
+            if (editReportDTO.getOrderId() == null) {
+                return Result.error(400, "检查单错误");
+            }
+            OrderVO orderVO = orderService.getOrderVO(editReportDTO.getOrderId());
+            if (orderVO == null) {
+                return Result.error(400, "检查单不存在");
+            }
+            String prompt = modelApiService.transCheckItemReportVO(editReportDTO.getCheckItemReports());
+//            String ans = modelApiService.generateReportAdvise(prompt, false).getResponse();
+            AiResponse aiResponse = aiService.sendChatRequest(prompt);
+            String ans = aiResponse.getData().getTextResponse();
+            log.info("askAI: {}", ans);
+            return Result.success(ans);
+        } catch (RuntimeException e) {
+            return Result.error(500, "询问AI失败");
         }
     }
 }

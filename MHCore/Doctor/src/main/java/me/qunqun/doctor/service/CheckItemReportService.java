@@ -2,13 +2,12 @@ package me.qunqun.doctor.service;
 
 import lombok.extern.slf4j.Slf4j;
 import me.qunqun.doctor.entity.dto.EditReportDTO;
-import me.qunqun.doctor.entity.vo.OverallResultVO;
 import me.qunqun.doctor.repo.*;
 import me.qunqun.shared.entity.po.*;
 import me.qunqun.doctor.entity.vo.CheckItemDetailedReportVO;
 import me.qunqun.doctor.entity.vo.CheckItemReportVO;
 import me.qunqun.doctor.entity.vo.OrderVO;
-import me.qunqun.doctor.utils.Result;
+import me.qunqun.doctor.entity.reps.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,14 +47,12 @@ public class CheckItemReportService {
                 for (CheckItem checkItem : checkItemSet) {
                     CheckItemReport checkItemReport = new CheckItemReport();
                     checkItemReport.setCheckItem(checkItem);
-                    // checkItemReport.setOrderId(orderVO.getOrderId());
                     checkItemReport.setOrder(order);
                     checkItemReport.setReview(null);
                     checkItemReportRepository.save(checkItemReport);
                     for (CheckItemDetailed checkItemDetailed : checkItem.getCheckItemDetaileds()) {
                         CheckItemDetailedReport checkItemDetailedReport = new CheckItemDetailedReport();
                         checkItemDetailedReport.setCheckItemReport(checkItemReport);
-                        // checkItemDetailedReport.setOrderId(orderVO.getOrderId());
                         checkItemDetailedReport.setOrder(order);
                         checkItemDetailedReport.setCheckItemDetailed(checkItemDetailed);
                         checkItemDetailedReport.setValue(null);

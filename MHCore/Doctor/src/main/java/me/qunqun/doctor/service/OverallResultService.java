@@ -3,7 +3,7 @@ package me.qunqun.doctor.service;
 import lombok.extern.slf4j.Slf4j;
 import me.qunqun.shared.entity.po.OverallResult;
 import me.qunqun.doctor.repo.OverallResultRepository;
-import me.qunqun.doctor.utils.Result;
+import me.qunqun.doctor.entity.reps.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

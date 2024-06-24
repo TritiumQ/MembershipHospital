@@ -18,13 +18,13 @@ public class WeatherService {
 
     private final WebClient.Builder webClientBuilder;
 
-    @Value("${weather.api.url}")
+    @Value("${weather.api.url:https://cn.apihz.cn/api/tianqi/tqyb.php}")
     private String apiUrl;
 
-    @Value("${weather.api.id}")
+    @Value("${weather.api.id:88888888}")
     private String apiId;
 
-    @Value("${weather.api.key}")
+    @Value("${weather.api.key:88888888}")
     private String apiKey;
 
     public WeatherService() {
@@ -58,7 +58,7 @@ public class WeatherService {
                     })
                     .block();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Failed to get weather data", e);
             return null;
         }
     }

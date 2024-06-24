@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <QueryForm @submit="handleQuerySubmit" />
@@ -69,6 +68,8 @@
           v-model="orderDetails.overallResults"
           @update:modelValue="updateOverallResults"
       />
+      <el-divider content-position="left">AI功能测试</el-divider>
+      <a-i-inquiry :orderId="orderIdGable" :checkItemReports="orderDetails.checkItemReports" :overallResults="orderDetails.overallResults" />
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="handleSave">保存</el-button>
         <el-button  type="success"@click="handleArchive">归档</el-button>
@@ -85,6 +86,7 @@ import myAxios from '../../api/myAxios';
 import OrderInfo from "./components/order-info.vue";
 import CheckItems from "./components/check-items.vue";
 import OverallResults from "./components/overall-result.vue";
+import AIInquiry from './components/AIInquiry.vue';
 
 const orders = ref([]);
 const loading = ref(false);

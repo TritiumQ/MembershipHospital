@@ -1,11 +1,11 @@
 package me.qunqun.doctor.utils;
 
 import jakarta.annotation.PreDestroy;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import me.qunqun.doctor.entity.reps.WeatherResponse;
 import me.qunqun.doctor.service.WeatherService;
 import me.qunqun.shared.entity.po.Doctor;
-import me.qunqun.doctor.entity.dto.OrderQueryDTO;
 import me.qunqun.doctor.service.DoctorService;
 import me.qunqun.doctor.service.EmailService;
 import me.qunqun.doctor.service.OrderService;
@@ -41,6 +41,9 @@ public class ScheduledTasks {
     @Autowired
     private PlatformTransactionManager transactionManager;
 
+    @Resource
+    private SmsUtil SmsUtil;
+
     private static final int THREAD_POOL_SIZE = 10;
     private final ExecutorService executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 
@@ -61,7 +64,6 @@ public class ScheduledTasks {
                             sendEmailToDoctor(doctor, currentDate, weatherText);
                             return null;
                         });
-//                        sendEmailToDoctor(doctor, currentDate, weatherText);
                     } catch (Exception e) {
                         log.error("Error sending email to doctor: {}", doctor.getId(), e);
                     }
@@ -85,7 +87,7 @@ public class ScheduledTasks {
             String orderId = order.getId().toString();
             executorService.submit(() -> {
                 try {
-                    SendSms.sendSMSTip(mobile, userName, orderId, hospitalName, date);
+                    SmsUtil.sendSMSTip(mobile, userName, orderId, hospitalName, date);
                 } catch (Exception e) {
                     log.error("Error sending SMS for order: {}", order.getId(), e);
                 }
