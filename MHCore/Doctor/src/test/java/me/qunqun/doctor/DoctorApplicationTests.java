@@ -1,10 +1,12 @@
 package me.qunqun.doctor;
 
 import lombok.extern.slf4j.Slf4j;
+import me.qunqun.doctor.entity.dto.RequiredDataDTO;
 import me.qunqun.doctor.entity.reps.AiResponse;
 import me.qunqun.doctor.entity.vo.CheckItemReportVO;
 import me.qunqun.doctor.entity.vo.CheckReportVO;
 import me.qunqun.doctor.entity.vo.OrderVO;
+import me.qunqun.doctor.entity.vo.StatisticsDataVO;
 import me.qunqun.doctor.repo.CheckItemDetailedReportRepository;
 import me.qunqun.doctor.service.*;
 import me.qunqun.doctor.entity.reps.Result;
@@ -16,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j
@@ -42,6 +45,8 @@ class DoctorApplicationTests
 	private ModelApiService modelApiService;
 	@Autowired
 	private AiService aiService;
+	@Autowired
+	private StatisticsService statisticsService;
 
 	@Test
 	void contextLoads()
@@ -90,5 +95,17 @@ class DoctorApplicationTests
 		log.info("api: {}", api.getData().getTextResponse());
 	}
 
+	@Test
+	void testStatistics()
+	{
+		LocalDate start = LocalDate.of(2024, 6, 1);
+		LocalDate end = LocalDate.of(2024, 6, 30);
+		String granularity = "D"; // 统计按月分组
+		List<RequiredDataDTO> requiredData = List.of(new RequiredDataDTO(1, "男士-基础套餐",  true), new RequiredDataDTO(2, "男士-肾病检查", true), new RequiredDataDTO(3, "男士-肝病检查", false));
+
+		StatisticsDataVO statisticsDataVO = statisticsService.getDataStatisticsT1(start, end, granularity, requiredData);
+
+		System.out.println(statisticsDataVO);
+	}
 	
 }

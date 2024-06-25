@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 public interface OrderRepository extends BaseRepo<Order, Integer> {
     Integer countByHospital_IdAndDeprecated(Integer hospitalId, Boolean deprecated);
@@ -26,4 +27,10 @@ public interface OrderRepository extends BaseRepo<Order, Integer> {
             "JOIN FETCH o.user u " +
             "WHERE o.date = :date AND o.deprecated = false")
     List<Order> findByDateAndDeprecated(@Param("date") LocalDate date);
+
+    @Query("SELECT o FROM Order o " +
+            "WHERE o.packageField.id IN :packageIds AND o.date BETWEEN :start AND :end AND o.deprecated = false")
+    List<Order> findByPackageIdsAndDateRange(@Param("packageIds") Set<Integer> packageIds,
+                                             @Param("start") LocalDate start,
+                                             @Param("end") LocalDate end);
 }

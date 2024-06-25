@@ -178,6 +178,12 @@ const doctorFunctionList = [
     icon: 'Search',
     desc: '查看并填写体检报告。',
     color: 'blue'
+  },
+  {
+    name: '数据统计',
+    icon: 'List',
+    desc: '查看历史数据统计。',
+    color: 'green'
   }
 ]
 
