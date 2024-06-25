@@ -16,14 +16,14 @@
               {{ scope.row.detailName }}<span v-if="scope.row.unit">（{{ scope.row.unit }}）</span><template v-if="scope.row.error === '异常'"> ⚠</template>
             </template>
           </el-table-column>
-          <el-table-column label="输入值">
+          <el-table-column label="检查结果">
             <template #default="scope">
-              <el-input v-model="scope.row.value" placeholder="请输入值" @input="validate(scope.row)" />
+              <el-input v-model="scope.row.value" placeholder="请输入检查结果" @input="validate(scope.row)" />
             </template>
           </el-table-column>
           <el-table-column prop="error" label="是否异常">
             <template #default="scope">
-              <el-select v-model="scope.row.error" placeholder="请选择错误">
+              <el-select v-model="scope.row.error" placeholder="请选择错误" @change="updateErrorType(scope.row)">
                 <el-option v-for="option in errorOptions" :key="option.value" :label="option.label" :value="option.value" />
               </el-select>
             </template>
@@ -114,6 +114,14 @@ const validate = (row) => {
       row.errorType = '1';
     }
   }
+  if (row.error === '异常') {
+    row.errorType = '1';
+  } else {
+    row.errorType = '0';
+  }
+};
+
+const updateErrorType = (row) => {
   if (row.error === '异常') {
     row.errorType = '1';
   } else {

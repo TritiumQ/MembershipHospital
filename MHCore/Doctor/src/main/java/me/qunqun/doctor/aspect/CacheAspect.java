@@ -45,7 +45,7 @@ public class CacheAspect {
         // Try to get from cache
         try {
             Object cachedResult = redisManager.getObject(key);
-            log.info("Cache get result: {}", cachedResult);
+//            log.info("Cache get result: {}", cachedResult);
             if (cachedResult != null) {
                 log.info("Cache hit for key: {}", key);
                 return cachedResult;
@@ -88,8 +88,8 @@ public class CacheAspect {
     }
 
     private void deleteCacheKeys(String keyPrefix) {
-        redisManager.deleteKey(keyPrefix + "*");
-        log.info("Cache evicted for keyPrefix: {}", keyPrefix);
+        redisManager.deleteKeys(keyPrefix);
+        log.info("Cache evicted for keyPrefix: {}", keyPrefix + "*");
     }
 
     private String generateKey(String keyPrefix, String className, String methodName, Object[] args) {

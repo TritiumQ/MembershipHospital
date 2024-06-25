@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.time.Duration;
+import java.util.Set;
 
 /**
  * Redis 管理器默认实现 <br>
@@ -70,6 +71,7 @@ public class RedisManager implements IRedisManager
 		{
 			jsonRedisTemplate.expire(fKey, Duration.ofSeconds(defaultExpireSeconds));
 		}
+		log.info("RedisManager setObject(): 设置 key: {}", fKey);
 		return key;
 	}
 	
@@ -78,6 +80,7 @@ public class RedisManager implements IRedisManager
 	public Object getObject(@NonNull String key)
 	{
 		var fKey = generateFormattedKey(key);
+		log.info("RedisManager getObject(): 获取 key: {}", fKey);
 		return jsonRedisTemplate.opsForValue().get(fKey);
 	}
 	
@@ -109,6 +112,19 @@ public class RedisManager implements IRedisManager
 		Assert.notNull(key, "RedisManager deleteKey(): key值不可为空");
 		var fKey = generateFormattedKey(key);
 		stringRedisTemplate.delete(fKey);
+		log.info("RedisManager deleteKey(): 删除 key: {}", fKey);
+	}
+
+	public void deleteKeys(@NonNull String keyPrefix)
+	{
+		Assert.notNull(keyPrefix, "RedisManager deleteKeys(): key值不可为空");
+		var fKey = generateFormattedKey(keyPrefix);
+		Set<String> keys = stringRedisTemplate.keys(fKey + "*");
+		if (keys != null)
+		{
+			stringRedisTemplate.delete(keys);
+			log.info("RedisManager deleteKeys(): 删除 key: {}", fKey + "*");
+		}
 	}
 	
 	

@@ -32,7 +32,7 @@ public class CheckItemReportService {
 
 
     @Transactional
-    @RedisCacheable(keyPrefix = "checkItemReports")
+    @RedisCacheable(keyPrefix = "checkReports")
     public Result<List<CheckItemReportVO>> getCheckItemReports(OrderVO orderVO) {
         try {
             List<CheckItemDetailedReport> checkItemDetailedReports = checkItemDetailedReportRepository.findByOrderId(orderVO.getOrderId());
@@ -103,7 +103,7 @@ public class CheckItemReportService {
     }
 
     @Transactional
-    @RedisCacheEvict(keyPrefix = "checkItemReports")
+    @RedisCacheEvict(keyPrefix = "checkReports")
     public Result<String> editReport(EditReportDTO editReportDTO) {
         try {
             List<CheckItemReportVO> checkItemReportVOs = editReportDTO.getCheckItemReports();
@@ -155,7 +155,7 @@ public class CheckItemReportService {
     }
 
     @Transactional
-    @RedisCacheEvict(keyPrefix = "checkItemReports")
+    @RedisCacheEvict(keyPrefix = "checkReports")
     public Result<String> saveReport(EditReportDTO editReportDTO) {
         try {
             Result<String> res = editReport(editReportDTO);

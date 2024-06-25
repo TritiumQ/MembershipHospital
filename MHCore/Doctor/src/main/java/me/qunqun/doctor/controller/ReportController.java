@@ -6,8 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import me.qunqun.doctor.entity.dto.EditReportDTO;
 import me.qunqun.doctor.entity.reps.AiResponse;
 import me.qunqun.doctor.entity.vo.OrderVO;
+import me.qunqun.doctor.mq.SmsMqMessage;
+import me.qunqun.doctor.mq.SmsMqProducer;
 import me.qunqun.doctor.service.*;
 import me.qunqun.doctor.entity.reps.Result;
+import me.qunqun.shared.manager.sms.SmsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +30,8 @@ public class ReportController {
     private ModelApiService modelApiService;
     @Autowired
     private AiService aiService;
+    @Autowired
+    private SmsMqProducer smsMqProducer;
 
 
     @Operation(summary = "保存检查单")
@@ -75,7 +80,8 @@ public class ReportController {
             }
             Result<String> result = checkItemReportService.saveReport(editReportDTO);
             if (result.getCode() == 200) {
-                smsService.sendSmsReportComplete(editReportDTO.getOrderId());
+//                smsService.sendSmsReportComplete(editReportDTO.getOrderId());
+                smsService.sendSmsReportCompleteMq(SmsMqMessage.create("体检报告归档，发送短信通知客户",editReportDTO.getOrderId()));
             }
             return result;
         } catch (RuntimeException e) {

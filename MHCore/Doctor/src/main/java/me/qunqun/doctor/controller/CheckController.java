@@ -3,12 +3,9 @@ package me.qunqun.doctor.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import me.qunqun.doctor.entity.vo.OrderPageVO;
+import me.qunqun.doctor.entity.vo.*;
 import me.qunqun.shared.entity.po.*;
 import me.qunqun.doctor.entity.dto.OrderQueryDTO;
-import me.qunqun.doctor.entity.vo.CheckItemReportVO;
-import me.qunqun.doctor.entity.vo.CheckReportVO;
-import me.qunqun.doctor.entity.vo.OrderVO;
 import me.qunqun.doctor.service.*;
 import me.qunqun.doctor.entity.reps.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +59,7 @@ public class CheckController {
             }else if (resCheckItemReportVOs.getData().isEmpty()) {
                 return Result.error(500, "检查项目报告为空");
             }
-            Result<List<OverallResult>> resOverallResults = overallResultService.getOverallResult(orderId);
+            Result<List<OverallResultVO>> resOverallResults = overallResultService.getOverallResult(orderId);
             if (resOverallResults.getCode() != 200) {
                 return Result.error(resOverallResults.getCode(), resOverallResults.getMessage());
             }

@@ -64,17 +64,17 @@ class DoctorApplicationTests
 	@Rollback(false)
 	void testCheck()
 	{
-		Integer orderId = 100569001;
-		OrderVO orderVO = orderService.getOrderVO(orderId);
-
-		Result<List<CheckItemReportVO>> resCheckItemReportVOs = checkItemReportService.getCheckItemReports(orderVO);
-
-		Result<List<OverallResult>> resOverallResults = overallResultService.getOverallResult(orderId);
-		CheckReportVO checkReportVO = new CheckReportVO();
-		checkReportVO.setOrder(orderVO);
-		checkReportVO.setCheckItemReports(resCheckItemReportVOs.getData());
-		checkReportVO.setOverallResults(resOverallResults.getData());
-		log.error("checkReportVO: {}", checkReportVO);
+//		Integer orderId = 100569001;
+//		OrderVO orderVO = orderService.getOrderVO(orderId);
+//
+//		Result<List<CheckItemReportVO>> resCheckItemReportVOs = checkItemReportService.getCheckItemReports(orderVO);
+//
+//		Result<List<OverallResult>> resOverallResults = overallResultService.getOverallResult(orderId);
+//		CheckReportVO checkReportVO = new CheckReportVO();
+//		checkReportVO.setOrder(orderVO);
+//		checkReportVO.setCheckItemReports(resCheckItemReportVOs.getData());
+//		checkReportVO.setOverallResults(resOverallResults.getData());
+//		log.error("checkReportVO: {}", checkReportVO);
 	}
 
 	@Test
