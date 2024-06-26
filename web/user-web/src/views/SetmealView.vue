@@ -8,7 +8,7 @@ const router = useRouter();
 const route = useRoute();
 const userStore = useUserStore();
 
-const userSex = ref<number>(userStore.user?.sex!);
+const currentSex = ref<number>(userStore.hasFamily ? userStore.family?.sex! : userStore.user?.sex!);
 const hospitalName = ref<string>(userStore.hospital?.name!);
 
 const setmealList = ref<Package[]>([]);
@@ -16,7 +16,7 @@ const setmealList = ref<Package[]>([]);
 const getPackage = () => {
     if (userStore.isLogin && userStore.hasHospital)
     {
-        apiService.get<Package[]>(`/package/list/${userSex.value}`).then((res) => {
+        apiService.get<Package[]>(`/package/list/${currentSex.value}`).then((res) => {
             if (res.isSuccess()) {
                 setmealList.value = res.data;
             }
@@ -60,7 +60,7 @@ onMounted(() => {
             <li>
                 <div class="item">
                     <div class="item-left" @click="()=>toNext(item)">
-                        <h3>{{ userSex == 0 ? "女士" : "男士" }}套餐: ￥{{ item.price }}</h3>
+                        <h3>{{ currentSex === 0 ? "女士" : "男士" }}套餐: ￥{{ item.price }}</h3>
                         <p>{{ item.name }}</p>
                     </div>
                     <div class="item-right" @click="() => showDrawer(idx)">

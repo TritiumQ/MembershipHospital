@@ -2,7 +2,7 @@
 import type { Order, OrderQuery, OrderInfo } from '@/model/order';
 import { useUserStore } from '@/stores/userStore';
 import { apiService } from '@/util/request';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
@@ -92,12 +92,16 @@ const onClose = () => {
             <ul v-for="order, idx in orders">
                 <li>
                     <div class="left" @click="() => showDrawer(idx)">
-                        <p>{{ order.date }}</p>
+                        <p>{{ order.date }} {{ order.family ? "(家属预约)" : "" }}</p>
                         <p>{{ order.packageName }}</p>
+
+                    </div>
+                    <div v-if="order.state === 1 && !order.deprecated && order.pay === 0" class="right"
+                        @click="() => router.push({ path: '/pay', query: { orderId: order.id } })">
+                        去支付<i class="fa fa-cny"></i>
                     </div>
                     <div v-if="order.state === 1 && !order.deprecated" class="right" @click="() => confirm(order.id)">
                         <p>取消预约<i class="fa fa-close"></i></p>
-
                     </div>
                     <div v-else-if="order.deprecated" class="right-cancel">
                         已取消
@@ -116,19 +120,25 @@ const onClose = () => {
                     <table>
                         <tr>
                             <td>姓名:</td>
-                            <td>{{ currentOrderInfo?.user?.realName }}</td>
+                            <td>{{ currentOrderInfo?.familyId ? currentOrderInfo?.family
+                                ?.name : currentOrderInfo?.user?.realName }} ({{ currentOrderInfo?.familyId ?
+                                    currentOrderInfo?.family
+                                ?.sex : currentOrderInfo?.user.sex }})</td>
                         </tr>
                         <tr>
                             <td>证件号码:</td>
-                            <td>{{ currentOrderInfo?.user?.idCard }}</td>
+                            <td>{{ currentOrderInfo?.familyId ? currentOrderInfo?.family
+                                ?.idCard : currentOrderInfo?.user?.idCard }}</td>
                         </tr>
                         <tr>
                             <td>出生日期:</td>
-                            <td>{{ currentOrderInfo?.user?.birthday }}</td>
+                            <td>{{ currentOrderInfo?.familyId ? currentOrderInfo?.family
+                                ?.birthday : currentOrderInfo?.user?.birthday }}</td>
                         </tr>
                         <tr>
                             <td>手机号码:</td>
-                            <td>{{ currentOrderInfo?.user?.id }}</td>
+                            <td>{{ currentOrderInfo?.familyId ? currentOrderInfo?.family
+                                ?.phone : currentOrderInfo?.user?.id }}</td>
                         </tr>
                     </table>
                     <div class="title">

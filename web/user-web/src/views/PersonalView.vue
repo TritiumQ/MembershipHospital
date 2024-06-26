@@ -43,6 +43,24 @@ const logout = () => {
                         <i class="fa fa-angle-right"></i>
                     </div>
                 </li>
+                <li @click="() => router.push('familylist')">
+                    <div class="left">
+                        <i class="fa fa-user"></i>
+                        <p>我的家属</p>
+                    </div>
+                    <div class="right">
+                        <i class="fa fa-angle-right"></i>
+                    </div>
+                </li>
+                <li @click="() => router.push('yearreport')">
+                    <div class="left">
+                        <i class="fa fa-list"></i>
+                        <p>年度总结</p>
+                    </div>
+                    <div class="right">
+                        <i class="fa fa-angle-right"></i>
+                    </div>
+                </li>
                 <li>
                     <div class="left">
                         <i class="fa fa-volume-control-phone"></i>

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
@@ -92,5 +93,21 @@ public class Order
 	@ColumnDefault("0")
 	@Column(name = "deprecated", nullable = false)
 	private Boolean deprecated = false;
+	
+	/**
+	 * 支付状态（0：未支付；1：已支付）
+	 */
+	@ColumnDefault("0")
+	@Column(name = "pay", nullable = false)
+	private Integer pay;
+	
+	/**
+	 * 家属编号(编号小于等于0则表示为个人订单)
+	 */
+	@ManyToOne(fetch = FetchType.LAZY, optional = true)
+	@JoinColumn(name = "family_id", nullable = true)
+	@Nullable
+	@ToString.Exclude
+	private Family family;
 	
 }

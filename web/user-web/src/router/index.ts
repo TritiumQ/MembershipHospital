@@ -52,14 +52,29 @@ const router = createRouter({
           component: () => import("../views/ConfirmorderView.vue"),
         },
         {
+          path: "/pay",
+          name: "pay",
+          component: () => import("../views/PayView.vue"),
+        },
+        {
           path: "/hospital",
           name: "hospital",
           component: () => import("../views/HospitalView.vue"),
         },
         {
+          path: "/yearreport",
+          name: "yearreport",
+          component: () => import("../views/YearReportView.vue"),
+        },
+        {
           path: "reportlist",
           name: "reportlist",
           component: () => import("../views/ReportlistView.vue"),
+        },
+        {
+          path: "/familylist",
+          name: "familylist",
+          component: () => import("../views/FamilylistView.vue"),
         },
         {
           path: "/report",

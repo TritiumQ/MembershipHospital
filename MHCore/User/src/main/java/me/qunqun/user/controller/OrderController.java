@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import me.qunqun.shared.entity.Result;
+import me.qunqun.shared.manager.pay.PayManager;
 import me.qunqun.user.entity.dto.OrderDto;
 import me.qunqun.user.entity.dto.OrderQueryDto;
 import me.qunqun.user.entity.vo.OrderInfoVo;
@@ -58,9 +59,23 @@ public class OrderController
 	public Result<OrderInfoVo> create(@RequestBody OrderDto orderDto)
 	{
 		var order = orderService.create(orderDto);
-		var msg = "您的体检预约登记成功，" + "订单号:" + order.getId() + "，预约时间：" + order.getDate() + "，请您准时到达。";
-		smsManager.sendCaptcha(order.getUserId(), msg);
 		return Result.success(order);
 	}
+	
+	@Operation(summary = "支付订单")
+	@GetMapping("/paycode/{orderId}")
+	public Result<String> payCode(@PathVariable Integer orderId)
+	{
+		return Result.success(orderService.getPayCode(orderId));
+	}
+	
+	
+	@Operation(summary = "查询支付状态，用于轮询")
+	@GetMapping("/paystatus/{orderId}")
+	public Result<Integer> payStatus(@PathVariable Integer orderId)
+	{
+		return Result.success(orderService.queryPayStatus(orderId));
+	}
+	
 	
 }

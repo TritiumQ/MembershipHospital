@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDate;
 
@@ -20,6 +21,7 @@ public class OrderDto
 	private Integer hospitalId;
 	@NotNull
 	private Integer packageId;
-	
+	@Nullable
+	private Integer familyId;
 	
 }

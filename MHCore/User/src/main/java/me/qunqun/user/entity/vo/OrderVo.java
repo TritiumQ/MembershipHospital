@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.ToString;
 import me.qunqun.shared.entity.po.Order;
+import org.springframework.lang.Nullable;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -30,6 +31,10 @@ public class OrderVo implements Serializable
 	private final Integer state;
 	@NotNull
 	private final Boolean deprecated;
+	@NotNull
+	private final Integer pay;
+	@Nullable
+	private final Integer familyId;
 	
 	public OrderVo(Order order)
 	{
@@ -41,5 +46,7 @@ public class OrderVo implements Serializable
 		this.packageName = order.getPackageField().getName();
 		this.state = order.getState();
 		this.deprecated = order.getDeprecated();
+		this.pay = order.getPay();
+		this.familyId = order.getFamily() == null ? null : order.getFamily().getId();
 	}
 }

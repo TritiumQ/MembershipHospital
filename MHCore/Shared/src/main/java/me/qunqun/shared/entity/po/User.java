@@ -77,4 +77,7 @@ public class User
 	@ToString.Exclude
 	private Set<Order> orders = new LinkedHashSet<>();
 	
+	@OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
+	@ToString.Exclude
+	private Set<Family> families = new LinkedHashSet<>();
 }

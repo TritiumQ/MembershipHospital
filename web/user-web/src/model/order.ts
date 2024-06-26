@@ -1,3 +1,4 @@
+import type { Family } from "./family";
 import type { Hospital } from "./hospital";
 import type { Package } from "./package";
 import type { UserInfo } from "./user";
@@ -8,6 +9,7 @@ interface OrderCreate
     userId?: string;
     hospitalId?: number;
     packageId?: number;
+    familyId?: number;
 }
 
 interface Order
@@ -20,14 +22,16 @@ interface Order
     packageName: string;
     state: number;
     deprecated: boolean;
+    pay: number;
+    familyId?: number;
 }
 
 interface OrderInfo extends Order
 {
-    //TODO add more fields
     hospital: Hospital;
     user: UserInfo;
     packageField: Package;
+    family?: Family;
 }
 
 interface OrderQuery
@@ -39,6 +43,7 @@ interface OrderQuery
     packageId?: number;
     state?: number;
     deprecated?: boolean;
+    familyId?: number;
 }
 
 

@@ -1,14 +1,14 @@
 package me.qunqun.user.entity.vo;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import me.qunqun.shared.entity.po.Family;
 
 @Getter
-public class FamilyVo
+@Setter
+@NoArgsConstructor
+public class FamilyVoAndDto
 {
 	private Integer id;
 	
@@ -22,7 +22,9 @@ public class FamilyVo
 	
 	private String phone;
 	
-	public FamilyVo(Family family)
+	private Integer sex;
+	
+	public FamilyVoAndDto(Family family)
 	{
 		this.id = family.getId();
 		this.userId = family.getUserId();
@@ -30,5 +32,6 @@ public class FamilyVo
 		this.idCard = family.getIdCard();
 		this.birthday = family.getBirthday();
 		this.phone = family.getPhone();
+		this.sex = family.getSex();
 	}
 }

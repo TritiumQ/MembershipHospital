@@ -22,4 +22,7 @@ public class OrderQueryDto
 	private Integer state;
 	
 	private Boolean deprecated;
+	
+	private Integer familyId;
+	
 }

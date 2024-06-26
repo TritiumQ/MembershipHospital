@@ -32,7 +32,7 @@ class ApiService {
             console.log(`Response: ${JSON.stringify(res)}`);
         }
         else {
-            console.log(`Response: ${JSON.stringify(res.data).substring(0, 100)}... (data too long)`);
+            console.log(`Response: ${JSON.stringify(res.data).substring(0, 200)}... (data too long)`);
         }
         return new Response<T>(res.data.code, res.data.message, res.data.data);
     }
@@ -47,7 +47,7 @@ class ApiService {
             console.log(`POST ${url} with data: ${JSON.stringify(data)}`);
         }
         else {
-            console.log(`POST ${url} with data: ${JSON.stringify(data).substring(0, 100)}... (data too long)`);
+            console.log(`POST ${url} with data: ${JSON.stringify(data).substring(0, 200)}... (data too long)`);
         }
         return this.instance.post(url, data).then((res) => this.mapToResponse(res, fullLogging));
     }

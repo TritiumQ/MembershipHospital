@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+import { useUserStore } from '@/stores/userStore';
 const router = useRouter();
+const userStore = useUserStore();
 </script>
 <template>
     <!-- 总容器 -->
@@ -15,9 +17,11 @@ const router = useRouter();
             <img src="@/assets/img/yuyue.png" />
             <p>
                 <!-- 用户预约 -->
-                <img @click="() => router.push('hospital')" src="@/assets/img/benrenyuyue.png" />
+                <img @click="() => { userStore.clearAppointment(); router.push('hospital') }"
+                    src="@/assets/img/benrenyuyue.png" />
                 <!-- 家属预约 -->
-                <img src="@/assets/img/jiashuyuyue.png" />
+                <img @click="() => { userStore.clearAppointment(); router.push('familylist') }"
+                    src="@/assets/img/jiashuyuyue.png" />
             </p>
         </section>
     </div>

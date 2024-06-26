@@ -9,6 +9,8 @@ const route = useRoute();
 const userStore = useUserStore();
 
 const user = ref(userStore.user!);
+const hasFamily = ref(userStore.hasFamily);
+const family = ref(userStore.hasFamily ? userStore.family! : null);
 const hospital = ref(userStore.hospital!);
 const packageInfo = ref(userStore.packageInfo!);
 const appointmentDate = ref(userStore.appointmentDate!);
@@ -28,12 +30,13 @@ const confirm = () => {
             date: appointmentDate.value,
             hospitalId: hospital.value.id,
             packageId: packageInfo.value.id,
-            userId: user.value.id
+            userId: user.value.id,
+            familyId: hasFamily.value ? family.value?.id : undefined
         };
         apiService.post<OrderInfo>('order/create', orderCreate).then((res) => {
             if (res.isSuccess())
             {
-                router.push('/appointmentsuccess')
+                router.push({ path: '/pay', query: { orderId: res.data.id } })
             }
             else
             {
@@ -52,30 +55,30 @@ const confirm = () => {
     <div class="wrapper">
         <header>
             <i class="fa fa-angle-left" @click="() => router.back()"></i>
-            <p>确认您的订单</p>
+            <p>确认您的订单{{ hasFamily ? "(家属体检)" : " " }}</p>
             <div></div>
         </header>
         <div class="top-ban"></div>
         <section>
             <div class="title">
-                <p>体检人信息</p>
+                <p>体检人信息{{ hasFamily ? "(家属体检)" : " " }}</p>
             </div>
             <table>
                 <tr>
                     <td>姓名:</td>
-                    <td>{{ user?.realName }}</td>
+                    <td>{{ hasFamily ? family?.name : user?.realName }}</td>
                 </tr>
                 <tr>
                     <td>证件号码:</td>
-                    <td>{{ user?.idCard }}</td>
+                    <td>{{ hasFamily ? family?.idCard : user?.idCard }}</td>
                 </tr>
                 <tr>
                     <td>出生日期:</td>
-                    <td>{{ user?.birthday}}</td>
+                    <td>{{ hasFamily ? family?.birthday : user?.birthday}}</td>
                 </tr>
                 <tr>
                     <td>手机号码:</td>
-                    <td>{{ user?.id }}</td>
+                    <td>{{ hasFamily ? family?.phone : user?.id }}</td>
                 </tr>
             </table>
             <div class="title">
