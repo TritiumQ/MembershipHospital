@@ -21,6 +21,7 @@
 <script setup>
 import { ref, watch, onMounted, onBeforeUnmount, computed } from "vue";
 import { defineProps, defineEmits } from "vue";
+import {ElMessage} from "element-plus";
 
 const props = defineProps({
   modelValue: Array
@@ -36,7 +37,10 @@ watch(results, (newVal) => {
 });
 
 const addOverallResult = () => {
-  results.value.push({ title: '', content: '' });
+  if (results.value.length === 3) {
+    ElMessage.warning('最多只能添加3项总评');
+  }
+  else results.value.push({ title: '', content: '' });
 }
 
 const tableContainer = ref(null);
@@ -77,47 +81,3 @@ onMounted(() => {
   color: #fff;
 }
 </style>
-
-<!--<template>-->
-<!--  <div>-->
-<!--    <h2>总评</h2>-->
-<!--    <div v-for="(result, index) in results" :key="index" class="overall-result">-->
-<!--      <el-row :gutter="20">-->
-<!--        <el-col :span="12">-->
-<!--          标题：<el-input v-model="result.title" placeholder="请输入标题" />-->
-<!--        </el-col>-->
-<!--        <el-col :span="12">-->
-<!--          内容：<el-input v-model="result.content" placeholder="请输入内容" />-->
-<!--        </el-col>-->
-<!--      </el-row>-->
-<!--    </div>-->
-<!--    <el-button @click="addOverallResult">新增项</el-button>-->
-<!--  </div>-->
-<!--</template>-->
-
-<!--<script setup>-->
-<!--import {ref, watch} from "vue";-->
-<!--import {defineProps, defineEmits} from "vue";-->
-<!--const props = defineProps({-->
-<!--  modelValue: Array-->
-<!--});-->
-
-<!--const emits = defineEmits(['update:modelValue']);-->
-
-<!--const results = ref(props.modelValue);-->
-
-<!--// watch for changes and emit update-->
-<!--watch(results, (newVal) => {-->
-<!--  emits('update:modelValue', newVal);-->
-<!--});-->
-
-<!--const addOverallResult = () => {-->
-<!--  results.value.push({ title: '', content: '' });-->
-<!--}-->
-<!--</script>-->
-
-<!--<style scoped>-->
-<!--.overall-result {-->
-<!--  margin-bottom: 20px;-->
-<!--}-->
-<!--</style>-->

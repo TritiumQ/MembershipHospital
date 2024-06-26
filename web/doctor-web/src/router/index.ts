@@ -54,7 +54,7 @@ const routes: RouteRecordRaw[] = [
                     title: '体检报告列表',
                     permiss: '1',
                 },
-                component: () => import(/* webpackChunkName: "dashboard" */ '../views/doctor/checkList.vue'),
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/doctor/index.vue'),
             },
             {
                 path: '/data',
