@@ -77,6 +77,12 @@ const items = [
     permiss: '2',
   },
   {
+    icon: 'Calendar',
+    index: '/account',
+    title: '医生管理',
+    permiss: '4',
+  },
+  {
     icon: 'Avatar',
     index: '0',
     title: '平台用户管理',

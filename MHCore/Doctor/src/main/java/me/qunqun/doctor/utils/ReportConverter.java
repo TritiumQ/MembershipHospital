@@ -18,7 +18,7 @@ public class ReportConverter {
             for (CheckItemDetailedReportVO detail : report.getCheckItemDetailedReports()) {
                 reportString.append("{ \"").append(detail.getDetailName()).append("\": {");
                 reportString.append("\"正常值\": \"").append(detail.getNormalValueDescription()).append("\",");
-                reportString.append("\"化验值\": \"").append(detail.getValue()).append("\",");
+                reportString.append("\"检验值\": \"").append(detail.getValue()).append("\",");
                 reportString.append("\"单位\": \"").append(detail.getUnit()).append("\",");
                 reportString.append("\"是否异常\": \"").append(detail.getError() == null ? "无异常" : detail.getError()).append("\"");
                 reportString.append("}},");

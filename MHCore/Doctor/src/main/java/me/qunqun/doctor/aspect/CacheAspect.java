@@ -82,7 +82,7 @@ public class CacheAspect {
         deleteCacheKeys(keyPrefix);
 
         // Schedule the second delete
-        scheduler.schedule(() -> deleteCacheKeys(keyPrefix), 2, TimeUnit.SECONDS);
+        scheduler.schedule(() -> deleteCacheKeys(keyPrefix), 3, TimeUnit.SECONDS);
 
         return result;
     }

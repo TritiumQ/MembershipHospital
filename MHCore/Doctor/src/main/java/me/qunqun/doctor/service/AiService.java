@@ -27,7 +27,7 @@ public class AiService {
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
 
-    private static final String reportAdvisePrompt = "请你从一位专业医生的角度对这份体检报告进行分析，帮助医生指出其中存在的问题，并帮助医生提供相应的建议，所有输出内容限制在150字中文以内。按以下风格中文输出为\"分析:xxx。\n建议:xxx\",分析和建议需要换行，注意不要输出除此之外的任何内容。";;
+    private static final String reportAdvisePrompt = "请你从一位专业医生的角度并结合搜索到的医学知识对这份体检报告进行分析，帮助医生指出其中存在的问题，并帮助医生提供相应的建议，所有输出内容限制在150字中文以内。按以下风格中文输出为\"分析:xxx。\n建议:xxx\",分析和建议需要换行，注意不要输出除此之外的任何内容。此外，“检验值“为“null”的检查项表示尚未填写可忽略";
 
     public AiService() {
         this.httpClient = HttpClient.newHttpClient();

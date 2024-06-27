@@ -4,7 +4,7 @@
 			<div class="login_adv__title">
 				<h2>体 检 系 统 医 生 端</h2>
 				<hr width="80%">
-				<h3>laboratory management system</h3>
+				<h3>Membership hospital system</h3>
 				<p style="margin-top: 98%;"></p>
 				<div>
 					<span>
@@ -40,7 +40,7 @@
 			</div>
 			<div class="login_adv__mask"></div>
 			<div class="login_adv__bottom">
-				一款专门为体检报告管理而设计的系统
+				给予每一位用户会员般的服务，为您提供最优质的体检服务
 			</div>
 		</div>
 		<div class="login_main">

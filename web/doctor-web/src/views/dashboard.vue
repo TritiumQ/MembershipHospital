@@ -12,10 +12,10 @@
 								effect="" round>{{ "医生" }}</el-tag>
 						</div>
 					</div>
-<!--					<div class="user-info-list">-->
-<!--						当前学期：-->
-<!--						<span>{{ currentTerm }}</span>-->
-<!--					</div>-->
+					<div class="user-info-list">
+						邮箱：
+						<span>{{ email }}</span>
+					</div>
 <!--					<div class="user-info-list">-->
 <!--						学期周数：-->
 <!--						<span>{{ weekCount }}</span>-->
@@ -120,6 +120,7 @@ import axios from 'axios';
 import { ElMessage, FormInstance, FormRules } from 'element-plus';
 import newAxios from '../api/newAxios';
 import { Calendar } from "@element-plus/icons-vue";
+import myAxios from "../api/myAxios";
 interface change {
 	oldPassword: string;
 	newPassword: string;
@@ -134,42 +135,42 @@ const changeForm = reactive<change>({
 const formEnable = ref(false);
 const name = localStorage.getItem('username');
 const role: string = localStorage.getItem("role");
-const currentTerm = ref('')
 const weekCount = ref('')
 const currentDate = ref('');
+const email = ref('');
 
 const adminFunctionList=[
-  {
-    name: '学期管理',
-    icon: 'Calendar',
-    desc: '查看系统学期信息，增加/删除学期。',
-    color: 'blue'
-  },
+  // {
+  //   name: '学期管理',
+  //   icon: 'Calendar',
+  //   desc: '查看系统学期信息，增加/删除学期。',
+  //   color: 'blue'
+  // },
   {
     name: '平台用户管理',
     icon: 'Avatar',
-    desc: '查看系统用户(实验员、教师、学生)信息，增加/删除/修改用户信息，重置密码。',
+    desc: '维护系统医生用户信息，增加/删除/修改/重置密码。',
     color: 'red'
   },
-  {
-    name: '排课管理',
-    icon: 'Memo',
-    desc: '查看排课申请，进行排课安排。',
-    color: 'purple'
-  },
-  {
-    name: '借用审批',
-    icon: 'Checked',
-    desc: '查看实验室借用申请，进行审批。',
-    color: 'dark'
-  },
-  {
-		name: '查询排课课表',
-		icon: 'Search',
-		desc: '根据选择日期查看实验室一天中的所有排课安排。',
-		color: 'green'
-
-	},
+  // {
+  //   name: '排课管理',
+  //   icon: 'Memo',
+  //   desc: '查看排课申请，进行排课安排。',
+  //   color: 'purple'
+  // },
+  // {
+  //   name: '借用审批',
+  //   icon: 'Checked',
+  //   desc: '查看实验室借用申请，进行审批。',
+  //   color: 'dark'
+  // },
+  // {
+	// 	name: '查询排课课表',
+	// 	icon: 'Search',
+	// 	desc: '根据选择日期查看实验室一天中的所有排课安排。',
+	// 	color: 'green'
+  //
+	// },
 ]
 
 const doctorFunctionList = [
@@ -188,17 +189,50 @@ const doctorFunctionList = [
 ]
 
 // const functionList = role==='管理员'?adminFunctionList:role==='学生'?studentFunctionList:role==='老师'?teacherFunctionList:labtorFunctionList;
-const functionList = doctorFunctionList;
+const functionList = role==='管理员'?adminFunctionList:doctorFunctionList;
+
+const hospitals = reactive([]);
+
+// 获取本地存储的医生信息
+const getSessionDoctor = () => {
+  email.value = localStorage.getItem('email');
+};
+
+// 获取本地存储的医院信息
+const getLocalHospitals = () => {
+  const localHospitals = localStorage.getItem('hospitals');
+  if (localHospitals) {
+    hospitals.push(...JSON.parse(localHospitals));
+  } else {
+    queryHospitals();
+  }
+};
+
+// 查询医院信息
+const queryHospitals = async () => {
+  try {
+    const response = await myAxios.get('/api/admin/queryHospitalVO');
+    if (response.data.code === 200) {
+      hospitals.push(...response.data.data);
+      localStorage.setItem('hospitals', JSON.stringify(hospitals));
+    } else {
+      ElMessage.error(response.data.message || '获取医院信息失败');
+    }
+  } catch (error) {
+    ElMessage.error('网络请求异常');
+  }
+};
 
 const sumbit = () => {
 	if (!changeForm || !changeForm.confirmPassword || !changeForm.newPassword || !changeForm.oldPassword) { ElMessage.error('请填写完整信息'); return; }
 	if (changeForm.newPassword !== changeForm.confirmPassword) { ElMessage.error('两次密码不一致'); return; }
-	newAxios.post('/login/changePassword', {
+	myAxios.post('/api/changePassword', {
+    code: localStorage.getItem('code'),
 		oldPassword: changeForm.oldPassword,
 		newPassword: changeForm.newPassword
 	}).then(res => {
 		if (res.data.code == 200) {
-			ElMessage.success(res.data.data)
+			ElMessage.success("密码修改成功")
 			clearForm();
 			formEnable.value = false;
 		}
@@ -214,14 +248,14 @@ const clearForm = () => {
 	changeForm.newPassword = '';
 	changeForm.confirmPassword = '';
 }
-const getTerm = () => {
-	axios.get('/api/login/queryTerm').then(res => {
-		if (res.data.code === 200) {
-			currentTerm.value = res.data.data.termName;
-			weekCount.value = res.data.data.weekCount;
-		}
-	})
-}
+// const getTerm = () => {
+// 	axios.get('/api/login/queryTerm').then(res => {
+// 		if (res.data.code === 200) {
+// 			currentTerm.value = res.data.data.termName;
+// 			weekCount.value = res.data.data.weekCount;
+// 		}
+// 	})
+// }
 
 const formatDate = (date: Date): string => {
   const year = date.getFullYear();
@@ -237,10 +271,12 @@ onMounted(() => {
 
 const formattedDate = currentDate;
 onMounted(() => {
-	getTerm();
+  getLocalHospitals();
+  getSessionDoctor();
 });
 onActivated(() => {
-	getTerm();
+  getLocalHospitals();
+  getSessionDoctor();
 });
 const newInput = ref();
 const newAgainInput = ref();

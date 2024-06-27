@@ -41,4 +41,8 @@ public class EditReportDTO {
         }
         return null;
     }
+
+    public List<OverallResultVO> getOverallResultsVO() {
+        return overallResults;
+    }
 }
