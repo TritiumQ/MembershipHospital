@@ -4,6 +4,7 @@ import { apiService } from '@/util/request';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 import type { UserInfoWithToken, UserLogin } from '@/model/user';
+import { encrypt_password } from '@/util/crypto';
 
 const userStore = useUserStore();
 
@@ -21,6 +22,9 @@ function login()
     if(userLoginParams.value.id === '' || userLoginParams.value.password === '') {
         return;
     }
+    // TODO: 密码加密
+    //let password = encrypt_password(userLoginParams.value.password);
+    //userLoginParams.value.password = password.toString();
     apiService.post<UserInfoWithToken>('/signin', userLoginParams.value)
         .then(res => {
         if(res.isSuccess()) {
