@@ -1,4 +1,9 @@
 package me.qunqun.user.entity.repo;
 
-interface YearReportRepo: org.springframework.data.jpa.repository.support.JpaRepositoryImplementation<me.qunqun.user.entity.po.YearReport, kotlin.Int> {
+import me.qunqun.shared.repo.BaseRepo;
+import me.qunqun.user.entity.po.YearReport;
+
+public interface YearReportRepo extends BaseRepo<YearReport, Integer>
+{
+
 }
