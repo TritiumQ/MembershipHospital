@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import me.qunqun.shared.entity.Result;
 import me.qunqun.user.entity.po.QYearReport;
 import me.qunqun.user.entity.po.YearReport;
 import me.qunqun.user.entity.vo.YearReportVo;
@@ -27,13 +28,13 @@ public class YearReportController
 	@GetMapping("/list/{userId}")
 	@Operation(summary = "获取用户年数据报表")
 	@Transactional
-	public List<YearReportVo> list(@PathVariable String userId)
+	public Result<List<YearReportVo>> list(@PathVariable String userId)
 	{
 		Assert.notNull(userId, "用户ID不能为空");
 		var qYearReport = QYearReport.yearReport;
 		var list =  jpaQueryFactory.selectFrom(qYearReport)
 			.where(qYearReport.userId.eq(userId))
 			.fetch();
-		return list.stream().map(YearReportVo::new).toList();
+		return Result.success(list.stream().map(YearReportVo::new).toList());
 	}
 }

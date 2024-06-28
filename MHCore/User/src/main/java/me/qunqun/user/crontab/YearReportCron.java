@@ -1,4 +1,4 @@
-package me.qunqun.user.cron;
+package me.qunqun.user.crontab;
 
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -8,7 +8,6 @@ import me.qunqun.user.entity.po.QYearReport;
 import me.qunqun.user.entity.po.YearReport;
 import me.qunqun.user.entity.repo.UserRepo;
 import me.qunqun.user.entity.repo.YearReportRepo;
-import org.intellij.lang.annotations.JdkConstants;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

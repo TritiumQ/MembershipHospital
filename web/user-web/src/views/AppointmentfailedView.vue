@@ -17,7 +17,7 @@ const errorMsg = ref(route.query.errorMsg as string || '预约失败');
         </header>
         <div class="top-ban"></div>
         <section>
-            <div class="success">
+            <div class="failed">
                 <div class="icon-box">
                     <div class="icon">
                         <i class="fa fa-close"></i>
@@ -38,4 +38,8 @@ const errorMsg = ref(route.query.errorMsg as string || '预约失败');
 </template>
 <style scoped>
 @import '../assets/css/appointmentsuccess.css';
+.failed {
+    text-align: center;
+    margin-top: 2rem;
+}
 </style>

@@ -73,7 +73,7 @@ const reset = () => {
         }).catch((err) => {
             console.error(err);
         });
-    }, 10000);
+    }, 5000);
 }; 
 
 

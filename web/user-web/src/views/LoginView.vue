@@ -61,7 +61,7 @@ const toRegister = () => {
             <p class="error-msg" v-if="errorMsg">{{errorMsg}}</p>
             <div class="reg-box">
                 <p @click="toRegister">注册</p>
-                <p>忘记密码？</p>
+                <!--<p>忘记密码？</p>-->
             </div>
             <div class="button-box" @click=login>登录</div>
         </section>

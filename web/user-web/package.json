@@ -16,6 +16,7 @@
     "@vuepic/vue-datepicker": "^8.8.0",
     "ant-design-vue": "4.x",
     "axios": "^1.7.2",
+    "crypto-js": "^4.2.0",
     "dayjs": "^1.11.11",
     "element-plus": "^2.7.5",
     "jsencrypt": "^3.3.2",
