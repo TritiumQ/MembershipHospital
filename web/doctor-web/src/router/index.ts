@@ -64,6 +64,15 @@ const routes: RouteRecordRaw[] = [
                     permiss: '2',
                 },
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/chart/charts.vue'),
+            },
+            {
+                path: '/account',
+                name: 'account',
+                meta: {
+                    title: '医生账号管理',
+                    permiss: '4',
+                },
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/admin/doctor-account.vue'),
             }
         ],
     },

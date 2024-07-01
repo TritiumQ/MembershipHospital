@@ -5,6 +5,12 @@
         <template #prepend>
           <el-button icon="User"></el-button>
         </template>
+        <template #append>
+          <el-select v-model="userType" style="width: 130px;">
+            <el-option label="医生" value="医生"></el-option>
+            <el-option label="管理员" value="管理员"></el-option>
+          </el-select>
+        </template>
       </el-input>
     </el-form-item>
     <el-form-item prop="password">
@@ -32,7 +38,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from 'vue';
+import {ref, reactive, watch, onMounted} from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 import { ElMessage, FormInstance, FormRules } from 'element-plus';
@@ -44,15 +50,23 @@ const router = useRouter();
 interface LoginInfo {
   code: string;
   password: string;
+  type: number;
 }
 
 const lgStr = localStorage.getItem('remember_form');
 const defParam = lgStr ? JSON.parse(lgStr) : null;
 const autologin = ref<boolean>(lgStr ? true : false);
+const userType = ref(defParam ? defParam.type === 0 ? '医生' : defParam.type === 1 ? '管理员' : '医生' : '管理员');
+
 
 const form = reactive<LoginInfo>({
   code: defParam ? defParam.code : "",
   password: defParam ? defParam.password : "",
+  type: defParam ? defParam.type : 0,
+});
+
+watch(userType, (newVal) => {
+  form.type = newVal === '医生' ? 0 : newVal === '管理员' ? 1 : 0;
 });
 
 const rules: FormRules = {
@@ -89,6 +103,7 @@ const login = (formEl: FormInstance | undefined) => {
       const loginData = {
         code: form.code,
         password: form.password,
+        type: form.type
       };
 
       axios.post('/api/api/signin', loginData).then(res => {
@@ -104,15 +119,22 @@ const login = (formEl: FormInstance | undefined) => {
             email: data.email
           };
           sessionStorage.setItem('doctorInfo', JSON.stringify(doctorInfo));
-          localStorage.setItem('permiss', JSON.stringify(permiss.defaultList[0]));
+          localStorage.setItem('email', data.email);
+          localStorage.setItem('permiss', JSON.stringify(permiss.defaultList[form.type]));
           ElMessage.success('登录成功');
           router.push('/');
+          localStorage.setItem('code', data.code);
           localStorage.setItem('username', data.realName);
           localStorage.setItem('deptNo', data.deptNo);
           if (autologin.value) {
             localStorage.setItem('remember_form', JSON.stringify(form));
           } else {
             localStorage.removeItem('remember_form');
+          }
+          if (loginData.type === 0) {
+            localStorage.setItem('role', "医生");
+          }else {
+            localStorage.setItem('role', "管理员");
           }
         } else {
           ElMessage.error(res.data.message);
@@ -123,6 +145,10 @@ const login = (formEl: FormInstance | undefined) => {
     }
   });
 };
+
+onMounted(() => {
+  userType.value = defParam ? defParam.type === 0 ? '医生' : defParam.type === 1 ? '管理员' : '医生' : '医生';
+});
 </script>
 
 

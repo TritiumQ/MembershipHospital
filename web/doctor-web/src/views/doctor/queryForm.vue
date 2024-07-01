@@ -42,6 +42,7 @@
 <!--          </el-form-item>-->
           <el-form-item label="套餐名称" prop="packageId">
             <el-select v-model="query.packageId" placeholder="请选择套餐">
+              <el-option label="全部" :value=null />
               <el-option
                   v-for="pkg in filteredPackages"
                   :key="pkg.id"

@@ -155,7 +155,7 @@ public class CheckItemReportService {
     }
 
     @Transactional
-    @RedisCacheEvict(keyPrefix = "checkReports")
+    @RedisCacheEvict(keyPrefix = "orderId")
     public Result<String> saveReport(EditReportDTO editReportDTO) {
         try {
             Result<String> res = editReport(editReportDTO);
@@ -166,12 +166,21 @@ public class CheckItemReportService {
                 if (order == null) {
                     throw new RuntimeException("检查单不存在，保存失败");
                 }
-                order.setState(2);
-                orderRepository.save(order);
+                setOrderState(order, 2);
                 return Result.success("保存成功");
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @RedisCacheEvict(keyPrefix = "orderId")
+    public void setOrderState(Order order, int state) {
+        log.info("setOrderState: {}", order);
+        if (order == null) {
+            throw new RuntimeException("检查单不存在，保存失败");
+        }
+        order.setState(state);
+        orderRepository.save(order);
     }
 }
